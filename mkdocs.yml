@@ -1,32 +1,30 @@
 site_name: MkDocs woon17
-site_url: https://james-willett.github.io/mkdocs-material-youtube-tutorial/
+repo_url: https://github.com/woon17/docs
 theme:
   name: material
   font:
-    text: Merriweather Sans
-    code: Red Hat Mono
-  # logo: fontawesome/solid/w
+    text: Roboto
+    code: Roboto Mono
   logo: assets/logo.png
   favicon: assets/favicon.ico
   features:
-    - navigation.footer
+    # - navigation.footer
+    - content.code.copy
+    - content.code.select
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - toc.integrate
+  custom_dir: overrides
   palette:
-    # Dark Mode
-    - scheme: slate
-      toggle:
-        icon: material/weather-sunny
-        name: Dark mode
-      primary: green
-      accent: deep purple
-
-    # Light Mode
     - scheme: default
       toggle:
-        icon: material/weather-night
-        name: Light mode
-      primary: blue
-      accent: deep orange
-
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 markdown_extensions:
   - attr_list
   - pymdownx.emoji:
@@ -47,7 +45,10 @@ markdown_extensions:
       alternate_style: true
   - admonition
   - pymdownx.details
-
+  - footnotes
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
 extra:
   social:
     - icon: material/github
