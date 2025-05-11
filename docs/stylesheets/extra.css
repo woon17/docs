@@ -18,3 +18,8 @@
 .md-typeset details {
   font-size: 0.8rem;
 }
+
+.highlighted-line {
+  background-color: #ffeeba !important;
+  transition: background-color 0.2s ease;
+}
