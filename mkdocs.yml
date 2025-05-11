@@ -55,3 +55,14 @@ extra:
       link: https://github.com/woon17
     - icon: material/linkedin
       link: https://www.linkedin.com/in/shufa-wen-7a530418b
+extra_javascript:
+  - javascripts/open_in_new_tab.js
+extra_css:
+  - stylesheets/extra.css
+nav:
+  - Home: index.md
+  - MkDocs:
+      - mkDocs/admonitions.md
+      - mkDocs/code-example.md
+      - mkDocs/content-tabs.md
+      - mkDocs/diagram-examples.md
