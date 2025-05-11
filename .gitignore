@@ -6,6 +6,8 @@ Front-end-Library/
 .python-version
 cmd.txt
 e25s-main/*
+mkdocs-material-ref/*
+docs-ref/*
 .DS_Store
 site/*
 overrides/timestamp.txt

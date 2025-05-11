@@ -79,3 +79,5 @@ nav:
       - system_design/test.md
   - Setup:
       - setup/python-vertual-env.md
+  - Blog:
+    - blog/index.md
