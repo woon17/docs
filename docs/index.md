@@ -7,7 +7,7 @@ For the guide for mdDocs [getStart](https://jameswillett.dev/getting-started-wit
 ## Commands
 
 * `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
+* `python write_timestamp.py && mkdocs serve` - Start the live-reloading docs server.
 * `mkdocs build` - Build the documentation site.
 * `mkdocs -h` - Print help message and exit.
 
