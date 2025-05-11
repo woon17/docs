@@ -9,7 +9,7 @@ theme:
   logo: assets/logo.png
   favicon: assets/favicon.ico
   features:
-    # - navigation.footer
+    - navigation.footer
     - content.code.copy
     - content.code.select
     - navigation.indexes
