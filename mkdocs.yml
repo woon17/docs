@@ -79,5 +79,7 @@ nav:
       - system_design/test.md
   - Setup:
       - setup/python-vertual-env.md
+  - Sprint Boot:
+      - spring-boot/index.md
   - Blog:
     - blog/index.md
