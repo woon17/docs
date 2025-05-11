@@ -23,3 +23,8 @@
   background-color: #ffeeba !important;
   transition: background-color 0.2s ease;
 }
+
+
+body[data-md-color-scheme="slate"] .highlighted-line {
+  background-color: #6d6d31 !important;
+}
