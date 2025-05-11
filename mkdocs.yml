@@ -1,5 +1,6 @@
 site_name: MkDocs woon17
 repo_url: https://github.com/woon17/docs
+edit_uri: edit/main/docs/
 theme:
   name: material
   font:
@@ -14,7 +15,10 @@ theme:
     - navigation.indexes
     - navigation.sections
     - navigation.tabs
-    - toc.integrate
+    # - toc.integrate
+    # - navigation.expand
+    - navigation.top
+    - content.action.edit
   custom_dir: overrides
   palette:
     - scheme: default
