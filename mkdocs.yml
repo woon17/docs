@@ -19,6 +19,7 @@ theme:
     # - navigation.expand
     - navigation.top
     - content.action.edit
+    - content.action.view
   custom_dir: overrides
   palette:
     - scheme: default
