@@ -72,3 +72,5 @@ nav:
       - fx/test.md
   - System Design:
       - system_design/test.md
+  - Setup:
+      - setup/python-vertual-env.md
