@@ -12,5 +12,5 @@ message = subprocess.getoutput("git log -1 --pretty=%s")
 commit_time = subprocess.getoutput("git log -1 --date=format:'%Y-%m-%d %H:%M SGT' --pretty=%cd")
 
 # Write the output
-with open("../overrides/timestamp.txt", "w") as f:
+with open("overrides/timestamp.txt", "w") as f:
     f.write(f"Last updated: {now}<br>Commit: {message}<br>Time: {commit_time}")
