@@ -53,6 +53,7 @@ extra:
       link: https://github.com/woon17
     - icon: material/linkedin
       link: https://www.linkedin.com/in/shufa-wen-7a530418b
+  # timestamp: true
 extra_javascript:
   - javascripts/open_in_new_tab.js
   - javascripts/highlight_selected_line_num.js
@@ -65,3 +66,9 @@ nav:
       - mkDocs/code-example.md
       - mkDocs/content-tabs.md
       - mkDocs/diagram-examples.md
+  - Java:
+      - java/test.md
+  - FX:
+      - fx/test.md
+  - System Design:
+      - system_design/test.md

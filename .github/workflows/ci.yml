@@ -25,5 +25,7 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material
+      - run: pip install mkdocs-material pytz
+      - name: Generate commit info and timestamp
+        run: python write_timestamp.py
       - run: mkdocs gh-deploy --force

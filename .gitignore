@@ -5,5 +5,7 @@ Front-end-Library/
 .vscode/
 .python-version
 cmd.txt
-25s-main/*
+e25s-main/*
 .DS_Store
+site/*
+overrides/timestamp.txt

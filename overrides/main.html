@@ -11,3 +11,25 @@
     gtag('config', 'G-Q3E0E4N6LZ');
 </script>
 {% endblock %}
+
+{% block footer %}
+{{ super() }}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const metaInner = document.querySelector(".md-footer-meta__inner");
+        if (metaInner) {
+            const infoBlock = document.createElement("div");
+            infoBlock.className = "md-timestamp";
+            infoBlock.style.cssText = `
+          font-size: 0.75rem;
+          color: var(--md-footer-fg-color);
+          margin-top: 0.5rem;
+          text-align: right;
+          flex: 1 0 100%;
+        `;
+            infoBlock.innerHTML = `{% include "timestamp.txt" %}`;
+            metaInner.appendChild(infoBlock);
+        }
+    });
+</script>
+{% endblock %}
