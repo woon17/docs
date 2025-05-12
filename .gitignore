@@ -11,3 +11,4 @@ docs-ref/*
 .DS_Store
 site/*
 overrides/timestamp.txt
+virDocEnv/*
