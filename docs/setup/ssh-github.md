@@ -34,7 +34,20 @@ Host github.com
   IdentityFile ~/.ssh/id_ed25519_github
   IdentitiesOnly yes
 ```
+The `IdentitiesOnly yes` tells SSH to use only this key instead of offering every key in your agent.
 
+without it, it will try:
+
+- Keys from ssh-agent
+- Default files in ~/.ssh/ 
+    - ~/.ssh/id_rsa
+    - ~/.ssh/id_ecdsa
+    - ~/.ssh/id_ed25519
+    - ~/.ssh/id_dsa
+    - Any others added in recent OpenSSH versions
+- Keys listed in your ~/.ssh/config for the current Host (`Host github.com`)
+
+with it, SSH uses only the key you specified — no default keys, no ssh-agent keys, no surprises.
 
 
 ## Test SSH Connection to GitHub

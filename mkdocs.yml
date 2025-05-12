@@ -78,8 +78,11 @@ nav:
   - System Design:
       - system_design/test.md
   - Setup:
-      - Python virEnv (mac): setup/python-vertual-env.md
-      - ssh: setup/ssh-github.md
+      - Python: 
+        -  virEnv (mac): setup/python-vertual-env.md
+      - SSH: 
+        - github: setup/ssh-github.md
+        - linux server: setup/ssh-server.md
   - Sprint Boot:
       - spring-boot/index.md
   - Blog:
