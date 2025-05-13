@@ -85,5 +85,7 @@ nav:
         - linux server: setup/ssh-server.md
   - Sprint Boot:
       - spring-boot/index.md
+      - Multiple module maven: spring-boot/mmm.md
+      - Maven: spring-boot/maven.md
   - Blog:
     - blog/index.md
