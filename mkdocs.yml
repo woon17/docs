@@ -73,11 +73,17 @@ nav:
       - mkDocs/diagram-examples.md
   - Java:
       - Stack and heap: java/test.md
+      - Thread: 
+        - issue-visibility: java/thread/visibility.md
+        - visibility and atomicity: java/volatile.md
   - FX:
       - fx/test.md
-  - System Design:
+  - System Design: 
       - FR VS NFR: system_design/frAndNfre.md
-      - IPC: system_design/ipc.md
+      - IPC:
+        - Summary: system_design/index.md
+        - ipc: system_design/IPC/ipc.md
+        - aeron mdc: system_design/IPC/aeron_mdc.md
   - Setup:
       - Python: 
         -  virEnv (mac): setup/python-vertual-env.md
