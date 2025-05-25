@@ -72,11 +72,12 @@ nav:
       - mkDocs/content-tabs.md
       - mkDocs/diagram-examples.md
   - Java:
-      - java/test.md
+      - Stack and heap: java/test.md
   - FX:
       - fx/test.md
   - System Design:
-      - system_design/test.md
+      - FR VS NFR: system_design/frAndNfre.md
+      - IPC: system_design/ipc.md
   - Setup:
       - Python: 
         -  virEnv (mac): setup/python-vertual-env.md
