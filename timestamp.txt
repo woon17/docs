@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2025-05-25 22:44:42 SGT</span><br>
+  <span style="opacity: 0.8;">(2025-05-25 22:44:15 SGT: 09a1e51 - add more thread doc)</span>
+</div>
