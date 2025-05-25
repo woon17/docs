@@ -75,6 +75,8 @@ nav:
       - Stack and heap: java/test.md
       - Thread: 
         - issue-visibility: java/thread/visibility.md
+        - issue-atomicity: java/thread/atomicity.md
+        - issue-ordering: java/thread/ordering.md
         - visibility and atomicity: java/volatile.md
   - FX:
       - fx/test.md
