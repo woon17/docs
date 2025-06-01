@@ -52,3 +52,16 @@ lsof -i
 lsof -iTCP
 lsof -iUDP
 ```
+
+
+## Check UDP Connectivity via nc (netcat):  see the message, UDP is open.
+
+```bash
+listener: listen on my port 1234
+nc -u -l -p 1234
+
+publisher: send msg to listener ip:port
+echo "test" | nc -u <listener_public_ip> 1234
+
+
+```
