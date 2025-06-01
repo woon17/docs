@@ -98,7 +98,7 @@ nav:
       - Maven: spring-boot/maven.md
   - Aeron:
     - Why aeron: aeron/adv.md
-  - linux:
+  - Linux:
     - cheatsheet: linux/cheatsheet.md
   - KDB:
     - setup on M3: kdb/setup.md
