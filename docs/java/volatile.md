@@ -1,25 +1,25 @@
 
-# 🧵 Java `volatile`, Thread Visibility, and Atomicity
+# Java `volatile`, Thread Visibility, and Atomicity
 
 In multithreaded programming, it's important to understand two key concepts: **visibility** and **atomicity**.
 
 ---
 
-## 🔍 `volatile` and Thread Visibility
+## `volatile` and Thread Visibility
 
-### ✅ What is Visibility?
+### What is Visibility?
 
 **Visibility** means that when one thread modifies a variable, other threads see the updated value.
 
 By default, the JVM and CPU may cache values in registers or CPU cache, so one thread might not immediately see changes made by another.
 
-### ✅ How `volatile` Helps
+### How `volatile` Helps
 
 The `volatile` keyword tells the JVM:
 - Always read/write the variable **directly from/to main memory**
 - Do **not cache** the value in registers or thread-local caches
 
-### 📌 Example:
+### Example:
 
 ```java
 volatile boolean running = true;
@@ -39,7 +39,7 @@ Without `volatile`, `t` might keep running forever because it might never see `r
 
 ---
 
-## ⚠️ `volatile` Does NOT Guarantee Atomicity
+## `volatile` Does NOT Guarantee Atomicity
 
 ### ❓ What is Atomicity?
 
@@ -62,7 +62,7 @@ This actually performs:
 
 Multiple threads may read the same value before any writes complete, causing lost updates.
 
-### ✅ Use `AtomicInteger` for Atomicity:
+### Use `AtomicInteger` for Atomicity:
 
 ```java
 AtomicInteger count = new AtomicInteger(0);
@@ -80,13 +80,13 @@ public void increment() {
 
 | Feature    | `volatile`       | `AtomicInteger`         |
 |------------|------------------|--------------------------|
-| Visibility | ✅ Yes           | ✅ Yes                  |
-| Atomicity  | ❌ No            | ✅ Yes                  |
+| Visibility | Yes           | Yes                  |
+| Atomicity  | ❌ No            | Yes                  |
 | Use case   | State flags      | Counters, increments     |
 
 ---
 
-## ✅ Conclusion
+## Conclusion
 
 - Use `volatile` for simple **state flags** between threads (like shutdown signals).
 - Use `AtomicInteger` or synchronization for **compound or critical updates**.

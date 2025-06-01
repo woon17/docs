@@ -96,5 +96,7 @@ nav:
       - spring-boot/index.md
       - Multiple module maven: spring-boot/mmm.md
       - Maven: spring-boot/maven.md
+  - Aeron:
+    - Why aeron: aeron/adv.md
   - Blog:
     - blog/index.md
