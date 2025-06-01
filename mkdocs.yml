@@ -100,5 +100,7 @@ nav:
     - Why aeron: aeron/adv.md
   - linux:
     - cheatsheet: linux/cheatsheet.md
+  - KDB:
+    - setup on M3: kdb/setup.md
   - Blog:
     - blog/index.md
