@@ -98,5 +98,7 @@ nav:
       - Maven: spring-boot/maven.md
   - Aeron:
     - Why aeron: aeron/adv.md
+  - linux:
+    - cheatsheet: linux/cheatsheet.md
   - Blog:
     - blog/index.md
