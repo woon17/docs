@@ -73,11 +73,16 @@ nav:
       - mkDocs/diagram-examples.md
   - Java:
       - Stack and heap: java/test.md
-      - Thread: 
+      - Thread:
+        - java/thread/index.md
         - issue-visibility: java/thread/visibility.md
         - issue-atomicity: java/thread/atomicity.md
         - issue-ordering: java/thread/ordering.md
         - visibility and atomicity: java/volatile.md
+        - multiple threads use case: 
+          - 1. block task: java/thread/block-task.md
+          - 2. CPU-Intensive Tasks: java/thread/CPU-Intensive-task.md
+          - 3. Small, Fast Tasks (high vulume): java/thread/small-fast-task.md
   - FX:
       - fx/test.md
   - System Design: 
