@@ -12,5 +12,5 @@ multiple threads can make things worse due to overhead or race conditions.
 
 the 3 use cases show the necessary of using multiple threads, then why need to use aeron (single service, single machine, mutltuple agents in different threads).
 
-this the different topic. please refer to aeron topic (link): even different threads, still use aeron agents on different threads.
+this the different topic. please refer to aeron topic ([Aeron](http://127.0.0.1:8000/aeron/adv/)): even different threads, still use aeron agents on different threads.
 
