@@ -1,6 +1,11 @@
 site_name: MkDocs woon17
 repo_url: https://github.com/woon17/docs
 edit_uri: edit/main/docs/
+plugins:
+  # - Blog: plugins/blog.md
+  - blog
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
 theme:
   name: material
   font:
@@ -109,3 +114,5 @@ nav:
     - setup on M3: kdb/setup.md
   - Blog:
     - blog/index.md
+    - one url: blog/one-url.md
+    
