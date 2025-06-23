@@ -78,6 +78,7 @@ nav:
       - mkDocs/diagram-examples.md
   - Java:
       - Stack and heap: java/test.md
+      - shutdown mecganism: java/shutdown.md
       - Thread:
         - java/thread/index.md
         - issue-visibility: java/thread/visibility.md
@@ -115,4 +116,3 @@ nav:
   - Blog:
     - blog/index.md
     - one url: blog/one-url.md
-    
