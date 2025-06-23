@@ -12,6 +12,9 @@ To handle shutdown signals (like Ctrl+C) gracefully and ensure that the main thr
 ## Code Example
 
 ```java
+import org.agrona.concurrent.ShutdownSignalBarrier;
+import org.agrona.concurrent.SigInt;
+
 ShutdownSignalBarrier barrier = new ShutdownSignalBarrier();
 SigInt.register(() -> {
     barrier.signal();
