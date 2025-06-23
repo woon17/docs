@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2025-06-24 00:21:09 SGT</span><br>
+  <span style="opacity: 0.8;">(2025-06-24 00:20:45 SGT: d21a09c - add the import)</span>
+</div>
