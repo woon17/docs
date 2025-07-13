@@ -112,7 +112,10 @@ nav:
   - Linux:
     - cheatsheet: linux/cheatsheet.md
   - KDB:
+    - kdb/index.md
     - setup on M3: kdb/setup.md
+    - connect to kdb+ manually: kdb/connect.md
+    - simple demo: kdb/demo.md
   - Blog:
     - blog/index.md
     - one url: blog/one-url.md
