@@ -115,6 +115,7 @@ nav:
     - kdb/index.md
     - setup on M3: kdb/setup.md
     - connect to kdb+ manually: kdb/connect.md
+    - kx dashboard data source: kdb/kxDashboard.md
     - simple demo: kdb/demo.md
   - Blog:
     - blog/index.md

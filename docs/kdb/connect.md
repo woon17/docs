@@ -12,7 +12,7 @@ Open a terminal and run:
 q -p 5000
 ```
 
-> This starts KDB+ and listens for incoming IPC connections on port 5000.
+> This starts KDB+ (q process) and listens for incoming IPC connections on port 5000.
 
 ---
 
@@ -62,6 +62,3 @@ You can now connect to it from Java or any IPC-compatible client using:
 ```java
 new Connection("localhost", 5000);
 ```
-
----
-
