@@ -46,11 +46,12 @@ Send a command to the remote session:
 h "1+1"
 ```
 
-You should see the result:
+You should see the result in the Second q process:
 
 ```q
 2
 ```
+
 
 ---
 
