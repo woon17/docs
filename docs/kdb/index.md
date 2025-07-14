@@ -39,6 +39,7 @@ q).z.ts[]   / manually call the function once
 q)\t 1000   / call every 1s
 
 .z.ts:{  `stocks set select from stocks where i > (count  stocks) - 10 }
+
 ## update stock with java: polling
 
 === "java publisher"
@@ -85,10 +86,12 @@ q)\t 1000   / call every 1s
     2. 
     ```q
     / only need to define stream schema which is stock table
-    stocks:([] time:`timestamp$(); sym:`symbol$(); price:`float$())
-    /  timer (.z.ts) does trim stocks to the last 10 rows.
-    .z.ts:{  `stocks set select from stocks where i > (count  stocks) - 10 }
-    \t 1000 / this sets and activates timer (1 second interval)
+    stocks:([] time:`timestamp$(); sym:`symbol$(); price:`float$());
+    \l tick/u.q
+    .u.init[]
+    / .z.ts:{  `stocks set select from stocks where i > (count  stocks) - 10 } 
+    .z.ts:{ `stocks set select from stocks where time > .z.p - 00:01:00.000 };
+    \t 1000
     ```
 
 === "kx dashabord"
