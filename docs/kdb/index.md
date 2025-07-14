@@ -99,6 +99,7 @@ q)\t 1000   / call every 1s
     2. under `DataSource->kdb+/q` 
     ```q
     / retrieve data from the data source with only latest 10 records
-    `time xdesc  10# select from stocks where time < .z.p
+    / `time xdesc  10# select from stocks where time < .z.p
+    `time xdesc select from stocks where time < .z.p
     ```
     3. choose `Subscription: Polling`; `Subscription: Force Reset`; Interval: `1s`; key: `Row Num`
