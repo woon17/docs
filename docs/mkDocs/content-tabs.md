@@ -39,3 +39,6 @@ This is some examples of content tabs.
 
     main();
     ```
+
+
+    .z.ts:{  `stocks set select from stocks where i > (count  stocks) - 1000 }

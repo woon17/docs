@@ -30,7 +30,15 @@ stocks:([] time:`timestamp$(); sym:`symbol$(); price:`float$())
 \t 1000  / every second call .z.ts
 .z.ts:{ .u.pub[`stocks; .u.snap[`stocks]] }
 
+// only contains latest 10 mins in the memory
+q).z.ts:{ `stocks set delete from value `stocks where time < .z.p - 00:10:00.000 }
+q)
+q).z.ts:{ `stocks set delete from `stocks where time < .z.p - 00:10:00.000 }
+q).z.ts[]   / manually call the function once
+`stocks
+q)\t 1000   / call every 1s
 
+.z.ts:{  `stocks set select from stocks where i > (count  stocks) - 10 }
 ## update stock with java: polling
 
 === "java publisher"
@@ -78,14 +86,16 @@ stocks:([] time:`timestamp$(); sym:`symbol$(); price:`float$())
     ```q
     / only need to define stream schema which is stock table
     stocks:([] time:`timestamp$(); sym:`symbol$(); price:`float$())
-
+    /  timer (.z.ts) does trim stocks to the last 10 rows.
+    .z.ts:{  `stocks set select from stocks where i > (count  stocks) - 10 }
+    \t 1000 / this sets and activates timer (1 second interval)
     ```
 
 === "kx dashabord"
     1.  connect to the q process
     2. under `DataSource->kdb+/q` 
     ```q
-    / retrieve data from the data source
-    `time xdesc select from stocks where time < .z.p
+    / retrieve data from the data source with only latest 10 records
+    `time xdesc  10# select from stocks where time < .z.p
     ```
-    3. choose `Subscription: Polling` key: `Row Num`
+    3. choose `Subscription: Polling`; `Subscription: Force Reset`; Interval: `1s`; key: `Row Num`
