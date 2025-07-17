@@ -1,7 +1,7 @@
 # Reference
 - [kx dashboard](https://code.kx.com/dashboards/gettingstarted/)
 - [kx developer](https://code.kx.com/developer/getting-started/)
-
+- [KDB Java API](https://www.timestored.com/kdb-guides/kdb-java-api)
 ## cmd
 - q)tables `. : returns a list of all tables in the root namespace
 - .u.w is a dictionary
