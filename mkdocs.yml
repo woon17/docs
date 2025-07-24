@@ -109,6 +109,8 @@ nav:
       - Maven: spring-boot/maven.md
   - Aeron:
     - Why aeron: aeron/adv.md
+    - Artio fix:
+      - Coinbase fix api: aeron/artio/coinbase.md
   - Linux:
     - cheatsheet: linux/cheatsheet.md
   - KDB:
