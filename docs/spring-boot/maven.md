@@ -249,3 +249,9 @@ target/site/checkstyle-result.xml
 </plugin>
 
 ```
+
+## cheatsheet
+1. delete a specific dependency from your local Maven cache (~/.m2/repository) and force Maven to re-download it cleanly from the remote repository
+      ```script
+      mvn dependency:purge-local-repository -DmanualInclude="org.bouncycastle:bcprov-jdk15on"
+      ```
