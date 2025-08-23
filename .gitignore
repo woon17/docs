@@ -12,4 +12,3 @@ docs-ref/*
 site/*
 overrides/timestamp.txt
 virDocEnv/*
-.claude/
