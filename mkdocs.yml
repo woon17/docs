@@ -77,6 +77,7 @@ nav:
       - mkDocs/content-tabs.md
       - mkDocs/diagram-examples.md
   - Java:
+      - java/index.md
       - Stack and heap: java/test.md
       - shutdown mecganism: java/shutdown.md
       - Thread:
@@ -98,6 +99,7 @@ nav:
         - ipc: system_design/IPC/ipc.md
         - aeron mdc: system_design/IPC/aeron_mdc.md
   - Setup:
+      - setup/index.md
       - Python: 
         -  virEnv (mac): setup/python-vertual-env.md
       - SSH: 
@@ -108,10 +110,13 @@ nav:
       - Multiple module maven: spring-boot/mmm.md
       - Maven: spring-boot/maven.md
   - Aeron:
+    - aeron/index.md
     - Why aeron: aeron/adv.md
+    - MDC vs Unicast: aeron/mdc-vs-unicast.md
     - Artio fix:
       - Coinbase fix api: aeron/artio/coinbase.md
   - Linux:
+    - linux/index.md
     - cheatsheet: linux/cheatsheet.md
   - KDB:
     - kdb/index.md
@@ -119,6 +124,8 @@ nav:
     - connect to kdb+ manually: kdb/connect.md
     - kx dashboard data source: kdb/kxDashboard.md
     - simple demo: kdb/demo.md
+  - Productivity Tools:
+    - Claude Tips: claude/tips.md
   - Blog:
     - blog/index.md
     - one url: blog/one-url.md

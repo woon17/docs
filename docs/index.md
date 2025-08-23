@@ -1,24 +1,43 @@
-# Welcome to MkDocs
+# Technical Documentation Hub
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Welcome to our comprehensive technical documentation covering Java development, database operations, system design, and high-performance messaging systems.
 
-For the guide for mdDocs [getStart](https://jameswillett.dev/getting-started-with-material-for-mkdocs/)
+## What You'll Find Here
 
-mkdocs-material reference: [Icons, Emojis](https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/)
+### Core Technologies
+- **[Java Development](/java/)** - Memory management, concurrency patterns, and threading best practices
+- **[KDB+ Database](/kdb/)** - Time-series database operations, setup guides, and integration examples  
+- **[System Design](/system_design/)** - Architecture patterns, IPC mechanisms, and design principles
+- **[Aeron Messaging](/aeron/)** - High-performance messaging protocols and low-latency communication
 
+### Development & Tools
+- **[Spring Boot](/spring-boot/)** - Application frameworks and multi-module Maven projects
+- **[Linux Operations](/linux/)** - Command reference and system administration
+- **[Setup Guides](/setup/)** - Environment configuration for Python, SSH, and development tools
+- **[Productivity Tools](/claude/)** - AI assistance and development workflow optimization
 
-## Commands
+## Getting Started
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `python write_timestamp.py && mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+!!! tip "New to the Documentation?"
+    Start with our [setup guides](/setup/) to configure your development environment, then explore topics by category above.
 
-## Project layout
+### Quick Navigation
+- **Beginners**: Start with [Java basics](/java/) and [setup guides](/setup/)
+- **Database work**: Jump to [KDB+ documentation](/kdb/) 
+- **System architecture**: Explore [system design](/system_design/) concepts
+- **Performance optimization**: Check out [Aeron messaging](/aeron/) guides
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## Development Commands
 
-I like to drink `umeshu` :fontawesome-solid-wine-bottle: after :construction_worker: 
+For contributors and maintainers:
+
+```bash
+# Start local development server
+python write_timestamp.py && mkdocs serve
+
+# Build documentation site  
+mkdocs build
+
+# Deploy to GitHub Pages
+mkdocs gh-deploy --force
+``` 

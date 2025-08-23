@@ -1,3 +1,7 @@
+# Java Threading Guide
+
+This guide covers Java threading concepts, when to use multiple threads, and common patterns for concurrent programming.
+
 ## Rule of Thumb
 Use multiple threads when work can be done independently and in parallel.
 

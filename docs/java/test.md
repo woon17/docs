@@ -1,3 +1,7 @@
+# Java Memory Management: Stack vs Heap
+
+Understanding Java's memory model is crucial for writing efficient applications and debugging memory-related issues.
+
 ## Stack
 
 - **Purpose**: Stores method call frames, local variables, and references.
