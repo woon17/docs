@@ -14,7 +14,7 @@ arch -x86_64 /System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
 
 ### 2. Build OpenSSL 1.1 Manually
 
-Homebrew has disabled OpenSSL 1.1, so we need to build it manually.
+Homebrew has disabled OpenSSL 1.1, so it needs to be built manually.
 
 !!! warning "Important"
     Make sure the terminal is opened with Rosetta (`uname -m` should return `x86_64`), otherwise you'll encounter issues when installing KDB Developer.

@@ -20,7 +20,7 @@ Steps performed by the browser:
 
 ## Inspecting Each Step in Terminal
 
-We’ll use `www.google.com` in all examples.
+This guide uses `www.google.com` in all examples.
 
 ---
 

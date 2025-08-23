@@ -1,6 +1,6 @@
 # Aeron MDC vs Unicast – Key Differences
 
-When it comes to the UDP protocol, we can either use Unicast, which sends messages one to one, or multicast, which sends messages to many
+When it comes to the UDP protocol, you can either use Unicast, which sends messages one to one, or multicast, which sends messages to many
 
 ## Overview
 

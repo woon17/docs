@@ -1,7 +1,7 @@
 
 # System Design
 
-Welcome to our system design documentation covering architectural patterns, inter-process communication (IPC), and design principles for building scalable systems.
+Welcome to system design documentation covering architectural patterns, inter-process communication (IPC), and design principles for building scalable systems.
 
 ## Overview
 

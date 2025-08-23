@@ -13,7 +13,7 @@ Create a thread pool that processes many tasks in parallel. This increases throu
 1. Doing sequentially = slow.
 1. Spread across 8 threads → process in parallel.
 
-we can finish the batch faster because many threads handle many tasks at once.
+this can finish the batch faster because many threads handle many tasks at once.
 
 ```java
 ExecutorService pool = Executors.newFixedThreadPool(8);

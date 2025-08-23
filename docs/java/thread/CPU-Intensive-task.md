@@ -13,7 +13,7 @@ Split the work into chunks, run each on a separate thread. Parallelism = much fa
 1. Split into 4 chunks.
 1. Use 4 threads → 4 CPU cores at once.
    
-we can reduce total runtime because 4 cores are working simultaneously.
+this can reduce total runtime because 4 cores are working simultaneously.
 
 ```java
 // Each thread works on a chunk

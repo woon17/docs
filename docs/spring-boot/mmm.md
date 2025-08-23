@@ -32,7 +32,7 @@ A central `pom.xml` with `<packaging>pom</packaging>` used to manage modules and
       ```
 
 === "Manually"
-    If we do not use the Spring Boot parent, Then you must import the Spring BOM manually like this:
+    If not using the Spring Boot parent, then you must import the Spring BOM manually like this:
       ```xml
       <dependencyManagement>
          <dependencies>
@@ -47,7 +47,7 @@ A central `pom.xml` with `<packaging>pom</packaging>` used to manage modules and
       </dependencyManagement>
 
       ```
-      This snippet must go inside your parent POM's <dependencyManagement> block if we are not using the spring-boot-starter-parent.
+      This snippet must go inside your parent POM's <dependencyManagement> block if not using the spring-boot-starter-parent.
 
 This ensures children can declare dependencies without specifying versions.
 

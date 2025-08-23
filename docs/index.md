@@ -1,6 +1,6 @@
 # Technical Documentation Hub
 
-Welcome to our comprehensive technical documentation covering Java development, database operations, system design, and high-performance messaging systems.
+Welcome to comprehensive technical documentation covering Java development, database operations, system design, and high-performance messaging systems.
 
 ## What You'll Find Here
 
@@ -19,7 +19,7 @@ Welcome to our comprehensive technical documentation covering Java development, 
 ## Getting Started
 
 !!! tip "New to the Documentation?"
-    Start with our [setup guides](/setup/) to configure your development environment, then explore topics by category above.
+    Start with the [setup guides](/setup/) to configure your development environment, then explore topics by category above.
 
 ### Quick Navigation
 - **Beginners**: Start with [Java basics](/java/) and [setup guides](/setup/)
