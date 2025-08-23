@@ -126,6 +126,7 @@ nav:
     - simple demo: kdb/demo.md
   - Productivity Tools:
     - Claude Tips: ai-tools/tips.md
+    - Claude Code Sessions: ai-tools/claude-code-sessions.md
   - Blog:
     - blog/index.md
     - one url: blog/one-url.md
