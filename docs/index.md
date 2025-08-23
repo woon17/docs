@@ -14,7 +14,7 @@ Welcome to our comprehensive technical documentation covering Java development, 
 - **[Spring Boot](/spring-boot/)** - Application frameworks and multi-module Maven projects
 - **[Linux Operations](/linux/)** - Command reference and system administration
 - **[Setup Guides](/setup/)** - Environment configuration for Python, SSH, and development tools
-- **[Productivity Tools](/claude/)** - AI assistance and development workflow optimization
+- **[Productivity Tools](/ai-tools/)** - AI assistance and development workflow optimization
 
 ## Getting Started
 

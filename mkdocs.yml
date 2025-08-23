@@ -125,7 +125,7 @@ nav:
     - kx dashboard data source: kdb/kxDashboard.md
     - simple demo: kdb/demo.md
   - Productivity Tools:
-    - Claude Tips: claude/tips.md
+    - Claude Tips: ai-tools/tips.md
   - Blog:
     - blog/index.md
     - one url: blog/one-url.md

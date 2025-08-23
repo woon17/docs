@@ -46,7 +46,7 @@ This section provides step-by-step setup instructions for development tools, SSH
 
 - **[KDB+ Setup](/kdb/setup.md)** - KDB+ installation and configuration
 - **[Spring Boot](/spring-boot/)** - Java application framework setup
-- **[Productivity Tools](/claude/)** - Development workflow optimization
+- **[Productivity Tools](/ai-tools/)** - Development workflow optimization
 
 ---
 
