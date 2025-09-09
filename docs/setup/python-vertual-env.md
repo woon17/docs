@@ -46,8 +46,8 @@ pyenv local virLanggraphEnv
 
 ## Uninstall a Python Environment
 To uninstall a specific Python environment (e.g., `virLanggraphEnv`):
-Use pyenv virtualenv-delete if you want to be explicit that you're deleting a virtualenv
-Use pyenv uninstall as the universal command for removing anything pyenv manages
+1. Use pyenv virtualenv-delete if you want to be explicit that you're deleting a virtualenv
+2. Use pyenv uninstall as the universal command for removing anything pyenv manages
 ```bash
 pyenv virtualenv-delete virLanggraphEnv
 pyenv uninstall virLanggraphEnv
