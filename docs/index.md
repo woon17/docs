@@ -5,10 +5,10 @@ Welcome to comprehensive technical documentation covering Java development, data
 ## What You'll Find Here
 
 ### Core Technologies
-- **[Java Development](/java/)** - Memory management, concurrency patterns, and threading best practices
-- **[KDB+ Database](/kdb/)** - Time-series database operations, setup guides, and integration examples  
-- **[System Design](/system_design/)** - Architecture patterns, IPC mechanisms, and design principles
-- **[Aeron Messaging](/aeron/)** - High-performance messaging protocols and low-latency communication
+- **[Java Development](/docs/java/)** - Memory management, concurrency patterns, and threading best practices
+- **[KDB+ Database](/docs/kdb/)** - Time-series database operations, setup guides, and integration examples  
+- **[System Design](/docs/system_design/frAndNfre/)** - Architecture patterns, IPC mechanisms, and design principles
+- **[Aeron Messaging](/docs/aeron/)** - High-performance messaging protocols and low-latency communication
 
 ### Development & Tools
 - **[Spring Boot](/spring-boot/)** - Application frameworks and multi-module Maven projects
