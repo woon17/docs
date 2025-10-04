@@ -86,6 +86,12 @@ with it, SSH uses only the key you specified — no default keys, no ssh-agent k
 ```bash
 git clone git@github.com:your-username/your-repo.git
 ```
+## Use default commit message template (specific repository)
+
+```bash
+echo "SF:" > .mycommitmsg.txt
+git config --local commit.template .mycommitmsg.txt
+```
 
 ## Notes
 
