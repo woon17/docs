@@ -118,6 +118,9 @@ nav:
   - Linux:
     - linux/index.md
     - cheatsheet: linux/cheatsheet.md
+  - AI:
+    - ai-tools/index.md
+    - Common AI Knowledge: ai-tools/common.md
   - KDB:
     - kdb/index.md
     - setup on M3: kdb/setup.md
