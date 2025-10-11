@@ -115,6 +115,11 @@ nav:
     - MDC vs Unicast: aeron/mdc-vs-unicast.md
     - Artio fix:
       - Coinbase fix api: aeron/artio/coinbase.md
+  - Disruptor:
+    - disruptor/index.md
+    - Conduit Framework: disruptor/conduit-framework.md
+    - Performance Analysis: disruptor/performance.md
+    - Example Applications: disruptor/examples.md
   - Linux:
     - linux/index.md
     - cheatsheet: linux/cheatsheet.md
