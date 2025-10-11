@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2025-10-11 23:39:48 SGT</span><br>
+  <span style="opacity: 0.8;">(2025-10-11 23:39:20 SGT: 09e694b - Add Aeron ring buffer performance documentation)</span>
+</div>
