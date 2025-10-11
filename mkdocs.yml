@@ -113,6 +113,7 @@ nav:
     - aeron/index.md
     - Why aeron: aeron/adv.md
     - MDC vs Unicast: aeron/mdc-vs-unicast.md
+    - Ring Buffer Performance: aeron/ring-buffer.md
     - Artio fix:
       - Coinbase fix api: aeron/artio/coinbase.md
   - Disruptor:
