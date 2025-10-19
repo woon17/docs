@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2025-10-19 18:19:13 SGT</span><br>
+  <span style="opacity: 0.8;">(2025-10-19 18:18:53 SGT: e73f261 - Update README with github io link)</span>
+</div>
