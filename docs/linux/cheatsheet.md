@@ -65,3 +65,8 @@ echo "test" | nc -u <listener_public_ip> 1234
 
 
 ```
+
+## Check what service/process/task are using the port
+```bash
+ps aux | grep PID
+```
