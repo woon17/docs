@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2025-11-12 17:50:31 SGT</span><br>
+  <span style="opacity: 0.8;">(2025-11-12 17:50:12 SGT: 45e504c - Add command for checking file/folder sizes)</span>
+</div>
