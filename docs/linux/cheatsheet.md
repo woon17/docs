@@ -1,3 +1,11 @@
+## Check files or folders size (human-readable sizes)
+```bash
+show size of all items in current directory (sort by size)
+du -sh * | sort -hr
+ls -lah
+```
+
+
 ## Find which process is using a specific port 8080:
 ```bash
 lsof -i :8080
