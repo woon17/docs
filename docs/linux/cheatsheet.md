@@ -99,3 +99,23 @@ ipconfig getifaddr en0
 ```bash
 ps aux | grep PID
 ```
+
+## docker
+```bash
+// Show running containers
+docker ps
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Image}}"
+
+// Show ALL containers (running + stopped)
+docker ps -a
+
+// Check logs (to confirm it’s alive)
+docker logs grafana
+docker logs -f grafana
+
+// See what ports are exposed
+docker port grafana
+or
+docker ps | grep grafana
+
+```
