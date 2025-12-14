@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2025-12-14 23:51:08 SGT</span><br>
+  <span style="opacity: 0.8;">(2025-12-14 23:50:49 SGT: 4801f47 - Enhance cheatsheet with public IP and TCP test info)</span>
+</div>
