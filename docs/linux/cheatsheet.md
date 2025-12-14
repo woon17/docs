@@ -70,8 +70,29 @@ nc -u -l -p 1234
 
 publisher: send msg to listener ip:port
 echo "test" | nc -u <listener_public_ip> 1234
+```
+
+## storage
+```bash
+// Check total size of current folder
+du -sh .
+
+// See size of each subfolder
+du -sh *
+
+// Sort folders by size (reverse -hr)
+du -sh * | sort -h
 
 
+// Check disk free space (overall, not folder)
+df -h .
+```
+
+
+## IP
+```bash
+// Check mac local/private ip
+ipconfig getifaddr en0 
 ```
 
 ## Check what service/process/task are using the port
