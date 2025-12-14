@@ -119,3 +119,24 @@ or
 docker ps | grep grafana
 
 ```
+
+## Quick external test in the same laptop (local ports exposed?)
+```bash
+// find your public IP
+curl ifconfig.me
+-> 1.2.3.4
+
+// Try to open a TCP connection to <PUBLIC_IP> on port 1234 and tell me if it succeeds.
+same laptop:
+1. Tries to reach its own public IP
+2. That traffic goes to the router
+Router decides:
+  ❌ drop it (no port forward) → SAFE
+  ✅ forward it to laptop:1234 → EXPOSED
+But ⚠️ IMPORTANT caveat (very important)
+Some routers do not support NAT loopback. nc from the same laptop will always fail, Even if the port is actually exposed to the internet
+
+The REAL definitive test:
+Use a device NOT on your Wi-Fi
+http://1.2.3.4:1234
+```
