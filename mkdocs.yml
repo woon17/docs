@@ -85,6 +85,7 @@ nav:
         - issue-visibility: java/thread/visibility.md
         - issue-atomicity: java/thread/atomicity.md
         - issue-ordering: java/thread/ordering.md
+        - HashMap Concurrent Access: java/thread/hashmap-concurrent-read-write.md
         - visibility and atomicity: java/volatile.md
         - multiple threads use case: 
           - 1. block task: java/thread/block-task.md
@@ -92,6 +93,7 @@ nav:
           - 3. Small, Fast Tasks (high vulume): java/thread/small-fast-task.md
   - FX:
       - fx/test.md
+      - RFS vs RFQ: fx/rfs-vs-rfq.md
   - System Design: 
       - FR VS NFR: system_design/frAndNfre.md
       - IPC:
@@ -121,6 +123,8 @@ nav:
     - Conduit Framework: disruptor/conduit-framework.md
     - Performance Analysis: disruptor/performance.md
     - Example Applications: disruptor/examples.md
+    - Lock-free & CAS: disruptor/lock-free-cas.md
+
   - Linux:
     - linux/index.md
     - cheatsheet: linux/cheatsheet.md
@@ -136,6 +140,17 @@ nav:
   - Productivity Tools:
     - Claude Tips: ai-tools/tips.md
     - Claude Code Sessions: ai-tools/claude-code-sessions.md
+  - Claude Code Skills:
+    - Overview: ai-tools/claude-code/index.md
+    - Commands:
+      - /new-service: ai-tools/claude-code/commands/new-service.md
+      - /refactor: ai-tools/claude-code/commands/refactor.md
+    - Java Architect Skill:
+      - Skill Overview: ai-tools/claude-code/java-architect/index.md
+      - Aeron Agent: ai-tools/claude-code/java-architect/references/aeron-agent.md
+      - Data Access: ai-tools/claude-code/java-architect/references/data-access.md
+      - Rest Api: ai-tools/claude-code/java-architect/references/rest-api.md
+      - Spring Boot Setup: ai-tools/claude-code/java-architect/references/spring-boot-setup.md
   - Blog:
     - blog/index.md
     - one url: blog/one-url.md

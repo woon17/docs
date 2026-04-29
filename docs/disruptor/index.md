@@ -101,6 +101,7 @@ To use the Disruptor in your project, add the dependency:
 - [Conduit Framework Overview](conduit-framework.md) - Learn about the reactive framework built on Disruptor
 - [Performance Comparison](performance.md) - Detailed performance analysis
 - [Example Applications](examples.md) - Real-world usage examples
+- [Lock-free & CAS](lock-free-cas.md) - Deep dive into lock-free programming and Compare-And-Swap
 
 ## Resources
 
