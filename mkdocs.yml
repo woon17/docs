@@ -94,8 +94,9 @@ nav:
   - FX:
       - fx/test.md
       - RFS vs RFQ: fx/rfs-vs-rfq.md
-  - System Design: 
+  - System Design:
       - FR VS NFR: system_design/frAndNfre.md
+      - Polling vs Push: system_design/polling-and-push.md
       - IPC:
         - Summary: system_design/index.md
         - ipc: system_design/IPC/ipc.md
