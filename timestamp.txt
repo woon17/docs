@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2026-05-10 16:28:59 SGT</span><br>
+  <span style="opacity: 0.8;">(2026-05-10 16:28:29 SGT: 410fb57 - update docs and rename python-virtual-env file)</span>
+</div>
