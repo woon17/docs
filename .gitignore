@@ -13,3 +13,4 @@ site/*
 overrides/timestamp.txt
 virDocEnv/*
 .claude/
+REVIEW_REPORT.md

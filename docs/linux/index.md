@@ -58,9 +58,9 @@ This section provides practical Linux command references, system administration 
 
 ## Related Topics
 
-- **[Setup Guides](/setup/)** - Environment configuration and tool installation
-- **[KDB+ Setup](/kdb/setup.md)** - Database installation on Linux systems
-- **[SSH Configuration](/setup/ssh-server.md)** - Remote access and security
+- **[Setup Guides](../setup/)** - Environment configuration and tool installation
+- **[KDB+ Setup](../kdb/setup.md)** - Database installation on Linux systems
+- **[SSH Configuration](..../setup/ssh-server.md)** - Remote access and security
 
 ---
 

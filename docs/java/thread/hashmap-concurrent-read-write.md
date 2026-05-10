@@ -1256,13 +1256,3 @@ Results:
 
 ---
 
-## Next Steps
-
-Would you like me to create:
-
-1. ✅ **Runnable Java code** demonstrating each bug ← **DONE!**
-2. ✅ **CPU-level MESI diagram** showing cache states
-3. ✅ **ConcurrentHashMap internals** deep-dive
-4. ✅ **JMM happens-before diagram** for HashMap operations
-
-Let me know which one you'd like next!

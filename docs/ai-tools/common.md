@@ -34,7 +34,7 @@ Example:
 Combined overview of prompts, MCP and agents.
 
 <figure>
-      <img src="/ai-tools/image/prompt_mcp_agent.jpeg" alt="Prompt / MCP / Agent diagram">
+      <img src="image/prompt_mcp_agent.jpeg" alt="Prompt / MCP / Agent diagram">
       <figcaption><b>Figure 1:</b> Server architecture overview</figcaption>
 </figure>
 ---

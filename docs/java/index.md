@@ -51,9 +51,9 @@ This section provides comprehensive coverage of Java fundamentals and advanced t
 
 ## Related Topics
 
-- **[System Design](/system_design/)** - Architecture patterns for scalable systems
-- **[KDB+ Integration](/kdb/)** - Database connectivity and performance optimization
-- **[Spring Boot](/spring-boot/)** - Application framework integration
+- **[System Design](../system_design/)** - Architecture patterns for scalable systems
+- **[KDB+ Integration](../kdb/)** - Database connectivity and performance optimization
+- **[Spring Boot](../spring-boot/)** - Application framework integration
 
 ---
 

@@ -161,7 +161,7 @@ public class TestService {
 
 ```java
 public class ThreadFactoryUtils {
-    public static final String THREAD_PREFIX = "unamed-thread";
+    public static final String THREAD_PREFIX = "unnamed-thread";
 
     private ThreadFactoryUtils() {}
 
@@ -170,10 +170,10 @@ public class ThreadFactoryUtils {
     }
 
     public static ThreadFactory getNonDaemonThreadFactory() {
-        return getThreadFactory(THREAD_PREFIX, true);
+        return getThreadFactory(THREAD_PREFIX, false);
     }
 
-    public static ThreadFactory getNamedDeamonTHreadFactory(String prefix) {
+    public static ThreadFactory getNamedDaemonThreadFactory(String prefix) {
         return getThreadFactory(prefix, true);
     }
 

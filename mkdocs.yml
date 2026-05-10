@@ -79,7 +79,7 @@ nav:
   - Java:
       - java/index.md
       - Stack and heap: java/test.md
-      - shutdown mecganism: java/shutdown.md
+      - shutdown mechanism: java/shutdown.md
       - Thread:
         - java/thread/index.md
         - issue-visibility: java/thread/visibility.md
@@ -90,7 +90,7 @@ nav:
         - multiple threads use case: 
           - 1. block task: java/thread/block-task.md
           - 2. CPU-Intensive Tasks: java/thread/CPU-Intensive-task.md
-          - 3. Small, Fast Tasks (high vulume): java/thread/small-fast-task.md
+          - 3. Small, Fast Tasks (high volume): java/thread/small-fast-task.md
   - FX:
       - fx/test.md
       - RFS vs RFQ: fx/rfs-vs-rfq.md
@@ -104,11 +104,11 @@ nav:
   - Setup:
       - setup/index.md
       - Python: 
-        -  virEnv (mac): setup/python-vertual-env.md
+        -  virEnv (mac): setup/python-virtual-env.md
       - SSH: 
         - github: setup/ssh-github.md
         - linux server: setup/ssh-server.md
-  - Sprint Boot:
+  - Spring Boot:
       - spring-boot/index.md
       - Multiple module maven: spring-boot/mmm.md
       - Maven: spring-boot/maven.md

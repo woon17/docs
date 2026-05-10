@@ -9,7 +9,7 @@ This section provides step-by-step setup instructions for development tools, SSH
 ## Available Guides
 
 ### Python Environment
-- **[Virtual Environment Setup (macOS)](python-vertual-env.md)** - Setting up Python virtual environments on macOS
+- **[Virtual Environment Setup (macOS)](python-virtual-env.md)** - Setting up Python virtual environments on macOS
 
 ### SSH Configuration  
 - **[GitHub SSH Setup](ssh-github.md)** - Configuring SSH keys for GitHub authentication
@@ -21,7 +21,7 @@ This section provides step-by-step setup instructions for development tools, SSH
     Start with the Python virtual environment setup if you're working with Python projects, or SSH configuration if you need secure remote access.
 
 ### Setup Workflow
-1. **Python Development** - Configure [virtual environments](python-vertual-env.md) for project isolation
+1. **Python Development** - Configure [virtual environments](python-virtual-env.md) for project isolation
 2. **GitHub Access** - Set up [SSH keys](ssh-github.md) for seamless repository access  
 3. **Remote Servers** - Configure [SSH access](ssh-server.md) to development or production servers
 
@@ -44,9 +44,9 @@ This section provides step-by-step setup instructions for development tools, SSH
 
 ## Related Topics
 
-- **[KDB+ Setup](/kdb/setup.md)** - KDB+ installation and configuration
-- **[Spring Boot](/spring-boot/)** - Java application framework setup
-- **[Productivity Tools](/ai-tools/)** - Development workflow optimization
+- **[KDB+ Setup](../kdb/setup.md)** - KDB+ installation and configuration
+- **[Spring Boot](../spring-boot/)** - Java application framework setup
+- **[Productivity Tools](../ai-tools/)** - Development workflow optimization
 
 ---
 

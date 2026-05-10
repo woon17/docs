@@ -11,7 +11,7 @@ ls -lah
 lsof -i :8080
 ```
 
-##  lists processes listening on TCP port 8082, showing clean output
+## lists processes listening on TCP port 8082, showing clean output
 ```bash
 lsof -nP -iTCP:8080 -sTCP:LISTEN
 ```
@@ -33,7 +33,7 @@ ps -p 123 -ww
 
 `-ww`:	Show full command line without cutting off arguments (double w means no truncation at all)
 
-##  lists all running Java processes with their PID and main class or jar file.
+## lists all running Java processes with their PID and main class or jar file.
 
 ```bash
 jps -l
@@ -74,24 +74,24 @@ echo "test" | nc -u <listener_public_ip> 1234
 
 ## storage
 ```bash
-// Check total size of current folder
+# Check total size of current folder
 du -sh .
 
-// See size of each subfolder
+# See size of each subfolder
 du -sh *
 
-// Sort folders by size (reverse -hr)
+# Sort folders by size (reverse -hr)
 du -sh * | sort -h
 
 
-// Check disk free space (overall, not folder)
+# Check disk free space (overall, not folder)
 df -h .
 ```
 
 
 ## IP
 ```bash
-// Check mac local/private ip
+# Check mac local/private ip
 ipconfig getifaddr en0 
 ```
 
@@ -102,18 +102,18 @@ ps aux | grep PID
 
 ## docker
 ```bash
-// Show running containers
+# Show running containers
 docker ps
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Image}}"
 
-// Show ALL containers (running + stopped)
+# Show ALL containers (running + stopped)
 docker ps -a
 
-// Check logs (to confirm it’s alive)
+# Check logs (to confirm it’s alive)
 docker logs grafana
 docker logs -f grafana
 
-// See what ports are exposed
+# See what ports are exposed
 docker port grafana
 or
 docker ps | grep grafana
@@ -122,11 +122,11 @@ docker ps | grep grafana
 
 ## Quick external test in the same laptop (local ports exposed?)
 ```bash
-// find your public IP
+# find your public IP
 curl ifconfig.me
 -> 1.2.3.4
 
-// Try to open a TCP connection to <PUBLIC_IP> on port 1234 and tell me if it succeeds.
+# Try to open a TCP connection to <PUBLIC_IP> on port 1234 and tell me if it succeeds.
 same laptop:
 1. Tries to reach its own public IP
 2. That traffic goes to the router

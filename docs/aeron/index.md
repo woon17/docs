@@ -72,9 +72,9 @@ Node A ←→ Aeron Cluster ←→ Node B, C, D
 
 ## Related Topics
 
-- **[System Design](/system_design/)** - Architecture patterns for distributed systems
-- **[Java Threading](/java/thread/)** - Concurrent programming for high-performance messaging
-- **[KDB+ Integration](/kdb/)** - Database connectivity for real-time data processing
+- **[System Design](../system_design/)** - Architecture patterns for distributed systems
+- **[Java Threading](../java/thread/)** - Concurrent programming for high-performance messaging
+- **[KDB+ Integration](../kdb/)** - Database connectivity for real-time data processing
 
 ---
 
