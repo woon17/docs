@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2026-07-26 23:35:17 SGT</span><br>
+  <span style="opacity: 0.8;">(2026-07-26 23:34:48 SGT: f338a5d - added ring buffer exploring)</span>
+</div>
