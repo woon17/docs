@@ -102,6 +102,7 @@ To use the Disruptor in your project, add the dependency:
 - [Performance Comparison](performance.md) - Detailed performance analysis
 - [Example Applications](examples.md) - Real-world usage examples
 - [Lock-free & CAS](lock-free-cas.md) - Deep dive into lock-free programming and Compare-And-Swap
+- [Hand-Rolled Ring Buffer](hand-rolled-ring-buffer.md) - From-scratch MPSC ring buffer implementation, line by line
 
 ## Resources
 

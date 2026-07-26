@@ -125,6 +125,7 @@ nav:
     - Performance Analysis: disruptor/performance.md
     - Example Applications: disruptor/examples.md
     - Lock-free & CAS: disruptor/lock-free-cas.md
+    - Hand-Rolled Ring Buffer: disruptor/hand-rolled-ring-buffer.md
 
   - Linux:
     - linux/index.md
