@@ -10,6 +10,10 @@ This section provides comprehensive coverage of Java fundamentals and advanced t
 
 ### Memory Management
 - **[Stack vs Heap Memory](test.md)** - Understanding Java's memory model and allocation patterns
+- **[Agrona's Agent Pattern, Explained](agrona-agent-pattern.md)** - `Agent`/`AgentRunner`/`IdleStrategy` from scratch — the plumbing behind every GC demo agent below
+- **[GC Basics, Visually](gc-basics.md)** - Generations, Eden/Survivor, and G1 regions explained with diagrams, from zero
+- **[GC Deep Dive: Leak to OOM](gc-leak-oom.md)** - G1 regions, humongous objects, and GC-log analysis, built from a real leak-to-crash walkthrough
+- **[GC Case Study: Healthy Churn](gc-survivor-demo.md)** - The Eden/Survivor/Old cycle actually happening, contrasted against the leak
 
 ### Threading & Concurrency
 - **[Threading Guide](thread/)** - Complete guide to Java threading concepts and patterns

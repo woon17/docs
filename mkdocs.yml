@@ -80,6 +80,10 @@ nav:
       - java/index.md
       - Stack and heap: java/test.md
       - shutdown mechanism: java/shutdown.md
+      - Agrona Agent pattern: java/agrona-agent-pattern.md
+      - GC basics (diagrams): java/gc-basics.md
+      - GC deep dive (leak to OOM): java/gc-leak-oom.md
+      - GC case study (healthy churn): java/gc-survivor-demo.md
       - Thread:
         - java/thread/index.md
         - issue-visibility: java/thread/visibility.md
