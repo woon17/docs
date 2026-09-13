@@ -202,6 +202,39 @@ If you only ever watch a heap graph shaped like a staircase climbing toward the 
 already a strong, early, visual signal of a leak — long before the log-level proof
 (ever-growing Humongous/Old region counts, or an eventual OOM) confirms it.
 
+---
+
+## 6. Practical rule: where should a `List` field actually live?
+
+Both agents' `List`/`Deque` fields are declared at the **class level** — so what actually decides
+whether that shape is `LeakyAgent` or `SurvivorDemoAgent` isn't where the field is declared, it's
+whether it has a **bounded lifecycle**.
+
+**Default to a method-level (local) variable whenever you can.** A list created inside a method
+is reachable only for that call — once the method returns, it's immediately garbage, dies young
+in Eden, and never becomes anyone's problem. This is the right choice for scratch space: build up
+results, process them, return.
+
+**Only promote it to a class-level field when the data genuinely must outlive a single method
+call** — and the moment you do, you've taken on the responsibility of bounding it:
+
+- **Unbounded `.add()`, nothing ever removed** → `LeakyAgent`'s shape. Grows forever regardless of
+  how small each element is, eventually lands in Old gen and never leaves.
+- **Bounded** — a fixed-size sliding window, an explicit `clear()`, TTL eviction, a real cache
+  with an eviction policy — → `SurvivorDemoAgent`'s shape. Same "class-level field," but the live
+  set stays flat no matter how many times it's called.
+
+!!! warning "Instance field vs `static` field — different blast radius"
+    An **instance field**'s lifetime is tied to the object holding it — if that object is
+    short-lived (e.g. a per-request handler), an unbounded list dies with it anyway, capping the
+    damage. A **`static` field** lives as long as the classloader, effectively the whole
+    application — an unbounded `static` list is the single most common real-world Java leak
+    pattern, because nothing ever makes the containing "object" unreachable to take the list down
+    with it.
+
+**Rule of thumb:** local by default; class-level field only with a stated bound; `static` field
+only with a bound you're very sure about.
+
 ## Related
 
 - [Agrona's Agent Pattern, Explained](agrona-agent-pattern.md) — the `Agent`/`AgentRunner`/
