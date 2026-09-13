@@ -198,7 +198,7 @@ Result:  A ⇄ B  (circular!)
 ```java
 for (Node<K,V> e = table[i]; e != null; e = e.next) {
     // e.next eventually points back to e
-    // Infinite loop! 🔁
+    // Infinite loop!
 }
 ```
 

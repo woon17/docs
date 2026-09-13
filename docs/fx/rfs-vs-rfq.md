@@ -386,18 +386,18 @@ Total: ~100ms (50% faster)
 ## Decision Matrix
 
 ### Choose **RFQ** if:
-- ✅ Trading large blocks (> 50M)
-- ✅ Infrequent trades (< 10/day)
-- ✅ Need guaranteed firm prices
-- ✅ Manual trading workflow
-- ✅ Price certainty is critical
+- Trading large blocks (> 50M)
+- Infrequent trades (< 10/day)
+- Need guaranteed firm prices
+- Manual trading workflow
+- Price certainty is critical
 
 ### Choose **RFS** if:
-- ✅ High-frequency trading (> 50/day)
-- ✅ Latency-sensitive strategies
-- ✅ Algorithmic execution
-- ✅ Need continuous market view
-- ✅ Small to medium sizes (< 50M)
+- High-frequency trading (> 50/day)
+- Latency-sensitive strategies
+- Algorithmic execution
+- Need continuous market view
+- Small to medium sizes (< 50M)
 
 ---
 

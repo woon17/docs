@@ -423,17 +423,17 @@ public class DisruptorBenchmark {
 ## Conclusion
 
 **Choose DisruptorNode for:**
-- ✅ Low-latency requirements
-- ✅ High-throughput event streams
-- ✅ Shared state scenarios
-- ✅ Ordered event processing
-- ✅ Simpler, safer code
+- Low-latency requirements
+- High-throughput event streams
+- Shared state scenarios
+- Ordered event processing
+- Simpler, safer code
 
 **Choose Plain Node for:**
-- ✅ Truly independent handlers
-- ✅ CPU-bound, parallelizable work
-- ✅ Maximum multi-core utilization
-- ✅ When thread-safety is not a concern
+- Truly independent handlers
+- CPU-bound, parallelizable work
+- Maximum multi-core utilization
+- When thread-safety is not a concern
 
 **For most applications, DisruptorNode is the better choice** due to its superior latency characteristics, simpler programming model, and excellent throughput for typical event processing workloads.
 

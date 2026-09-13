@@ -57,11 +57,11 @@ Without `volatile`, `t` might keep running forever because it might never see `r
 
 ## `volatile` Does NOT Guarantee Atomicity
 
-### ❓ What is Atomicity?
+### What is Atomicity?
 
 **Atomicity** means that a compound operation (like `count++`) executes as one **indivisible step** — no other thread can observe it in a halfway state.
 
-### ❌ `volatile` Doesn't Help with This:
+### `volatile` Doesn't Help with This:
 
 ```java
 volatile int count = 0;
@@ -92,7 +92,7 @@ public void increment() {
 
 ---
 
-## 🧠 Summary Table
+## Summary Table
 
 | Feature    | `volatile`       | `AtomicInteger`         |
 |------------|------------------|--------------------------|

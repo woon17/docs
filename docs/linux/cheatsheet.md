@@ -133,7 +133,7 @@ same laptop:
 Router decides:
   ❌ drop it (no port forward) → SAFE
   ✅ forward it to laptop:1234 → EXPOSED
-But ⚠️ IMPORTANT caveat (very important)
+But important caveat:
 Some routers do not support NAT loopback. nc from the same laptop will always fail, Even if the port is actually exposed to the internet
 
 The REAL definitive test:

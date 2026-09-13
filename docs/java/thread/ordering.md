@@ -31,7 +31,7 @@ The ordering problem in multithreaded programming can be caused by:
 === "Due to single thread"
     Modern compilers and CPUs may reorder instructions for performance as long as the result is the same from the perspective of that single thread.
 
-    🔸 But this can break correctness in multithreaded scenarios.
+    But this can break correctness in multithreaded scenarios.
 
     ```java
     int x = 0;
