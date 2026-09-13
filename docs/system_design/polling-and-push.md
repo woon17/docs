@@ -8,13 +8,16 @@ Three common patterns for a client to receive data updates from a server.
 
 Client repeatedly sends requests at a fixed interval regardless of whether new data exists.
 
-```
-Client          Server
-  |---request--->|
-  |<--response---|  (empty or data)
-  |   (wait N s) |
-  |---request--->|
-  |<--response---|
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>Server: request
+    Server-->>Client: response (empty or data)
+    Note over Client: wait N seconds
+    Client->>Server: request
+    Server-->>Client: response
 ```
 
 **How it works:** Client fires HTTP request every N seconds. Server responds immediately with current data or empty.
@@ -33,16 +36,16 @@ Client          Server
 
 Client sends a request; server holds it open until new data is available, then responds. Client immediately re-connects.
 
-```
-Client          Server
-  |---request--->|
-  |   (server    |
-  |    holds     |
-  |    connection|
-  |    open...)  |
-  |<--response---|  (data available!)
-  |---request--->|  (immediately reconnects)
-  |    ...       |
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>Server: request
+    Note over Server: holds connection open<br/>until data or timeout
+    Server-->>Client: response (data available!)
+    Client->>Server: request (immediately reconnects)
+    Note over Server: holds again...
 ```
 
 **How it works:** Server blocks the response until an event occurs or a timeout is hit. On timeout, returns empty and client reconnects.
@@ -65,24 +68,32 @@ Server proactively sends data to the client when events occur — no repeated cl
 
 One-way: server → client over a persistent HTTP connection.
 
-```
-Client          Server
-  |---request--->|
-  |<--event------|  (data: ...)
-  |<--event------|  (data: ...)
-  |<--event------|  (data: ...)
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>Server: request (once)
+    Server-->>Client: event (data: ...)
+    Server-->>Client: event (data: ...)
+    Server-->>Client: event (data: ...)
+    Note over Client,Server: single persistent connection,<br/>server pushes whenever it wants
 ```
 
 ### WebSocket
 
 Full-duplex: client ↔ server over a single persistent TCP connection.
 
-```
-Client          Server
-  |--WS upgrade->|
-  |<--message----|
-  |---message--->|
-  |<--message----|
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>Server: WS upgrade (HTTP → WebSocket)
+    Server-->>Client: message
+    Client->>Server: message
+    Server-->>Client: message
+    Note over Client,Server: either side can send,<br/>at any time, on the same connection
 ```
 
 | Pros | Cons |
@@ -110,14 +121,14 @@ Client          Server
 
 ## Decision Guide
 
-```
-Need bidirectional?
-  Yes → WebSocket
-  No  → Need real-time?
-          Yes → SSE
-          No  → Update frequency high?
-                  High (< 1s) → Long Polling
-                  Low  (> 1s) → Short Polling
+```mermaid
+flowchart TD
+    A{"Need bidirectional?"} -->|Yes| WS["WebSocket"]
+    A -->|No| B{"Need real-time?"}
+    B -->|Yes| SSE["SSE"]
+    B -->|No| C{"Update frequency?"}
+    C -->|"High (< 1s)"| LP["Long Polling"]
+    C -->|"Low (> 1s)"| SP["Short Polling"]
 ```
 
 ---

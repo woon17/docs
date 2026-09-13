@@ -24,11 +24,16 @@ The LMAX Disruptor is a library that enables very high performance concurrent pr
 A fixed-size circular buffer that holds references to events. It's pre-allocated at startup, which eliminates memory allocation during runtime.
 
 ```mermaid
-graph LR
-    A[Producer] --> B[Ring Buffer]
-    B --> C[Consumer]
-    style B fill:#f9f,stroke:#333,stroke-width:2px
+flowchart LR
+    S0["slot 0"] --> S1["slot 1"] --> S2["slot 2"] --> S3["slot 3"] --> S0
+    Producer["Producer cursor<br/>(next slot to write)"] -.-> S1
+    Consumer["Consumer cursor<br/>(next slot to read)"] -.-> S3
 ```
+
+The buffer never grows or shrinks — producer and consumer cursors just keep advancing and
+wrapping back to slot 0 once they pass the end. See
+[Hand-Rolled Ring Buffer](hand-rolled-ring-buffer.md) for exactly how that wrap-around is made
+safe without locks.
 
 #### Sequence Numbers
 Used to track positions in the ring buffer. Producers claim sequence numbers before writing, and consumers track which events they've processed.
@@ -67,14 +72,18 @@ The Disruptor can process **millions of events per second** with **nanosecond la
 
 ### Benchmark Comparison
 
-```mermaid
-graph TB
-    subgraph "Throughput (ops/sec)"
-        A[Disruptor: 25M]
-        B[ArrayBlockingQueue: 5M]
-        C[LinkedBlockingQueue: 3M]
-    end
-```
+| Queue | Throughput (ops/sec) |
+|---|---|
+| Disruptor | ~25M |
+| `ArrayBlockingQueue` | ~5M |
+| `LinkedBlockingQueue` | ~3M |
+
+!!! note "Illustrative, not measured on this project's hardware"
+    These numbers are the kind of ratio commonly cited for the Disruptor vs. `java.util.concurrent`
+    queues, not a benchmark run captured on a specific machine here. Treat them as "expect roughly
+    this shape of difference," and benchmark on your own target hardware before relying on exact
+    figures — see the real, captured numbers in
+    [Hand-Rolled Ring Buffer](hand-rolled-ring-buffer.md#benchmark) for an example of the latter.
 
 ## Common Use Cases
 

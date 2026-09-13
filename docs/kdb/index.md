@@ -16,7 +16,6 @@ KDB+ is a high-performance column-oriented database with a built-in expressive q
 ### Quick Start
 1. **[Setup KDB+ on M3](setup.md)** - Installation guide for ARM-based Macs
 2. **[Connect manually](connect.md)** - Basic connection methods
-3. **[Simple Demo](demo.md)** - Working examples and tutorials
 
 ## Core Concepts
 

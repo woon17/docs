@@ -3,6 +3,22 @@
 
 In multithreaded programming, it's important to understand two key concepts: **visibility** and **atomicity**.
 
+```mermaid
+flowchart LR
+    V["visibility problem<br/>(stale cached reads)"] -->|"fixed by"| Volatile["volatile"]
+    A["atomicity problem<br/>(lost updates from read-modify-write)"] -->|"fixed by"| Atomic["AtomicInteger / synchronized"]
+    Volatile -.->|"does NOT fix"| A
+```
+
+`volatile` solves exactly one problem and stops there — it's tempting to reach for it as a
+general "make this thread-safe" keyword, but the diagram above is the whole story: it guarantees
+visibility, full stop. A compound operation like `count++` still needs `AtomicInteger` or a lock
+regardless of whether `count` is `volatile`.
+
+For the full mechanism behind each side — memory barriers, CPU caches, the actual
+read-modify-write race — see [Visibility Issues](thread/visibility.md) and
+[Atomicity Issues](thread/atomicity.md), which this page summarizes.
+
 ---
 
 ## `volatile` and Thread Visibility
@@ -91,3 +107,10 @@ public void increment() {
 - Use `volatile` for simple **state flags** between threads (like shutdown signals).
 - Use `AtomicInteger` or synchronization for **compound or critical updates**.
 - Understanding both **visibility** and **atomicity** is essential for writing correct concurrent code in Java.
+
+## Related
+
+- [Visibility Issues](thread/visibility.md) — the CPU-cache mechanism behind `volatile`.
+- [Atomicity Issues](thread/atomicity.md) — the read-modify-write race `volatile` can't fix.
+- [Ordering Issues](thread/ordering.md) — the third pillar: instruction reordering.
+- [Shutdown Mechanisms](shutdown.md) — `volatile`'s classic "state flag" use case in practice.

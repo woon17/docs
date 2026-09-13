@@ -2,6 +2,19 @@
 
 key concepts and configuration examples for setting up a multi-module Maven project using Spring Boot.
 
+```mermaid
+flowchart TB
+    Parent["Parent POM<br/>packaging = pom<br/>dependencyManagement + pluginManagement"]
+    Parent --> A["service-a<br/>packaging = jar"]
+    Parent --> B["service-b<br/>packaging = jar"]
+    Parent --> C["service-c<br/>packaging = jar"]
+    BOM["Spring Boot BOM<br/>(spring-boot-dependencies)"] -.->|imported into| Parent
+```
+
+Every child inherits versions and plugin config from the parent — that's the entire point of
+this structure: declare a dependency's version **once**, in the parent, and every module that
+uses it stays in lockstep automatically.
+
 ---
 
 ## Parent POM

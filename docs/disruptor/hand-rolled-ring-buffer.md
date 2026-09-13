@@ -54,7 +54,44 @@ winner gets seq 1, forever increasing). The **slot** a seq lives in is
 distinction — ever-increasing ticket vs. wrapping array index — is the whole
 trick.
 
+```mermaid
+flowchart LR
+    S0["slot 0<br/>seq 0, lap 0"] --> S1["slot 1<br/>seq 1, lap 0"]
+    S1 --> S2["slot 2<br/>seq 2, lap 0"] --> S3["slot 3<br/>seq 3, lap 0"] --> S0
+```
+
+*(capacity = 4, matching the walkthrough table below)* — `seq = 4` maps back to slot 0
+(`4 & 3 = 0`), but as **lap 1**, not lap 0. That lap number is exactly what lets the consumer
+tell "fresh lap-1 data" apart from "stale lap-0 data still sitting in the same slot" — see
+[Why a lap counter, not a boolean flag](#why-a-lap-counter-not-a-boolean-flag) below.
+
 ## Producer path
+
+```mermaid
+sequenceDiagram
+    participant P as Producer thread
+    participant CQ as claimSequence (atomic)
+    participant Buf as buffer[] (plain array)
+    participant AL as availableLap (atomic array)
+    participant C as Consumer thread
+
+    P->>CQ: incrementAndGet() → seq
+    Note over P,CQ: 1. claim() — unique ticket,<br/>the only point producers contend
+    P->>P: spin until consumeSequence >= seq - capacity
+    Note over P: 2. backpressure gate — wait if the<br/>consumer hasn't finished this slot's previous lap
+    P->>Buf: buffer[seq & mask] = value
+    Note over P,Buf: 3. plain write — safe, this thread<br/>exclusively owns the slot right now
+    P->>AL: availableLap[seq & mask] = lapOf(seq)
+    Note over P,AL: 4. publish() — volatile write,<br/>the release fence
+
+    C->>AL: isAvailable(next)? (volatile read — the acquire fence)
+    C->>Buf: get(next) — plain read, safe due to the fence above
+    C->>C: process event
+    C->>CQ: consumeSequence = next (unblocks any spinning producer)
+```
+
+The four numbered steps below are exactly the four messages in this diagram — the sequence
+diagram is the roadmap, the prose is what each step actually costs and why it's safe.
 
 ### 1. `claim()` — get a unique ticket
 

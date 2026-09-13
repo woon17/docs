@@ -6,6 +6,27 @@ When it comes to the UDP protocol, you can either use Unicast, which sends messa
 
 This guide compares Aeron's two main communication patterns for UDP-based messaging, helping you choose the right approach for your use case.
 
+## At a glance
+
+=== "Unicast"
+    ```mermaid
+    flowchart LR
+        Pub["Publisher"] -->|"1 UDP send"| Sub["Subscriber<br/>(the only one)"]
+    ```
+    Fixed pair, one send per message. Simple, and the most efficient option — but adding a
+    second subscriber means the publisher has to open a second, separate connection to it.
+
+=== "MDC"
+    ```mermaid
+    flowchart LR
+        Pub["Publisher<br/>(control-mode=dynamic)"] -->|"send"| S1["Subscriber 1"]
+        Pub -->|"send"| S2["Subscriber 2"]
+        Pub -->|"send"| S3["Subscriber N<br/>(joins/leaves dynamically)"]
+    ```
+    One publisher, N sends per message (one per subscriber) — still plain unicast UDP
+    underneath, just fanned out by the publisher. Subscribers can join and leave at runtime
+    without the publisher needing reconfiguration.
+
 ## Comparison Table
 
 | Feature                      | **Aeron Unicast**                            | **Aeron MDC (Multi-Destination-Cast)**                     |

@@ -29,16 +29,15 @@ A **traditional quote-request workflow** where:
 
 ### Typical RFQ Workflow
 
-```
-Client                          Dealer
-  |                               |
-  |---(1) QuoteRequest---------->|  "Quote me EUR/USD 10M"
-  |                               |
-  |<--(2) Quote------------------|  "Bid: 1.0850 / Ask: 1.0852"
-  |                               |
-  |---(3) ExecutionReport------->|  "Hit the bid at 1.0850"
-  |                               |
-  |<--(4) ExecutionReport--------|  "Fill: 10M @ 1.0850"
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Dealer
+
+    Client->>Dealer: (1) QuoteRequest — "Quote me EUR/USD 10M"
+    Dealer-->>Client: (2) Quote — "Bid: 1.0850 / Ask: 1.0852"
+    Client->>Dealer: (3) NewOrderSingle — "Hit the bid at 1.0850"
+    Dealer-->>Client: (4) ExecutionReport — "Fill: 10M @ 1.0850"
 ```
 
 ### FIX Message Examples
@@ -156,18 +155,17 @@ A **modern streaming workflow** where:
 
 ### Typical RFS Workflow
 
-```
-Client                          Dealer
-  |                               |
-  |---(1) QuoteRequest---------->|  "Stream me EUR/USD 10M"
-  |                               |
-  |<--(2) Quote (stream)---------|  "Bid: 1.0850 / Ask: 1.0852"
-  |<--(3) Quote (stream)---------|  "Bid: 1.0851 / Ask: 1.0853"
-  |<--(4) Quote (stream)---------|  "Bid: 1.0850 / Ask: 1.0852"
-  |                               |
-  |---(5) NewOrderSingle-------->|  "Lift offer at 1.0852"
-  |                               |
-  |<--(6) ExecutionReport--------|  "Fill: 10M @ 1.0852"
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Dealer
+
+    Client->>Dealer: (1) QuoteRequest — "Stream me EUR/USD 10M"
+    Dealer-->>Client: (2) Quote (stream) — "Bid: 1.0850 / Ask: 1.0852"
+    Dealer-->>Client: (3) Quote (stream) — "Bid: 1.0851 / Ask: 1.0853"
+    Dealer-->>Client: (4) Quote (stream) — "Bid: 1.0850 / Ask: 1.0852"
+    Client->>Dealer: (5) NewOrderSingle — "Lift offer at 1.0852"
+    Dealer-->>Client: (6) ExecutionReport — "Fill: 10M @ 1.0852"
 ```
 
 ### FIX Message Examples
@@ -326,21 +324,19 @@ Client                          Dealer
 ### Latency Comparison
 
 **RFQ:**
+```mermaid
+flowchart LR
+    A["Request<br/>50ms"] --> B["Quote<br/>50ms"] --> C["Order<br/>50ms"] --> D["Fill<br/>50ms"]
 ```
-Request → Quote → Order → Fill
-  50ms     50ms     50ms    50ms
-
 Total: ~200ms minimum
-```
 
 **RFS:**
+```mermaid
+flowchart LR
+    A["Order<br/>50ms"] --> B["Fill<br/>50ms"]
 ```
-(Stream already active)
-Order → Fill
- 50ms    50ms
-
+*(stream already active — no Request/Quote round trip needed)*
 Total: ~100ms (50% faster)
-```
 
 ---
 

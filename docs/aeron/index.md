@@ -56,18 +56,39 @@ Aeron is a high-performance messaging library designed for low-latency, high-thr
 ## Architecture Patterns
 
 ### Publisher-Subscriber Model
-```
-Publisher → Aeron Transport → Multiple Subscribers
+
+```mermaid
+flowchart LR
+    Pub["Publisher"] --> Transport["Aeron Transport"]
+    Transport --> S1["Subscriber 1"]
+    Transport --> S2["Subscriber 2"]
+    Transport --> S3["Subscriber N"]
 ```
 
+See [MDC vs Unicast](mdc-vs-unicast.md) for how this fan-out is actually implemented on the wire.
+
 ### Request-Response Pattern
-```
-Client ←→ Aeron Transport ←→ Server
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Transport as Aeron Transport
+    participant Server
+
+    Client->>Transport: request
+    Transport->>Server: request
+    Server->>Transport: response
+    Transport->>Client: response
 ```
 
 ### Cluster Communication
-```
-Node A ←→ Aeron Cluster ←→ Node B, C, D
+
+```mermaid
+flowchart LR
+    A["Node A"] <--> Cluster["Aeron Cluster<br/>(consensus + replication)"]
+    Cluster <--> B["Node B"]
+    Cluster <--> C["Node C"]
+    Cluster <--> D["Node D"]
 ```
 
 ## Related Topics
