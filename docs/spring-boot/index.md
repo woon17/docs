@@ -10,6 +10,8 @@ Spring Boot makes it easy to create stand-alone, production-grade Spring-based a
 
 - **[Multi-Module Maven Projects](mmm.md)** - Organizing large Spring Boot applications
 - **[Maven Configuration](maven.md)** - Build configuration and dependency management
+- **[Spring MVC vs WebFlux](mvc-vs-webflux.md)** - Blocking vs reactive web stacks, with a Node.js comparison
+- **[Spring MVC vs WebFlux](mvc-vs-webflux.md)** - Blocking vs reactive web stacks, with a Node.js comparison
 - Application architecture patterns
 - Configuration and profiles management
 
