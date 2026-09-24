@@ -139,6 +139,7 @@ nav:
   - AI:
     - ai-tools/index.md
     - Common AI Knowledge: ai-tools/common.md
+    - Java Agent Skills (Claude + Gemini): ai-tools/java-agent-skills.md
   - KDB:
     - kdb/index.md
     - setup on M3: kdb/setup.md
