@@ -1,0 +1,5273 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../gc-basics/">
+      
+      
+        <link rel="next" href="../gc-survivor-demo/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>GC deep dive (leak to OOM) - MkDocs woon17</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q3E0E4N6LZ"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-Q3E0E4N6LZ');
+</script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gc-deep-dive-from-a-deliberate-leak-to-outofmemoryerror" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MkDocs woon17" class="md-header__button md-logo" aria-label="MkDocs woon17" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MkDocs woon17
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GC deep dive (leak to OOM)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/woon17/docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mkDocs/admonitions/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  MkDocs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../fx/test/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  FX
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../system_design/frAndNfre/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../setup/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Setup
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../spring-boot/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring Boot
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../aeron/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Aeron
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../disruptor/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Disruptor
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../linux/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Linux
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai-tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kdb/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  KDB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai-tools/tips/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Productivity Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai-tools/claude-code/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Claude Code Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MkDocs woon17" class="md-nav__button md-logo" aria-label="MkDocs woon17" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    MkDocs woon17
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/woon17/docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MkDocs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/admonitions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admonitions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/code-example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/content-tabs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Content tabs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/diagram-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagram Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stack and heap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    shutdown mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agrona-agent-pattern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agrona Agent pattern
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gc-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GC basics (diagrams)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GC deep dive (leak to OOM)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GC deep dive (leak to OOM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-garbage-collection-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why garbage collection exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-generational-hypothesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The generational hypothesis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-g1-specifically-a-heap-made-of-regions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. G1 specifically: a heap made of regions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-anatomy-of-one-young-collection-line-by-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Anatomy of one young collection, line by line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-humongous-objects-the-key-to-this-whole-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Humongous objects — the key to this whole story
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-why-humongous-regions-only-ever-grow-in-a-leak" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Why humongous regions only ever grow (in a leak)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-concurrent-mark-cycle-how-g1-deals-with-old-gen-without-long-pauses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Concurrent Mark Cycle — how G1 deals with old gen without long pauses
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-the-demo-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. The demo itself
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. The demo itself">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-leaking-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The leaking Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wiring-it-up-with-a-real-daemon-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring it up with a real daemon thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-timestamps-thread-name-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging — timestamps, thread name, everything
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-the-gc-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling the GC log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-reading-the-three-observation-tools-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Reading the three observation tools together
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Reading the three observation tools together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-visualvms-monitor-tab-showed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What VisualVM's Monitor tab showed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-console-log-showed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the console log showed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-gc-log-showed-the-part-the-other-two-hid-completely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the GC log showed — the part the other two hid completely
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-one-big-early-drop-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The one big early drop, explained
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-very-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The very end
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Glossary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-applying-this-to-real-performance-engineering-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Applying this to real performance engineering work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gc-survivor-demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GC case study (healthy churn)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../thread/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thread
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_8" id="__nav_3_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Thread
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/visibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    issue-visibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/atomicity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    issue-atomicity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/ordering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    issue-ordering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/hashmap-concurrent-read-write/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HashMap Concurrent Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../volatile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    visibility and atomicity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_8_7" id="__nav_3_8_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multiple threads use case
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_8_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    multiple threads use case
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/block-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. block task
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/CPU-Intensive-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. CPU-Intensive Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thread/small-fast-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Small, Fast Tasks (high volume)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fx/test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fx/rfs-vs-rfq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RFS vs RFQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/frAndNfre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FR VS NFR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/polling-and-push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Polling vs Push
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../system_design/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPC
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    IPC
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/IPC/ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ipc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/IPC/aeron_mdc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    aeron mdc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../setup/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/python-virtual-env/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    virEnv (mac)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SSH
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/ssh-github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    github
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/ssh-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../spring-boot/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring Boot
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring-boot/mmm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiple module maven
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring-boot/maven/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Maven
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring-boot/mvc-vs-webflux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MVC vs WebFlux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../aeron/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aeron
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Aeron
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/adv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Why aeron
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/mdc-vs-unicast/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MDC vs Unicast
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/ring-buffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ring Buffer Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artio fix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Artio fix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/artio/coinbase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coinbase fix api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../disruptor/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disruptor
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Disruptor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/conduit-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conduit Framework
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example Applications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/lock-free-cas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lock-free & CAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/hand-rolled-ring-buffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hand-Rolled Ring Buffer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../linux/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cheatsheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ai-tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/common/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common AI Knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/java-agent-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java Agent Skills (Claude + Gemini)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/agentic-ticket-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Ticket Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/agentic-workflows-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Workflows Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../kdb/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KDB
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_12" id="__nav_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KDB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kdb/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    setup on M3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kdb/connect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    connect to kdb+ manually
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kdb/kxDashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kx dashboard data source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Productivity Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Productivity Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Tips
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/claude-code-sessions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code Sessions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ai-tools/claude-code/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code Skills
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_14" id="__nav_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Claude Code Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_14_2" id="__nav_14_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/claude-code/commands/new-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    /new-service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/claude-code/commands/refactor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    /refactor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../ai-tools/claude-code/java-architect/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java Architect Skill
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_14_3" id="__nav_14_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java Architect Skill
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/claude-code/java-architect/references/aeron-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aeron Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/claude-code/java-architect/references/data-access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/claude-code/java-architect/references/rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rest Api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai-tools/claude-code/java-architect/references/spring-boot-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../blog/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_15" id="__nav_15_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/one-url/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    one url
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-garbage-collection-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why garbage collection exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-generational-hypothesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The generational hypothesis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-g1-specifically-a-heap-made-of-regions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. G1 specifically: a heap made of regions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-anatomy-of-one-young-collection-line-by-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Anatomy of one young collection, line by line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-humongous-objects-the-key-to-this-whole-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Humongous objects — the key to this whole story
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-why-humongous-regions-only-ever-grow-in-a-leak" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Why humongous regions only ever grow (in a leak)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-concurrent-mark-cycle-how-g1-deals-with-old-gen-without-long-pauses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Concurrent Mark Cycle — how G1 deals with old gen without long pauses
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-the-demo-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. The demo itself
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. The demo itself">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-leaking-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The leaking Agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wiring-it-up-with-a-real-daemon-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring it up with a real daemon thread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-timestamps-thread-name-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging — timestamps, thread name, everything
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-the-gc-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling the GC log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-reading-the-three-observation-tools-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Reading the three observation tools together
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Reading the three observation tools together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-visualvms-monitor-tab-showed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What VisualVM's Monitor tab showed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-console-log-showed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the console log showed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-gc-log-showed-the-part-the-other-two-hid-completely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the GC log showed — the part the other two hid completely
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-one-big-early-drop-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The one big early drop, explained
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-very-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The very end
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Glossary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-applying-this-to-real-performance-engineering-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Applying this to real performance engineering work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/woon17/docs/edit/main/docs/java/gc-leak-oom.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/woon17/docs/raw/main/docs/java/gc-leak-oom.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="gc-deep-dive-from-a-deliberate-leak-to-outofmemoryerror">GC Deep Dive: From a Deliberate Leak to OutOfMemoryError</h1><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+        
+<div class="copy-markdown-container" style="margin: 10px 0;">
+    <button id="copy-markdown-btn" class="copy-markdown-button" 
+            onclick="copyMarkdownToClipboard()" 
+            style="background: #007acc; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+        <i id="copy-icon" class="ph ph-clipboard" style="font-size: 16px;"></i>
+        <span>Copy as Markdown</span>
+    </button>
+</div>
+        
+        <script>
+        window.pageMarkdown = '# GC Deep Dive: From a Deliberate Leak to OutOfMemoryError\n\nA hands-on exploration of G1 garbage collection, built by writing a small Agrona `Agent` that\ndeliberately leaks memory, then watching it die — in VisualVM, in the application log, and in\nthe JVM\'s own `-Xlog:gc*` log. This page walks through **everything** needed to read that story,\nassuming no prior GC knowledge.\n\nNew to GC entirely? Start with [GC Basics, Visually](gc-basics.md) first — it covers generations,\nEden/Survivor, and G1 regions with diagrams, and this page assumes that vocabulary throughout.\n\nCompanion reading: [Stack vs Heap](test.md) (what lives where), [Shutdown Mechanisms](shutdown.md)\n(how the demo process starts/stops cleanly).\n\n---\n\n## 1. Why garbage collection exists\n\nEvery `new String(...)`, every `"x".repeat(...)`, every object literal carves out space on the\nheap. Java has no `free()` — nothing ever *explicitly* releases that memory. Instead, the\n**Garbage Collector (GC)** runs periodically, walks the graph of objects reachable from your\nrunning threads (local variables, static fields, etc. — the **GC roots**), and reclaims memory\nbehind everything that *isn\'t* reachable anymore.\n\nA **memory leak** in Java doesn\'t mean "forgot to free something" (there\'s no `free`). It means\n**something is still holding a reference to an object you don\'t actually need anymore**, so the\nGC — correctly, by its own rules — can never reclaim it. That\'s exactly what we built on purpose\nbelow.\n\n## 2. The generational hypothesis\n\nAcross nearly every GC-heavy language, one empirical pattern holds: **most objects die young**.\nA temporary string built for one calculation, a formatting buffer, a loop-local object — most\ngarbage is created and discarded within milliseconds. Long-lived objects (caches, config,\nconnection pools, and — in our demo — a deliberately-retained list) are comparatively rare.\n\nCollectors exploit this by splitting the heap into **generations**:\n\n| Generation | Contains | Collected | Cost |\n|---|---|---|---|\n| **Young** (Eden + Survivor) | Everything is *born* here | Often | Cheap — mostly garbage, few live objects to copy out |\n| **Old** | Objects that survived enough young collections get *promoted* here | Rarely | Expensive — scanning a large, mostly-live set |\n\n## 3. G1 specifically: a heap made of regions\n\nOlder collectors (Serial, Parallel) used one contiguous Eden space and one contiguous Old space.\n**G1 ("Garbage First")**, the default collector since JDK 9, instead chops the whole heap into\nfixed-size chunks called **regions**. Each region is labeled Eden, Survivor, Old, or Humongous —\ndynamically, not fixed at JVM startup. G1 always collects the regions with the most garbage in\nthem first (hence the name), to get the best reclaim-per-millisecond-of-pause.\n\nFrom a real run\'s log header:\n\n```\n[0.006s][info][gc,init] Heap Region Size: 1M\n[0.006s][info][gc,init] Heap Min Capacity: 8M\n[0.006s][info][gc,init] Heap Initial Capacity: 128M\n[0.006s][info][gc,init] Heap Max Capacity: 128M\n```\n\nRegion size is chosen automatically from heap size (small heap → small regions, 1MB minimum).\n128MB max heap ÷ 1MB regions = **128 regions total** to work with. Remember this number — it\'s\nthe ceiling everything below eventually runs into.\n\n## 4. Anatomy of one young collection, line by line\n\n```\n[12.987s] GC(0) Pause Young (Normal) (G1 Evacuation Pause)\n[12.987s] GC(0) Using 3 workers of 10 for evacuation\n[12.989s] GC(0)   Evacuate Collection Set: 1.8ms\n[12.989s] GC(0) Eden regions: 23->0(36)\n[12.989s] GC(0) Survivor regions: 0->3(3)\n[12.989s] GC(0) Old regions: 0->2\n[12.989s] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 27M->9M(128M) 2.308ms\n```\n\n- **"Pause Young"** — a **stop-the-world** pause. *Every* application thread freezes completely\n  for the duration; only GC worker threads run.\n- **"Using 3 workers of 10"** — G1 pauses are parallelized across multiple GC threads to keep\n  them short.\n- **"Evacuate Collection Set: 1.8ms"** — the actual work: find every object in Eden still\n  reachable, and **copy** it out into a Survivor region. Anything left behind afterward is, by\n  definition, garbage — G1 doesn\'t delete it object-by-object, it just marks the whole region\n  empty and reuses it. This copy-only approach is *why* young collections are cheap: you only\n  touch live objects, never the garbage.\n- **"Eden regions: 23->0(36)"** — 23 regions were Eden before the pause; 0 after (everything\n  evacuated or discarded); `(36)` is the *new target Eden size* G1 picked going forward, adapted\n  to hit its pause-time goal.\n- **"Survivor regions: 0->3(3)"** — the objects that survived got copied into 3 fresh regions.\n- **"Old regions: 0->2"** — a couple of long-lived objects were promoted (survived enough\n  previous collections).\n- **"27M->9M(128M) 2.308ms"** — the pause summary: 27MB used before, 9MB after (18MB reclaimed),\n  out of a 128MB cap, and the *entire* stop-the-world pause took 2.3 milliseconds. That pause\n  time is the number that matters for application latency.\n\n## 5. Humongous objects — the key to this whole story\n\nG1\'s rule: **any single object ≥ 50% of the region size doesn\'t go through the normal\nEden→Survivor→Old lifecycle at all.** It\'s allocated directly into one or more dedicated\n**Humongous regions**, bypassing young gen completely.\n\nWith a 1MB region size, that threshold is **512KB**. Our leaked strings are **2MB** each — 4x\nover the threshold — so *every single one* becomes a humongous object: allocated straight into\nold-gen-like territory, never copied, never touched by an ordinary young collection.\n\n```\n[251.675s] GC(2) Pause Young (Concurrent Start) (G1 Humongous Allocation)\n[251.675s] GC(2) Humongous regions: 50->50\n```\n\nThe pause *reason* literally says `(G1 Humongous Allocation)` — this pause was triggered by code\nrequesting a 2MB allocation. G1\'s allocator needs 2 contiguous free 1MB regions for that request,\nand does a quick young collection first (freeing up space, re-checking) before granting it. That\'s\na real, measurable cost of leaking (or even just frequently allocating) large objects: each one\ndoesn\'t just consume memory, it actively triggers a GC pause on the way in.\n\n!!! warning "Practical takeaway"\n    In real services, avoid allocating objects near or above half your G1 region size in hot\n    paths if you can help it (e.g. building one giant `StringBuilder`/`byte[]` per request\n    instead of streaming/chunking). Each one is a small, guaranteed GC event, and it can never be\n    young-collected once created — only ever compacted by a full/mixed GC.\n\n## 6. Why humongous regions only ever grow (in a leak)\n\n```\nGC(2)  Humongous regions: 50->50\nGC(4)  Humongous regions: 52->52\nGC(6)  Humongous regions: 54->54\n...\nGC(20) Humongous regions: 68->68\n```\n\nThe format is `before->after` **for that one pause**. It\'s flat within a single pause (a young\ncollection doesn\'t touch old/humongous regions), but *across* pauses it climbs by exactly 2 every\ntime — one more 2MB (2-region) string retained between each tick. A young collection can never\nfree a humongous region that\'s still reachable — only a full/mixed collection that finds it\n**unreachable** could, and ours never becomes unreachable, because our code never stops\nreferencing it.\n\n## 7. Concurrent Mark Cycle — how G1 deals with old gen without long pauses\n\n```\n[261.748s] GC(5) Concurrent Mark Cycle\n[261.748s] GC(5)   Concurrent Scan Root Regions        0.635ms\n[261.749s] GC(5)   Concurrent Mark From Roots          5.396ms\n[261.754s] GC(5) Pause Remark                          8.778ms\n[261.766s] GC(5) Pause Cleanup                         0.063ms\n[261.766s] GC(5)   Concurrent Rebuild Remembered Sets   2.475ms\n```\n\nOld gen is rarely collected, but G1 still needs to eventually know what\'s garbage in there.\nRather than one long stop-the-world scan of the whole old generation (which would freeze the app\nfor a long time on a big heap), G1 does most of the work **concurrently** — while application\nthreads keep running normally:\n\n- **Scan Root Regions / Mark From Roots** — walk the object graph from GC roots to find\n  everything reachable, concurrently, no stop-the-world.\n- **Pause Remark** — a *short* stop-the-world pause to catch up on anything the app mutated\n  mid-mark.\n- **Pause Cleanup** — another short pause to finalize which regions are now known-garbage.\n\nThese pauses are single-digit milliseconds, versus what a naive full old-gen scan would cost —\nthat\'s G1\'s whole design point: short, predictable pauses even as the heap grows, at the cost of\nextra background CPU.\n\nThis cycle gets triggered automatically after a humongous allocation pause (see the pattern:\n`Pause Young (Concurrent Start)` immediately followed by `Concurrent Mark Cycle`). G1 uses\nhumongous allocations as one of its triggers to check "is it time to reclaim old-gen garbage." It\nnever finds much to reclaim here, because the only old-gen-ish garbage in this demo *is* the leak\n— always reachable, never collectable.\n\n---\n\n## 8. The demo itself\n\n### The leaking Agent\n\nAn Agrona `Agent` whose `doWork()` is polled by an `AgentRunner` on its own thread — if that\nsentence is unfamiliar, read [Agrona\'s Agent Pattern, Explained](agrona-agent-pattern.md) first,\nit covers `Agent`/`AgentRunner`/`IdleStrategy` from scratch. Every 10 seconds this one builds a\n2MB string and appends it to a list it never clears:\n\n```java\npublic class LeakyAgent implements Agent {\n    private static final Logger LOG = LoggerFactory.getLogger(LeakyAgent.class);\n    private static final long INTERVAL_NS = TimeUnit.SECONDS.toNanos(10);\n    private static final int CHARS_PER_TICK = 2_000_000; // ~2MB per allocation\n\n    private final List<String> retained = new ArrayList<>();\n    private long nextFireNs;\n    private long totalBytes;\n\n    @Override\n    public void onStart() {\n        nextFireNs = System.nanoTime();\n    }\n\n    @Override\n    public int doWork() {\n        final long now = System.nanoTime();\n        if (now < nextFireNs) {\n            return 0; // idle strategy backs off — no busy-spin\n        }\n\n        final String chunk = "x".repeat(CHARS_PER_TICK);\n        retained.add(chunk); // deliberately never released\n        totalBytes += chunk.length();\n\n        LOG.info("leaked #{}: retained ~{}MB total", retained.size(), totalBytes / 1_000_000);\n        nextFireNs = now + INTERVAL_NS;\n\n        return 1;\n    }\n\n    @Override\n    public String roleName() {\n        return "leaky-agent";\n    }\n}\n```\n\nWhy `"x".repeat(2_000_000)` is ~2MB and not ~4MB: **Compact Strings** (JEP 254, default since\nJava 9). Since `\'x\'` is Latin-1-representable, the JVM stores the backing array as `byte[]`\n(1 byte/char) instead of `char[]` (2 bytes/char UTF-16). A non-Latin-1 character would double the\nsize for the same character count.\n\n### Wiring it up with a real daemon thread\n\n```java\nAgentRunner leakyRunner = new AgentRunner(\n    new SleepingIdleStrategy(TimeUnit.MILLISECONDS.toNanos(100)),\n    error -> LOG.error("agent error", error),\n    null,\n    new LeakyAgent());\n\nAgentRunner.startOnThread(leakyRunner, runnable -> {\n    Thread thread = new Thread(runnable);\n    thread.setDaemon(true);\n    return thread;\n});\n```\n\n!!! note "`AgentRunner.startOnThread(runner)` does NOT make a daemon thread"\n    The no-arg overload uses `Thread::new` as its `ThreadFactory` — a thread created that way\n    inherits daemon-ness from its *creator* thread. Since `main` is non-daemon, the agent thread\n    would be non-daemon too. To actually get a daemon thread, use the\n    `startOnThread(runner, ThreadFactory)` overload with a factory that calls\n    `setDaemon(true)` explicitly, as above. Confirmed by decompiling `AgentRunner.class` —\n    the no-arg overload\'s bytecode only calls `setName(roleName())` and `start()`, nothing else.\n    Full explanation: [Agrona\'s Agent Pattern §5](agrona-agent-pattern.md#5-the-daemon-thread-pitfall).\n\n!!! tip "Reproducing this exact run"\n    All three demo agents live in the same `Main.java` (renamed from `DirectBufferExplore.java`),\n    each wired up as its own commented-out `AgentRunner` block. To reproduce this leak run\n    specifically, make sure the `LeakyAgent`/`leakyRunner` block is uncommented and any others\n    (e.g. `SurvivorDemoAgent`) are commented out — only one agent should be active at a time for a\n    clean, unconfounded GC log.\n\n### Logging — timestamps, thread name, everything\n\nConsole output uses `slf4j-api` + `logback-classic`, configured via `src/main/resources/logback.xml`:\n\n```xml\n<configuration>\n    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">\n        <encoder>\n            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>\n        </encoder>\n    </appender>\n    <root level="INFO">\n        <appender-ref ref="STDOUT"/>\n    </root>\n</configuration>\n```\n\nSample output right before the crash:\n\n```\n2026-09-13 17:43:36.300 [leaky-agent] INFO  org.agrona.LeakyAgent - leaked #60: retained ~120MB total\n2026-09-13 17:43:46.378 [leaky-agent] ERROR org.agrona.DirectBufferExplore - agent error\njava.lang.OutOfMemoryError: Java heap space\n    at java.base/java.lang.String.repeat(String.java:4430)\n    at org.agrona.LeakyAgent.doWork(LeakyAgent.java:32)\n    at org.agrona.concurrent.AgentRunner.doWork(AgentRunner.java:304)\n    at org.agrona.concurrent.AgentRunner.workLoop(AgentRunner.java:296)\n    at org.agrona.concurrent.AgentRunner.run(AgentRunner.java:162)\nException in thread "leaky-agent" java.lang.OutOfMemoryError: Java heap space\n    ...\n```\n\n![Console log showing leaked #46 through #60, then the OutOfMemoryError stack trace at LeakyAgent.java:32](pics/leaky-agent-oom-console.png)\n\n!!! note "Why this doesn\'t go through our own `errorHandler`"\n    `OutOfMemoryError` is an `Error`, not an `Exception`. `Agent.doWork()` is declared\n    `throws Exception`, so `AgentRunner`\'s internal catch only wraps `Exception` — an `Error`\n    escapes straight past it and is handled by the JVM\'s default uncaught-exception handler\n    instead (which is why the log line above says `Exception in thread "leaky-agent"`, printed\n    by the JVM itself, not by our `LOG.error(...)` handler — though that ran too, first).\n\n### Enabling the GC log\n\n```\n-Xmx128m -Xlog:gc*:file=/path/to/gc.log --add-opens java.base/jdk.internal.misc=ALL-UNNAMED\n```\n\n- `-Xmx128m` caps the heap small on purpose, so the leak dies in minutes instead of taking down\n  the whole machine over a much longer, less-observable window.\n- `-Xlog:gc*:file=...` is the modern (JDK 9+) unified logging flag — logs every GC phase in\n  detail to a file, which is the *only* one of the three observation tools (console, VisualVM,\n  GC log) that ends up telling the full story (see below).\n- `--add-opens java.base/jdk.internal.misc=ALL-UNNAMED` — an unrelated but necessary flag on\n  JDK 17+: Agrona\'s `ShutdownSignalBarrier` reflectively touches `jdk.internal.misc.Signal` to\n  hook SIGINT/SIGTERM, which throws `IllegalAccessException` without this flag (a real regression\n  introduced between Aeron 1.43.0 and 1.48.0 — the older version didn\'t need it).\n\n---\n\n## 9. Reading the three observation tools together\n\nThree tools were watched on the same run: **VisualVM\'s Monitor tab**, the **application console\nlog**, and the **GC log**. Cross-checking them against each other is itself a performance\nengineering skill worth practicing.\n\n### What VisualVM\'s Monitor tab showed\n\n![VisualVM Monitor tab showing Used heap climbing to ~130MB against a 134MB max over a 10-minute run, with Live/Daemon thread counts dropping near the end](pics/leaky-agent-visualvm-heap-climb.png)\n\n- **Used heap**: climbed in a staircase pattern (~2MB step every 10s, matching the leak), with\n  **one big drop** partway through (~85MB → ~40MB), then resumed climbing after — and, over the\n  full 10-minute run shown above, kept climbing all the way to the 134MB ceiling.\n- **CPU usage / GC activity**: sat at ~0% for almost the entire run, even in the final minute —\n  see below for why that\'s actively misleading.\n\n### What the console log showed\n\nA clean, human-readable sequence: `leaked #1 ... #60`, each ~10s apart, `retained ~2MB, 4MB, ...\n120MB total` — then the `OutOfMemoryError` stack trace, naming the exact line\n(`LeakyAgent.java:32`, the `"x".repeat(...)` call) that failed.\n\n### What the GC log showed — the part the other two hid completely\n\n```\ngrep -c "To-space exhausted" gc.log   →  25\ngrep -c "Pause Full" gc.log           →  54\n```\n\nIn the final ~81 seconds before death, G1 attempted **54 full stop-the-world compactions** and\nhit **25 "To-space exhausted"** failures — a young collection tried to copy survivors out of Eden\nand couldn\'t even find room for *that*, forcing an emergency full compaction that barely freed\nanything (`125M->124M`) before immediately trying again. This is **GC thrashing**: the JVM\nburning CPU almost continuously on GC, for almost no gain, because 120 of 128 regions were\npermanently locked up as humongous objects that can never be moved or reclaimed.\n\nVisualVM\'s `CPU usage: 0.4%`, `GC activity: 0.1%` — averaged over a 10-minute, once-per-second\nsampled graph — made 54 full GCs crammed into 81 seconds statistically invisible. **If you only\nwatched VisualVM, you would never know the death spiral happened.** The GC log is the only source\nof the three that reveals it — a lesson worth internalizing: dashboards sampled coarsely over\nlong windows can completely hide short, severe events. Always keep GC logging on for anything\nyou actually care about diagnosing.\n\n### The one big early drop, explained\n\n```\n[206.907s] GC(1) Pause Young (Normal) (G1 Evacuation Pause) 83M->47M(128M) 6.559ms\n```\n\nThis is an *ordinary* young collection — not triggered by a humongous allocation — that reclaimed\n36MB of garbage that had piled up in Eden over the previous ~194 seconds (JIT compiler artifacts,\nlogging objects, VisualVM\'s own JMX/RMI polling overhead — its management agent runs *inside your\nprocess*, using your heap, so watching a process changes what you\'re watching, a real observer\neffect). Crucially: this reclaim has **nothing to do with the leak** — the leaked strings are\nhumongous, never in Eden, never touched by this pause. Proof: the staircase kept **climbing again\nright after** the dip; if the leak had stopped, it would have gone flat, not resumed.\n\n### The very end\n\n```\n[685.964s][info][gc,heap        ] GC(141) Humongous regions: 120->0\n[685.964s][info][gc             ] GC(141) Pause Full (G1 Compaction Pause) 125M->4M(24M) 6.404ms\n[685.964s][info][gc,heap,exit   ] Heap\n[685.964s][info][gc,heap,exit   ]  garbage-first heap   total 24576K, used 4950K ...\n```\n\nThe `[gc,heap,exit]` tag only prints when the **whole JVM process terminates** — not just one\nthread. An uncaught `OutOfMemoryError` in one agent thread should, by default, kill only that\nthread; `main` and everything else should keep running. Seeing the entire heap (including every\nhumongous region) collapse to near-zero here means the whole process was torn down — either a\nmanual stop, or something more serious cascading further. This is the one loose thread these logs\nalone don\'t resolve — worth confirming against how the process was actually terminated whenever\nyou see this in a real investigation.\n\n---\n\n## 10. Glossary\n\n| Term | Meaning |\n|---|---|\n| **GC root** | A starting point for reachability analysis: local variables on a thread\'s stack, static fields, JNI references. Anything not reachable from a root, transitively, is garbage. |\n| **Region** | G1\'s fixed-size heap chunk (here, 1MB). Labeled Eden/Survivor/Old/Humongous dynamically. |\n| **Eden** | Where new (non-humongous) objects are born. |\n| **Survivor** | Where objects that survived at least one young collection are copied to. |\n| **Old gen** | Long-lived, promoted objects. Collected rarely, via concurrent marking + mixed/full GCs. |\n| **Humongous object/region** | An object ≥ 50% of region size; allocated directly, bypassing Eden; occupies 1+ dedicated regions. |\n| **Stop-the-world (STW) pause** | A period where *all* application threads are frozen so GC can safely move/reclaim objects. |\n| **Evacuation** | Copying live objects out of a region being collected (Eden→Survivor, or Survivor→Old on promotion). |\n| **To-space exhausted** | A young/mixed collection couldn\'t find enough free space to copy survivors into — an emergency signal that the heap is nearly out of room. |\n| **Full GC / compaction** | The last-resort, most expensive collection: scans and compacts the *entire* heap. Frequent full GCs are a red flag. |\n| **Concurrent Mark Cycle** | G1\'s background (mostly non-STW) process for figuring out what\'s reachable in old gen, so it can be included in future mixed collections. |\n\n## 11. Applying this to real performance engineering work\n\n- **Always run with `-Xlog:gc*:file=...` in anything you\'re trying to understand**, even in\n  dev/staging. It\'s cheap, and it\'s the only one of these tools that doesn\'t average away short,\n  severe events.\n- **Watch for `(G1 Humongous Allocation)` as a pause *reason*, and a Humongous region count that\n  only ever grows.** That combination — regardless of whether it\'s a "real" leak or just a\n  large-object-heavy workload — is a direct line to unnecessary GC pauses and eventual heap\n  pressure.\n- **"To-space exhausted" + a burst of `Pause Full` entries close together in time is the\n  signature of an imminent OOM** — worth alerting on directly in production log-based monitoring,\n  well before the actual `OutOfMemoryError` fires.\n- **A monitoring dashboard sampled at 1Hz over a long window can hide a real crisis that happens\n  in double-digit seconds.** Don\'t trust "CPU usage: 0.4%, GC activity: 0.1%" as proof nothing bad\n  happened — cross-check against the actual GC log when something doesn\'t add up.\n- **A thread dying from an uncaught `Error` is not the same as the JVM exiting.** If you see the\n  whole process go down, confirm whether that was requested (a stop button, a signal) or whether\n  something cascaded — don\'t assume.\n\n## Related\n\n- [Agrona\'s Agent Pattern, Explained](agrona-agent-pattern.md) — the `Agent`/`AgentRunner`/\n  `IdleStrategy` plumbing this whole demo is built on.\n- [GC Case Study: Healthy Churn](gc-survivor-demo.md) — the counterpart to this page: a second\n  agent that does normal small-object churn instead of leaking, showing the Eden→Survivor→Old\n  cycle actually happening (which this leak\'s humongous objects skip entirely).\n- [Stack vs Heap](test.md) — the memory model this whole page builds on.\n- [Shutdown Mechanisms](shutdown.md) — how `ShutdownSignalBarrier`/`AgentRunner` start and stop\n  cleanly, including the daemon-thread pitfall above.\n- [Thread Visibility Issues](thread/visibility.md) — another example of "what you\'d assume vs.\n  what the JVM actually does," verified the same way: read the real behavior, don\'t guess.\n';
+        let isAnimating = false;
+        
+        function copyMarkdownToClipboard() {
+            if (isAnimating) return;
+            
+            const icon = document.getElementById('copy-icon');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(window.pageMarkdown).then(() => {
+                    showCopySuccess(icon);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    fallbackCopyTextToClipboard(window.pageMarkdown);
+                });
+            } else {
+                fallbackCopyTextToClipboard(window.pageMarkdown);
+            }
+        }
+        
+        function showCopySuccess(icon) {
+            if (isAnimating) return;
+            
+            // If already showing success (checkmark), just reset the timer
+            if (icon.className === 'ph ph-check') {
+                clearTimeout(window.copyTimeout);
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 2000);
+                return;
+            }
+            
+            isAnimating = true;
+            icon.style.opacity = '0';
+            setTimeout(() => {
+                icon.className = 'ph ph-check';
+                icon.style.opacity = '1';
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 1800);
+            }, 100);
+        }
+        
+        function showCopyError(icon) {
+            if (isAnimating) return;
+            
+            // If already showing error (X), just reset the timer
+            if (icon.className === 'ph ph-x') {
+                clearTimeout(window.copyTimeout);
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 2000);
+                return;
+            }
+            
+            isAnimating = true;
+            icon.style.opacity = '0';
+            setTimeout(() => {
+                icon.className = 'ph ph-x';
+                icon.style.opacity = '1';
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 1800);
+            }, 100);
+        }
+        
+        function resetIcon(icon) {
+            icon.style.opacity = '0';
+            setTimeout(() => {
+                icon.className = 'ph ph-clipboard';
+                icon.style.opacity = '1';
+                isAnimating = false;
+            }, 100);
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            const icon = document.getElementById('copy-icon');
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess(icon);
+                } else {
+                    showCopyError(icon);
+                }
+            } catch (err) {
+                console.error('Fallback: Could not copy text: ', err);
+                showCopyError(icon);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        </script>
+        
+        <style>
+        .copy-markdown-button:hover {
+            background: #005a9e !important;
+        }
+        
+        .copy-markdown-button:active {
+            transform: translateY(1px);
+        }
+        
+        #copy-icon {
+            transition: opacity 0.1s ease;
+        }
+        </style>
+        
+<p>A hands-on exploration of G1 garbage collection, built by writing a small Agrona <code>Agent</code> that
+deliberately leaks memory, then watching it die — in VisualVM, in the application log, and in
+the JVM's own <code>-Xlog:gc*</code> log. This page walks through <strong>everything</strong> needed to read that story,
+assuming no prior GC knowledge.</p>
+<p>New to GC entirely? Start with <a href="../gc-basics/">GC Basics, Visually</a> first — it covers generations,
+Eden/Survivor, and G1 regions with diagrams, and this page assumes that vocabulary throughout.</p>
+<p>Companion reading: <a href="../test/">Stack vs Heap</a> (what lives where), <a href="../shutdown/">Shutdown Mechanisms</a>
+(how the demo process starts/stops cleanly).</p>
+<hr />
+<h2 id="1-why-garbage-collection-exists">1. Why garbage collection exists</h2>
+<p>Every <code>new String(...)</code>, every <code>"x".repeat(...)</code>, every object literal carves out space on the
+heap. Java has no <code>free()</code> — nothing ever <em>explicitly</em> releases that memory. Instead, the
+<strong>Garbage Collector (GC)</strong> runs periodically, walks the graph of objects reachable from your
+running threads (local variables, static fields, etc. — the <strong>GC roots</strong>), and reclaims memory
+behind everything that <em>isn't</em> reachable anymore.</p>
+<p>A <strong>memory leak</strong> in Java doesn't mean "forgot to free something" (there's no <code>free</code>). It means
+<strong>something is still holding a reference to an object you don't actually need anymore</strong>, so the
+GC — correctly, by its own rules — can never reclaim it. That's exactly what we built on purpose
+below.</p>
+<h2 id="2-the-generational-hypothesis">2. The generational hypothesis</h2>
+<p>Across nearly every GC-heavy language, one empirical pattern holds: <strong>most objects die young</strong>.
+A temporary string built for one calculation, a formatting buffer, a loop-local object — most
+garbage is created and discarded within milliseconds. Long-lived objects (caches, config,
+connection pools, and — in our demo — a deliberately-retained list) are comparatively rare.</p>
+<p>Collectors exploit this by splitting the heap into <strong>generations</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Generation</th>
+<th>Contains</th>
+<th>Collected</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Young</strong> (Eden + Survivor)</td>
+<td>Everything is <em>born</em> here</td>
+<td>Often</td>
+<td>Cheap — mostly garbage, few live objects to copy out</td>
+</tr>
+<tr>
+<td><strong>Old</strong></td>
+<td>Objects that survived enough young collections get <em>promoted</em> here</td>
+<td>Rarely</td>
+<td>Expensive — scanning a large, mostly-live set</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-g1-specifically-a-heap-made-of-regions">3. G1 specifically: a heap made of regions</h2>
+<p>Older collectors (Serial, Parallel) used one contiguous Eden space and one contiguous Old space.
+<strong>G1 ("Garbage First")</strong>, the default collector since JDK 9, instead chops the whole heap into
+fixed-size chunks called <strong>regions</strong>. Each region is labeled Eden, Survivor, Old, or Humongous —
+dynamically, not fixed at JVM startup. G1 always collects the regions with the most garbage in
+them first (hence the name), to get the best reclaim-per-millisecond-of-pause.</p>
+<p>From a real run's log header:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>[0.006s][info][gc,init] Heap Region Size: 1M
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>[0.006s][info][gc,init] Heap Min Capacity: 8M
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>[0.006s][info][gc,init] Heap Initial Capacity: 128M
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>[0.006s][info][gc,init] Heap Max Capacity: 128M
+</span></code></pre></div></td></tr></table></div>
+<p>Region size is chosen automatically from heap size (small heap → small regions, 1MB minimum).
+128MB max heap ÷ 1MB regions = <strong>128 regions total</strong> to work with. Remember this number — it's
+the ceiling everything below eventually runs into.</p>
+<h2 id="4-anatomy-of-one-young-collection-line-by-line">4. Anatomy of one young collection, line by line</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>[12.987s] GC(0) Pause Young (Normal) (G1 Evacuation Pause)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>[12.987s] GC(0) Using 3 workers of 10 for evacuation
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>[12.989s] GC(0)   Evacuate Collection Set: 1.8ms
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>[12.989s] GC(0) Eden regions: 23-&gt;0(36)
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>[12.989s] GC(0) Survivor regions: 0-&gt;3(3)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>[12.989s] GC(0) Old regions: 0-&gt;2
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>[12.989s] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 27M-&gt;9M(128M) 2.308ms
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li><strong>"Pause Young"</strong> — a <strong>stop-the-world</strong> pause. <em>Every</em> application thread freezes completely
+  for the duration; only GC worker threads run.</li>
+<li><strong>"Using 3 workers of 10"</strong> — G1 pauses are parallelized across multiple GC threads to keep
+  them short.</li>
+<li><strong>"Evacuate Collection Set: 1.8ms"</strong> — the actual work: find every object in Eden still
+  reachable, and <strong>copy</strong> it out into a Survivor region. Anything left behind afterward is, by
+  definition, garbage — G1 doesn't delete it object-by-object, it just marks the whole region
+  empty and reuses it. This copy-only approach is <em>why</em> young collections are cheap: you only
+  touch live objects, never the garbage.</li>
+<li><strong>"Eden regions: 23-&gt;0(36)"</strong> — 23 regions were Eden before the pause; 0 after (everything
+  evacuated or discarded); <code>(36)</code> is the <em>new target Eden size</em> G1 picked going forward, adapted
+  to hit its pause-time goal.</li>
+<li><strong>"Survivor regions: 0-&gt;3(3)"</strong> — the objects that survived got copied into 3 fresh regions.</li>
+<li><strong>"Old regions: 0-&gt;2"</strong> — a couple of long-lived objects were promoted (survived enough
+  previous collections).</li>
+<li><strong>"27M-&gt;9M(128M) 2.308ms"</strong> — the pause summary: 27MB used before, 9MB after (18MB reclaimed),
+  out of a 128MB cap, and the <em>entire</em> stop-the-world pause took 2.3 milliseconds. That pause
+  time is the number that matters for application latency.</li>
+</ul>
+<h2 id="5-humongous-objects-the-key-to-this-whole-story">5. Humongous objects — the key to this whole story</h2>
+<p>G1's rule: <strong>any single object ≥ 50% of the region size doesn't go through the normal
+Eden→Survivor→Old lifecycle at all.</strong> It's allocated directly into one or more dedicated
+<strong>Humongous regions</strong>, bypassing young gen completely.</p>
+<p>With a 1MB region size, that threshold is <strong>512KB</strong>. Our leaked strings are <strong>2MB</strong> each — 4x
+over the threshold — so <em>every single one</em> becomes a humongous object: allocated straight into
+old-gen-like territory, never copied, never touched by an ordinary young collection.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>[251.675s] GC(2) Pause Young (Concurrent Start) (G1 Humongous Allocation)
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>[251.675s] GC(2) Humongous regions: 50-&gt;50
+</span></code></pre></div></td></tr></table></div>
+<p>The pause <em>reason</em> literally says <code>(G1 Humongous Allocation)</code> — this pause was triggered by code
+requesting a 2MB allocation. G1's allocator needs 2 contiguous free 1MB regions for that request,
+and does a quick young collection first (freeing up space, re-checking) before granting it. That's
+a real, measurable cost of leaking (or even just frequently allocating) large objects: each one
+doesn't just consume memory, it actively triggers a GC pause on the way in.</p>
+<div class="admonition warning">
+<p class="admonition-title">Practical takeaway</p>
+<p>In real services, avoid allocating objects near or above half your G1 region size in hot
+paths if you can help it (e.g. building one giant <code>StringBuilder</code>/<code>byte[]</code> per request
+instead of streaming/chunking). Each one is a small, guaranteed GC event, and it can never be
+young-collected once created — only ever compacted by a full/mixed GC.</p>
+</div>
+<h2 id="6-why-humongous-regions-only-ever-grow-in-a-leak">6. Why humongous regions only ever grow (in a leak)</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>GC(2)  Humongous regions: 50-&gt;50
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>GC(4)  Humongous regions: 52-&gt;52
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>GC(6)  Humongous regions: 54-&gt;54
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>...
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a>GC(20) Humongous regions: 68-&gt;68
+</span></code></pre></div></td></tr></table></div>
+<p>The format is <code>before-&gt;after</code> <strong>for that one pause</strong>. It's flat within a single pause (a young
+collection doesn't touch old/humongous regions), but <em>across</em> pauses it climbs by exactly 2 every
+time — one more 2MB (2-region) string retained between each tick. A young collection can never
+free a humongous region that's still reachable — only a full/mixed collection that finds it
+<strong>unreachable</strong> could, and ours never becomes unreachable, because our code never stops
+referencing it.</p>
+<h2 id="7-concurrent-mark-cycle-how-g1-deals-with-old-gen-without-long-pauses">7. Concurrent Mark Cycle — how G1 deals with old gen without long pauses</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>[261.748s] GC(5) Concurrent Mark Cycle
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>[261.748s] GC(5)   Concurrent Scan Root Regions        0.635ms
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>[261.749s] GC(5)   Concurrent Mark From Roots          5.396ms
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a>[261.754s] GC(5) Pause Remark                          8.778ms
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a>[261.766s] GC(5) Pause Cleanup                         0.063ms
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a>[261.766s] GC(5)   Concurrent Rebuild Remembered Sets   2.475ms
+</span></code></pre></div></td></tr></table></div>
+<p>Old gen is rarely collected, but G1 still needs to eventually know what's garbage in there.
+Rather than one long stop-the-world scan of the whole old generation (which would freeze the app
+for a long time on a big heap), G1 does most of the work <strong>concurrently</strong> — while application
+threads keep running normally:</p>
+<ul>
+<li><strong>Scan Root Regions / Mark From Roots</strong> — walk the object graph from GC roots to find
+  everything reachable, concurrently, no stop-the-world.</li>
+<li><strong>Pause Remark</strong> — a <em>short</em> stop-the-world pause to catch up on anything the app mutated
+  mid-mark.</li>
+<li><strong>Pause Cleanup</strong> — another short pause to finalize which regions are now known-garbage.</li>
+</ul>
+<p>These pauses are single-digit milliseconds, versus what a naive full old-gen scan would cost —
+that's G1's whole design point: short, predictable pauses even as the heap grows, at the cost of
+extra background CPU.</p>
+<p>This cycle gets triggered automatically after a humongous allocation pause (see the pattern:
+<code>Pause Young (Concurrent Start)</code> immediately followed by <code>Concurrent Mark Cycle</code>). G1 uses
+humongous allocations as one of its triggers to check "is it time to reclaim old-gen garbage." It
+never finds much to reclaim here, because the only old-gen-ish garbage in this demo <em>is</em> the leak
+— always reachable, never collectable.</p>
+<hr />
+<h2 id="8-the-demo-itself">8. The demo itself</h2>
+<h3 id="the-leaking-agent">The leaking Agent</h3>
+<p>An Agrona <code>Agent</code> whose <code>doWork()</code> is polled by an <code>AgentRunner</code> on its own thread — if that
+sentence is unfamiliar, read <a href="../agrona-agent-pattern/">Agrona's Agent Pattern, Explained</a> first,
+it covers <code>Agent</code>/<code>AgentRunner</code>/<code>IdleStrategy</code> from scratch. Every 10 seconds this one builds a
+2MB string and appends it to a list it never clears:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span>
+<span class="normal"><a href="#__codelineno-5-23">23</a></span>
+<span class="normal"><a href="#__codelineno-5-24">24</a></span>
+<span class="normal"><a href="#__codelineno-5-25">25</a></span>
+<span class="normal"><a href="#__codelineno-5-26">26</a></span>
+<span class="normal"><a href="#__codelineno-5-27">27</a></span>
+<span class="normal"><a href="#__codelineno-5-28">28</a></span>
+<span class="normal"><a href="#__codelineno-5-29">29</a></span>
+<span class="normal"><a href="#__codelineno-5-30">30</a></span>
+<span class="normal"><a href="#__codelineno-5-31">31</a></span>
+<span class="normal"><a href="#__codelineno-5-32">32</a></span>
+<span class="normal"><a href="#__codelineno-5-33">33</a></span>
+<span class="normal"><a href="#__codelineno-5-34">34</a></span>
+<span class="normal"><a href="#__codelineno-5-35">35</a></span>
+<span class="normal"><a href="#__codelineno-5-36">36</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LeakyAgent</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Agent</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">LOG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">LeakyAgent</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">INTERVAL_NS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">.</span><span class="na">toNanos</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CHARS_PER_TICK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2_000_000</span><span class="p">;</span><span class="w"> </span><span class="c1">// ~2MB per allocation</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">retained</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">nextFireNs</span><span class="p">;</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">totalBytes</span><span class="p">;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onStart</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">        </span><span class="n">nextFireNs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">nanoTime</span><span class="p">();</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">doWork</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">nanoTime</span><span class="p">();</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nextFireNs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// idle strategy backs off — no busy-spin</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"x"</span><span class="p">.</span><span class="na">repeat</span><span class="p">(</span><span class="n">CHARS_PER_TICK</span><span class="p">);</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="w">        </span><span class="n">retained</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">chunk</span><span class="p">);</span><span class="w"> </span><span class="c1">// deliberately never released</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="w">        </span><span class="n">totalBytes</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">chunk</span><span class="p">.</span><span class="na">length</span><span class="p">();</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="w">        </span><span class="n">LOG</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">"leaked #{}: retained ~{}MB total"</span><span class="p">,</span><span class="w"> </span><span class="n">retained</span><span class="p">.</span><span class="na">size</span><span class="p">(),</span><span class="w"> </span><span class="n">totalBytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1_000_000</span><span class="p">);</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="w">        </span><span class="n">nextFireNs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">INTERVAL_NS</span><span class="p">;</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28"></a>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31"></a>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">roleName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">"leaky-agent"</span><span class="p">;</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Why <code>"x".repeat(2_000_000)</code> is ~2MB and not ~4MB: <strong>Compact Strings</strong> (JEP 254, default since
+Java 9). Since <code>'x'</code> is Latin-1-representable, the JVM stores the backing array as <code>byte[]</code>
+(1 byte/char) instead of <code>char[]</code> (2 bytes/char UTF-16). A non-Latin-1 character would double the
+size for the same character count.</p>
+<h3 id="wiring-it-up-with-a-real-daemon-thread">Wiring it up with a real daemon thread</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">AgentRunner</span><span class="w"> </span><span class="n">leakyRunner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AgentRunner</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="n">SleepingIdleStrategy</span><span class="p">(</span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">MILLISECONDS</span><span class="p">.</span><span class="na">toNanos</span><span class="p">(</span><span class="mi">100</span><span class="p">)),</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="n">error</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">LOG</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">"agent error"</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">),</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="n">LeakyAgent</span><span class="p">());</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="n">AgentRunner</span><span class="p">.</span><span class="na">startOnThread</span><span class="p">(</span><span class="n">leakyRunner</span><span class="p">,</span><span class="w"> </span><span class="n">runnable</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">    </span><span class="n">Thread</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Thread</span><span class="p">(</span><span class="n">runnable</span><span class="p">);</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">    </span><span class="n">thread</span><span class="p">.</span><span class="na">setDaemon</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">thread</span><span class="p">;</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="p">});</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="admonition note">
+<p class="admonition-title"><code>AgentRunner.startOnThread(runner)</code> does NOT make a daemon thread</p>
+<p>The no-arg overload uses <code>Thread::new</code> as its <code>ThreadFactory</code> — a thread created that way
+inherits daemon-ness from its <em>creator</em> thread. Since <code>main</code> is non-daemon, the agent thread
+would be non-daemon too. To actually get a daemon thread, use the
+<code>startOnThread(runner, ThreadFactory)</code> overload with a factory that calls
+<code>setDaemon(true)</code> explicitly, as above. Confirmed by decompiling <code>AgentRunner.class</code> —
+the no-arg overload's bytecode only calls <code>setName(roleName())</code> and <code>start()</code>, nothing else.
+Full explanation: <a href="../agrona-agent-pattern/#5-the-daemon-thread-pitfall">Agrona's Agent Pattern §5</a>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Reproducing this exact run</p>
+<p>All three demo agents live in the same <code>Main.java</code> (renamed from <code>DirectBufferExplore.java</code>),
+each wired up as its own commented-out <code>AgentRunner</code> block. To reproduce this leak run
+specifically, make sure the <code>LeakyAgent</code>/<code>leakyRunner</code> block is uncommented and any others
+(e.g. <code>SurvivorDemoAgent</code>) are commented out — only one agent should be active at a time for a
+clean, unconfounded GC log.</p>
+</div>
+<h3 id="logging-timestamps-thread-name-everything">Logging — timestamps, thread name, everything</h3>
+<p>Console output uses <code>slf4j-api</code> + <code>logback-classic</code>, configured via <code>src/main/resources/logback.xml</code>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nt">&lt;configuration&gt;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">    </span><span class="nt">&lt;appender</span><span class="w"> </span><span class="na">name=</span><span class="s">"STDOUT"</span><span class="w"> </span><span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">        </span><span class="nt">&lt;encoder&gt;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">            </span><span class="nt">&lt;pattern&gt;</span>%d{yyyy-MM-dd<span class="w"> </span>HH:mm:ss.SSS}<span class="w"> </span>[%thread]<span class="w"> </span>%-5level<span class="w"> </span>%logger{36}<span class="w"> </span>-<span class="w"> </span>%msg%n<span class="nt">&lt;/pattern&gt;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="w">        </span><span class="nt">&lt;/encoder&gt;</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="w">    </span><span class="nt">&lt;/appender&gt;</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="w">    </span><span class="nt">&lt;root</span><span class="w"> </span><span class="na">level=</span><span class="s">"INFO"</span><span class="nt">&gt;</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="w">        </span><span class="nt">&lt;appender-ref</span><span class="w"> </span><span class="na">ref=</span><span class="s">"STDOUT"</span><span class="nt">/&gt;</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="w">    </span><span class="nt">&lt;/root&gt;</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="nt">&lt;/configuration&gt;</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Sample output right before the crash:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-8-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a>2026-09-13 17:43:36.300 [leaky-agent] INFO  org.agrona.LeakyAgent - leaked #60: retained ~120MB total
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>2026-09-13 17:43:46.378 [leaky-agent] ERROR org.agrona.DirectBufferExplore - agent error
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a>java.lang.OutOfMemoryError: Java heap space
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a>    at java.base/java.lang.String.repeat(String.java:4430)
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a>    at org.agrona.LeakyAgent.doWork(LeakyAgent.java:32)
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a>    at org.agrona.concurrent.AgentRunner.doWork(AgentRunner.java:304)
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a>    at org.agrona.concurrent.AgentRunner.workLoop(AgentRunner.java:296)
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a>    at org.agrona.concurrent.AgentRunner.run(AgentRunner.java:162)
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a>Exception in thread "leaky-agent" java.lang.OutOfMemoryError: Java heap space
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a>    ...
+</span></code></pre></div></td></tr></table></div>
+<p><img alt="Console log showing leaked #46 through #60, then the OutOfMemoryError stack trace at LeakyAgent.java:32" src="../pics/leaky-agent-oom-console.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Why this doesn't go through our own <code>errorHandler</code></p>
+<p><code>OutOfMemoryError</code> is an <code>Error</code>, not an <code>Exception</code>. <code>Agent.doWork()</code> is declared
+<code>throws Exception</code>, so <code>AgentRunner</code>'s internal catch only wraps <code>Exception</code> — an <code>Error</code>
+escapes straight past it and is handled by the JVM's default uncaught-exception handler
+instead (which is why the log line above says <code>Exception in thread "leaky-agent"</code>, printed
+by the JVM itself, not by our <code>LOG.error(...)</code> handler — though that ran too, first).</p>
+</div>
+<h3 id="enabling-the-gc-log">Enabling the GC log</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>-Xmx128m -Xlog:gc*:file=/path/to/gc.log --add-opens java.base/jdk.internal.misc=ALL-UNNAMED
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li><code>-Xmx128m</code> caps the heap small on purpose, so the leak dies in minutes instead of taking down
+  the whole machine over a much longer, less-observable window.</li>
+<li><code>-Xlog:gc*:file=...</code> is the modern (JDK 9+) unified logging flag — logs every GC phase in
+  detail to a file, which is the <em>only</em> one of the three observation tools (console, VisualVM,
+  GC log) that ends up telling the full story (see below).</li>
+<li><code>--add-opens java.base/jdk.internal.misc=ALL-UNNAMED</code> — an unrelated but necessary flag on
+  JDK 17+: Agrona's <code>ShutdownSignalBarrier</code> reflectively touches <code>jdk.internal.misc.Signal</code> to
+  hook SIGINT/SIGTERM, which throws <code>IllegalAccessException</code> without this flag (a real regression
+  introduced between Aeron 1.43.0 and 1.48.0 — the older version didn't need it).</li>
+</ul>
+<hr />
+<h2 id="9-reading-the-three-observation-tools-together">9. Reading the three observation tools together</h2>
+<p>Three tools were watched on the same run: <strong>VisualVM's Monitor tab</strong>, the <strong>application console
+log</strong>, and the <strong>GC log</strong>. Cross-checking them against each other is itself a performance
+engineering skill worth practicing.</p>
+<h3 id="what-visualvms-monitor-tab-showed">What VisualVM's Monitor tab showed</h3>
+<p><img alt="VisualVM Monitor tab showing Used heap climbing to ~130MB against a 134MB max over a 10-minute run, with Live/Daemon thread counts dropping near the end" src="../pics/leaky-agent-visualvm-heap-climb.png" /></p>
+<ul>
+<li><strong>Used heap</strong>: climbed in a staircase pattern (~2MB step every 10s, matching the leak), with
+  <strong>one big drop</strong> partway through (~85MB → ~40MB), then resumed climbing after — and, over the
+  full 10-minute run shown above, kept climbing all the way to the 134MB ceiling.</li>
+<li><strong>CPU usage / GC activity</strong>: sat at ~0% for almost the entire run, even in the final minute —
+  see below for why that's actively misleading.</li>
+</ul>
+<h3 id="what-the-console-log-showed">What the console log showed</h3>
+<p>A clean, human-readable sequence: <code>leaked #1 ... #60</code>, each ~10s apart, <code>retained ~2MB, 4MB, ...
+120MB total</code> — then the <code>OutOfMemoryError</code> stack trace, naming the exact line
+(<code>LeakyAgent.java:32</code>, the <code>"x".repeat(...)</code> call) that failed.</p>
+<h3 id="what-the-gc-log-showed-the-part-the-other-two-hid-completely">What the GC log showed — the part the other two hid completely</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>grep -c "To-space exhausted" gc.log   →  25
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>grep -c "Pause Full" gc.log           →  54
+</span></code></pre></div></td></tr></table></div>
+<p>In the final ~81 seconds before death, G1 attempted <strong>54 full stop-the-world compactions</strong> and
+hit <strong>25 "To-space exhausted"</strong> failures — a young collection tried to copy survivors out of Eden
+and couldn't even find room for <em>that</em>, forcing an emergency full compaction that barely freed
+anything (<code>125M-&gt;124M</code>) before immediately trying again. This is <strong>GC thrashing</strong>: the JVM
+burning CPU almost continuously on GC, for almost no gain, because 120 of 128 regions were
+permanently locked up as humongous objects that can never be moved or reclaimed.</p>
+<p>VisualVM's <code>CPU usage: 0.4%</code>, <code>GC activity: 0.1%</code> — averaged over a 10-minute, once-per-second
+sampled graph — made 54 full GCs crammed into 81 seconds statistically invisible. <strong>If you only
+watched VisualVM, you would never know the death spiral happened.</strong> The GC log is the only source
+of the three that reveals it — a lesson worth internalizing: dashboards sampled coarsely over
+long windows can completely hide short, severe events. Always keep GC logging on for anything
+you actually care about diagnosing.</p>
+<h3 id="the-one-big-early-drop-explained">The one big early drop, explained</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>[206.907s] GC(1) Pause Young (Normal) (G1 Evacuation Pause) 83M-&gt;47M(128M) 6.559ms
+</span></code></pre></div></td></tr></table></div>
+<p>This is an <em>ordinary</em> young collection — not triggered by a humongous allocation — that reclaimed
+36MB of garbage that had piled up in Eden over the previous ~194 seconds (JIT compiler artifacts,
+logging objects, VisualVM's own JMX/RMI polling overhead — its management agent runs <em>inside your
+process</em>, using your heap, so watching a process changes what you're watching, a real observer
+effect). Crucially: this reclaim has <strong>nothing to do with the leak</strong> — the leaked strings are
+humongous, never in Eden, never touched by this pause. Proof: the staircase kept <strong>climbing again
+right after</strong> the dip; if the leak had stopped, it would have gone flat, not resumed.</p>
+<h3 id="the-very-end">The very end</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span>
+<span class="normal"><a href="#__codelineno-12-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a>[685.964s][info][gc,heap        ] GC(141) Humongous regions: 120-&gt;0
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a>[685.964s][info][gc             ] GC(141) Pause Full (G1 Compaction Pause) 125M-&gt;4M(24M) 6.404ms
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a>[685.964s][info][gc,heap,exit   ] Heap
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a>[685.964s][info][gc,heap,exit   ]  garbage-first heap   total 24576K, used 4950K ...
+</span></code></pre></div></td></tr></table></div>
+<p>The <code>[gc,heap,exit]</code> tag only prints when the <strong>whole JVM process terminates</strong> — not just one
+thread. An uncaught <code>OutOfMemoryError</code> in one agent thread should, by default, kill only that
+thread; <code>main</code> and everything else should keep running. Seeing the entire heap (including every
+humongous region) collapse to near-zero here means the whole process was torn down — either a
+manual stop, or something more serious cascading further. This is the one loose thread these logs
+alone don't resolve — worth confirming against how the process was actually terminated whenever
+you see this in a real investigation.</p>
+<hr />
+<h2 id="10-glossary">10. Glossary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GC root</strong></td>
+<td>A starting point for reachability analysis: local variables on a thread's stack, static fields, JNI references. Anything not reachable from a root, transitively, is garbage.</td>
+</tr>
+<tr>
+<td><strong>Region</strong></td>
+<td>G1's fixed-size heap chunk (here, 1MB). Labeled Eden/Survivor/Old/Humongous dynamically.</td>
+</tr>
+<tr>
+<td><strong>Eden</strong></td>
+<td>Where new (non-humongous) objects are born.</td>
+</tr>
+<tr>
+<td><strong>Survivor</strong></td>
+<td>Where objects that survived at least one young collection are copied to.</td>
+</tr>
+<tr>
+<td><strong>Old gen</strong></td>
+<td>Long-lived, promoted objects. Collected rarely, via concurrent marking + mixed/full GCs.</td>
+</tr>
+<tr>
+<td><strong>Humongous object/region</strong></td>
+<td>An object ≥ 50% of region size; allocated directly, bypassing Eden; occupies 1+ dedicated regions.</td>
+</tr>
+<tr>
+<td><strong>Stop-the-world (STW) pause</strong></td>
+<td>A period where <em>all</em> application threads are frozen so GC can safely move/reclaim objects.</td>
+</tr>
+<tr>
+<td><strong>Evacuation</strong></td>
+<td>Copying live objects out of a region being collected (Eden→Survivor, or Survivor→Old on promotion).</td>
+</tr>
+<tr>
+<td><strong>To-space exhausted</strong></td>
+<td>A young/mixed collection couldn't find enough free space to copy survivors into — an emergency signal that the heap is nearly out of room.</td>
+</tr>
+<tr>
+<td><strong>Full GC / compaction</strong></td>
+<td>The last-resort, most expensive collection: scans and compacts the <em>entire</em> heap. Frequent full GCs are a red flag.</td>
+</tr>
+<tr>
+<td><strong>Concurrent Mark Cycle</strong></td>
+<td>G1's background (mostly non-STW) process for figuring out what's reachable in old gen, so it can be included in future mixed collections.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="11-applying-this-to-real-performance-engineering-work">11. Applying this to real performance engineering work</h2>
+<ul>
+<li><strong>Always run with <code>-Xlog:gc*:file=...</code> in anything you're trying to understand</strong>, even in
+  dev/staging. It's cheap, and it's the only one of these tools that doesn't average away short,
+  severe events.</li>
+<li><strong>Watch for <code>(G1 Humongous Allocation)</code> as a pause <em>reason</em>, and a Humongous region count that
+  only ever grows.</strong> That combination — regardless of whether it's a "real" leak or just a
+  large-object-heavy workload — is a direct line to unnecessary GC pauses and eventual heap
+  pressure.</li>
+<li><strong>"To-space exhausted" + a burst of <code>Pause Full</code> entries close together in time is the
+  signature of an imminent OOM</strong> — worth alerting on directly in production log-based monitoring,
+  well before the actual <code>OutOfMemoryError</code> fires.</li>
+<li><strong>A monitoring dashboard sampled at 1Hz over a long window can hide a real crisis that happens
+  in double-digit seconds.</strong> Don't trust "CPU usage: 0.4%, GC activity: 0.1%" as proof nothing bad
+  happened — cross-check against the actual GC log when something doesn't add up.</li>
+<li><strong>A thread dying from an uncaught <code>Error</code> is not the same as the JVM exiting.</strong> If you see the
+  whole process go down, confirm whether that was requested (a stop button, a signal) or whether
+  something cascaded — don't assume.</li>
+</ul>
+<h2 id="related">Related</h2>
+<ul>
+<li><a href="../agrona-agent-pattern/">Agrona's Agent Pattern, Explained</a> — the <code>Agent</code>/<code>AgentRunner</code>/
+  <code>IdleStrategy</code> plumbing this whole demo is built on.</li>
+<li><a href="../gc-survivor-demo/">GC Case Study: Healthy Churn</a> — the counterpart to this page: a second
+  agent that does normal small-object churn instead of leaking, showing the Eden→Survivor→Old
+  cycle actually happening (which this leak's humongous objects skip entirely).</li>
+<li><a href="../test/">Stack vs Heap</a> — the memory model this whole page builds on.</li>
+<li><a href="../shutdown/">Shutdown Mechanisms</a> — how <code>ShutdownSignalBarrier</code>/<code>AgentRunner</code> start and stop
+  cleanly, including the daemon-thread pitfall above.</li>
+<li><a href="../thread/visibility/">Thread Visibility Issues</a> — another example of "what you'd assume vs.
+  what the JVM actually does," verified the same way: read the real behavior, don't guess.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../gc-basics/" class="md-footer__link md-footer__link--prev" aria-label="Previous: GC basics (diagrams)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                GC basics (diagrams)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../gc-survivor-demo/" class="md-footer__link md-footer__link--next" aria-label="Next: GC case study (healthy churn)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                GC case study (healthy churn)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/woon17" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/shufa-wen-7a530418b" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const metaInner = document.querySelector(".md-footer-meta__inner");
+        if (metaInner) {
+            const infoBlock = document.createElement("div");
+            infoBlock.className = "md-timestamp";
+            infoBlock.style.cssText = `
+          font-size: 0.75rem;
+          color: var(--md-footer-fg-color);
+          margin-top: 0.5rem;
+          text-align: right;
+          flex: 1 0 100%;
+        `;
+            infoBlock.innerHTML = `
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2026-09-25 00:58:32 SGT</span><br>
+  <span style="opacity: 0.8;">(2026-09-25 00:58:13 SGT: ac3dc9a - add agentic workflows catalog page, enable tasklist checkboxes)</span>
+</div>`;
+            metaInner.appendChild(infoBlock);
+        }
+    });
+</script>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.footer", "content.code.copy", "content.code.select", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/open_in_new_tab.js"></script>
+      
+        <script src="../../javascripts/highlight_selected_line_num.js"></script>
+      
+    
+  </body>
+</html>

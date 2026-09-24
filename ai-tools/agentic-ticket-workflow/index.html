@@ -1,0 +1,4880 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../java-agent-skills/">
+      
+      
+        <link rel="next" href="../agentic-workflows-catalog/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Agentic Ticket Workflow - MkDocs woon17</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q3E0E4N6LZ"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-Q3E0E4N6LZ');
+</script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agentic-ticket-workflow" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MkDocs woon17" class="md-header__button md-logo" aria-label="MkDocs woon17" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MkDocs woon17
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agentic Ticket Workflow
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/woon17/docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mkDocs/admonitions/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  MkDocs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../fx/test/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  FX
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../system_design/frAndNfre/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../setup/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Setup
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../spring-boot/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring Boot
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../aeron/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Aeron
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../disruptor/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Disruptor
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../linux/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Linux
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kdb/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  KDB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tips/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Productivity Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../claude-code/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Claude Code Skills
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../blog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MkDocs woon17" class="md-nav__button md-logo" aria-label="MkDocs woon17" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    MkDocs woon17
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/woon17/docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    MkDocs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/admonitions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admonitions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/code-example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/content-tabs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Content tabs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mkDocs/diagram-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagram Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../java/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stack and heap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/shutdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    shutdown mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/agrona-agent-pattern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agrona Agent pattern
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/gc-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GC basics (diagrams)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/gc-leak-oom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GC deep dive (leak to OOM)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/gc-survivor-demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GC case study (healthy churn)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../java/thread/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thread
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_8" id="__nav_3_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Thread
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/thread/visibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    issue-visibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/thread/atomicity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    issue-atomicity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/thread/ordering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    issue-ordering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/thread/hashmap-concurrent-read-write/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HashMap Concurrent Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/volatile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    visibility and atomicity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_8_7" id="__nav_3_8_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multiple threads use case
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_8_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    multiple threads use case
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/thread/block-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. block task
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/thread/CPU-Intensive-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. CPU-Intensive Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/thread/small-fast-task/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Small, Fast Tasks (high volume)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FX
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FX
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fx/test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fx/rfs-vs-rfq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RFS vs RFQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/frAndNfre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FR VS NFR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/polling-and-push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Polling vs Push
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../system_design/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPC
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    IPC
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/IPC/ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ipc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system_design/IPC/aeron_mdc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    aeron mdc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../setup/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/python-virtual-env/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    virEnv (mac)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SSH
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/ssh-github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    github
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/ssh-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../spring-boot/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring Boot
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring-boot/mmm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiple module maven
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring-boot/maven/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Maven
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring-boot/mvc-vs-webflux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MVC vs WebFlux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../aeron/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aeron
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Aeron
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/adv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Why aeron
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/mdc-vs-unicast/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MDC vs Unicast
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/ring-buffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ring Buffer Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artio fix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Artio fix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aeron/artio/coinbase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coinbase fix api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../disruptor/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disruptor
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Disruptor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/conduit-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conduit Framework
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example Applications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/lock-free-cas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lock-free & CAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disruptor/hand-rolled-ring-buffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hand-Rolled Ring Buffer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../linux/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cheatsheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common AI Knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../java-agent-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java Agent Skills (Claude + Gemini)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Ticket Workflow
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Ticket Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-tailor-paste-this-then-paste-templates-1-2-right-below-it-in-the-same-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Tailor (paste this, then paste templates 1 + 2 right below it in the same message)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-improve-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Improve (template)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-evaluate-template-re-run-after-every-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Evaluate (template, re-run after every change)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-workflows-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Workflows Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../kdb/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KDB
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_12" id="__nav_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    KDB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kdb/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    setup on M3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kdb/connect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    connect to kdb+ manually
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kdb/kxDashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kx dashboard data source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Productivity Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Productivity Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Tips
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code-sessions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code Sessions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../claude-code/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code Skills
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_14" id="__nav_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Claude Code Skills
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_14_2" id="__nav_14_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code/commands/new-service/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    /new-service
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code/commands/refactor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    /refactor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../claude-code/java-architect/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java Architect Skill
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_14_3" id="__nav_14_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java Architect Skill
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code/java-architect/references/aeron-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aeron Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code/java-architect/references/data-access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code/java-architect/references/rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rest Api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code/java-architect/references/spring-boot-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../blog/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_15" id="__nav_15_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/one-url/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    one url
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-tailor-paste-this-then-paste-templates-1-2-right-below-it-in-the-same-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Tailor (paste this, then paste templates 1 + 2 right below it in the same message)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-improve-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Improve (template)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-evaluate-template-re-run-after-every-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Evaluate (template, re-run after every change)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/woon17/docs/edit/main/docs/ai-tools/agentic-ticket-workflow.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/woon17/docs/raw/main/docs/ai-tools/agentic-ticket-workflow.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="agentic-ticket-workflow">Agentic Ticket Workflow</h1><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+        
+<div class="copy-markdown-container" style="margin: 10px 0;">
+    <button id="copy-markdown-btn" class="copy-markdown-button" 
+            onclick="copyMarkdownToClipboard()" 
+            style="background: #007acc; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+        <i id="copy-icon" class="ph ph-clipboard" style="font-size: 16px;"></i>
+        <span>Copy as Markdown</span>
+    </button>
+</div>
+        
+        <script>
+        window.pageMarkdown = '# Agentic Ticket Workflow\n\n## 0. Tailor (paste this, then paste templates 1 + 2 right below it in the same message)\n\n````markdown\n# Task: Tailor the template prompts below to my existing AI coding agent setup\n\nBelow this message are 2 TEMPLATE prompts: "Improve my agent automation flow" and\n"Evaluate my agent automation flow". They were written without knowing my setup, so some\nparts are too specific and may conflict with it (paths, file names, phase names, script\ntemplate, ticket files, command names, metrics).\nYour job: rewrite both templates so they fit my existing flow. Do NOT run them yet and\ndo NOT change my setup.\n\n## Mode: READ-ONLY\n- Built-in file tools only (read, list/glob, search). NO shell.\n- Don\'t modify any existing file. Only write the 2 new prompt files in Step 4.\n\n## Step 1: Learn my existing flow\nRead all agent instruction/memory files, agent settings, custom commands, workflow\nscripts/launchers, and 2–3 recent ticket folders. Summarize my flow in ≤ 20 lines:\nfolder layout, ticket files, session naming, phases/commands, script conventions,\nwhat gets logged where.\n\n## Step 2: Map template → my setup\nFor each template section, decide one of:\n- KEEP: already fits as is\n- ADAPT: same intent, but use my real names/paths/conventions\n  (e.g. my ticket file names instead of TICKET.md/PLAN.md/LOG.md, my phase names,\n  my script style instead of the template script)\n- SUGGEST: I don\'t have this yet; keep it, but mark it "(optional suggestion)"\n- DROP: conflicts with my flow or adds no value for my setup\nShow a table: template section | decision | my equivalent | reason.\n\n## Step 3: Ask before writing\nList the unclear points (max 8 short questions), e.g. where two conventions in my setup\ndisagree, or a template idea could go either way. Wait for my answers.\n\n## Step 4: Write the tailored prompts\nAfter I answer, write 2 NEW files (pick a folder next to my existing setup, e.g.\n<hub>/prompts/; tell me the path):\n- improve.md: tailored version of template 1\n- evaluate.md: tailored version of template 2 (metrics + "how to measure" use MY files\n  and conventions; drop metrics that don\'t apply; keep scoring comparable across runs)\n\nRules for the rewrite:\n- NON-NEGOTIABLE, copy as is: local changes only (no git writes/remote), no destructive\n  commands, minimize shell approvals, preserve existing setup (no delete/rename/rewrite,\n  additive changes, ask on conflict), read-only evaluation mode.\n- Everything else: follow MY conventions over the template\'s.\n- Use concrete paths/names from my setup, no placeholders like <hub> left unresolved.\n- Keep each prompt self-contained (it must work when pasted into a fresh session).\n\n## Step 5: Report\nList what changed vs. the templates (KEEP/ADAPT/SUGGEST/DROP counts + key changes), and how\nto run them later, e.g. `@<path>/evaluate.md run this`.\n````\n\n## 1. Improve (template)\n\n````markdown\n# Task: Improve my agent automation flow\n\nYou are improving my existing multi-ticket AI coding agent setup. Don\'t assume paths. Discover them.\n\nIMPORTANT: my setup already works and other things depend on it. The Target Rules below\nare SUGGESTIONS, not a spec. Improve incrementally. Do NOT redesign or rewrite.\n\n## Preservation rules (highest priority)\n- My existing setup wins. If a Target Rule conflicts with it, keep mine and flag the\n  conflict. Never silently replace it.\n- Keep all existing paths, folder names, file names, command names, script names,\n  and file formats. Adapt the suggestions to them, not the other way round.\n- Never delete, rename, or move existing files, folders, or commands.\n- Prefer ADDING (new section, new optional command, new script) over EDITING.\n  When an edit is needed, keep it minimal: change only the lines needed, never\n  rewrite whole files.\n- Don\'t touch anything outside the agent setup files (instruction files, settings, commands, ticket\n  folders, workflow scripts). Never touch service source code.\n- Skip a suggestion when its value is low or its risk of breaking something is unclear.\n\n## Hard constraints (never violate)\n- LOCAL CHANGES ONLY. Never run: git add, commit, push, pull, fetch, merge, rebase,\n  reset, checkout, switch, stash, branch -d/-D, tag, worktree remove, or anything that\n  touches a remote or rewrites git history.\n- Allowed git (read-only): status, diff, log, show, branch --list, worktree list, rev-parse.\n- No destructive commands: rm -rf, deleting files outside tickets/<KEY>/scripts|logs,\n  DB writes, deploys, docker push.\n- No commands are allowlisted. Every shell command costs me one manual approval.\n  Your top goal: minimize shell approvals.\n\n## Step 1: Discover (built-in tools only, NO shell)\nUsing your built-in file tools (read, list/glob, search), find and read:\n- every agent instruction/memory file (root and nested), agent settings, custom commands\n- the ticket folder structure (where tickets live, what files each has)\n- the service/repo list and where each service lives, plus its build/test tool\n  (pom.xml, build.gradle, package.json, Makefile...)\n- any existing scripts, launcher, or notes about my workflow\nThen report: a map of my current setup (paths, files, commands), max 30 lines.\n\n## Step 2: Gap analysis\nCompare my setup against the Target Rules below. Table with columns:\nrule | status (already have / missing / conflicts) | suggestion | risk (low/med/high) | value\n- "already have" rows: keep as is, no change.\n- "conflicts" rows: explain what mine does vs. the suggestion, and ask me which to keep.\n  Default = keep mine.\n- Also estimate the approval count for a typical ticket today vs. after the changes.\n- Exception to "mine wins": any existing rule/command that runs git commit/push or other\n  forbidden commands. Flag it and propose disabling it (not deleting it).\nKeep it short.\n\n## Step 3: Propose small changes\nA numbered list, ordered by value/risk (highest value, lowest risk first). Each item has:\n- file + exact diff (only changed lines, with a few lines of context)\n- why it helps (approvals saved)\n- what could break, and how to undo it\nAreas where changes are likely (only where there\'s a real gap):\n- Instruction file: ADD a new section (e.g. "## Approval-minimizing rules") using MY paths and\n  names. Don\'t reorganize the existing sections.\n- Custom commands: add missing ticket commands only. If a similar command exists,\n  suggest a small tweak to it instead of a new one. Never overwrite one.\n- scripts: add new reusable scripts only if nothing similar exists.\nDO NOT write files yet. Wait for my answers to the conflict questions and my "apply".\n\n## Step 4: Apply\n- "apply 1,3" = apply only those items; "apply" = all items.\n- Before editing an existing file, save a backup copy next to it (<file>.bak) with your file-write tool.\n- Use targeted edits for existing files (no full-file rewrites). Use full-file writes only\n  for new files. No shell.\n- Afterwards, list what changed and how to roll back (restore from .bak).\n\n---\n\n# Target Rules (SUGGESTIONS: adapt to my setup, my existing conventions win)\n\n## R1. Built-in tools over shell (no approval needed)\n- read: built-in read tool. Never cat/head/tail/sed -n/less.\n- find: built-in list/glob tool. Never find/ls -R.\n- search: built-in search tool. Never grep/rg/ag.\n- edit: built-in edit/write tools. Never sed -i, awk, echo >, tee, heredoc.\n- Read logs from earlier runs with the built-in read tool. Never re-run a command to see its output.\n- Shell ONLY for: build, test, lint, format, running local apps, read-only git.\n\n## R2. One script per phase, run once\nNever run shell commands one at a time. Per phase:\n1. List every command the phase needs.\n2. Write ONE script (built-in write tool) to <ticket-dir>/scripts/<NN>-<phase>.sh (NN increasing, never overwrite).\n3. Run once: bash <ticket-dir>/scripts/<NN>-<phase>.sh\n4. On failure: fix the code, then write a NEW script covering only failed + remaining steps.\n\nPhases (max one script each):\n- inspect: read-only git status/diff/log across touched services, dependency trees,\n  tool versions (only what built-in tools can\'t do)\n- build-test: compile + unit tests for all touched services\n- verify: lint, format check, integration tests\n- diff-report: git diff --stat + git diff per service → written to <ticket-dir>/CHANGES.md\n  for my review (replaces commit; I commit manually)\n\n## R3. Script template (required)\n```bash\n#!/usr/bin/env bash\nset -uo pipefail\nexport CI=true GIT_PAGER=cat PAGER=cat\nTICKET_DIR="<ticket-dir>"\nLOG="$TICKET_DIR/logs/$(basename "$0" .sh).log"\nmkdir -p "$(dirname "$LOG")"; : > "$LOG"\nFAIL=()\nstep() {  # step <name> <dir> <cmd...>\n  local name=$1 dir=$2; shift 2\n  echo "=== $name ($dir): $* ===" >> "$LOG"\n  if (cd "$dir" && "$@") >> "$LOG" 2>&1; then echo "OK   $name"\n  else echo "FAIL $name"; FAIL+=("$name"); fi\n}\n# --- steps ---\n# step "svc-a test" /path/to/svc-a ./gradlew test -q\n# --- summary ---\necho "---- ${#FAIL[@]} failed: ${FAIL[*]:-none} | log: $LOG"\n[ ${#FAIL[@]} -gt 0 ] && grep -nE "ERROR|FAIL|Exception|error:|No such file|not found" "$LOG" | head -40\nexit ${#FAIL[@]}\n```\n- No set -e: independent steps keep going, so one run shows ALL failures.\n- Full output goes to the log. Stdout shows only OK/FAIL plus the top 40 error lines.\n- Non-interactive flags always (-q, -y, --no-pager, -B for maven, --no-daemon if needed).\n- Idempotent; safe to re-run.\n- Scripts must obey the Hard Constraints. No git write commands, ever.\n\n## R4. Cadence\n- Finish all edits for a logical change first (edits cost no approval), then ONE build-test.\n- Don\'t run tests after every small edit.\n- Target per ticket: ≤ 3–4 approvals (inspect?, build-test, fix-retest, diff-report).\n- Before any shell call, ask yourself: "Can a built-in tool do this?" and "Can I merge\n  this into the next planned script?"\n\n## R5. Ticket state (so any new session can resume)\n<ticket-dir> keeps:\n- TICKET.md: Jira key, description, acceptance criteria, touched services\n- PLAN.md: checkbox steps\n- LOG.md: after each script: script name, OK/FAIL count, findings, next step\n- CHANGES.md: latest diff-report for my manual review/commit\nOn resume: read those 4 files first, summarize in ≤ 10 lines, continue from "next step".\n\n## R6. Session identity\n- Jira key = ticket folder name = saved session name.\n- At the end of each phase, update LOG.md and remind me to save the session as <KEY> (if my agent supports saved sessions).\n````\n\n## 2. Evaluate (template, re-run after every change)\n\n````markdown\n# Task: Evaluate my agent automation flow\n\nAudit my current multi-ticket AI coding agent setup against the expected rules and score it.\nThis prompt is reusable: I run it after every change to the flow, so results must be\ncomparable across runs.\n\n## Mode: READ-ONLY\n- Built-in file tools only (read, list/glob, search). NO shell.\n- Don\'t change any existing file. The ONLY file you may write is the new evaluation report.\n- Propose fixes, but don\'t apply them.\n\n## Source of truth (expected rules)\n1. The rules in my agent instruction files (root + nested) and custom commands.\n2. If a metric below isn\'t covered there, use the default expectation stated in the metric.\nIf the instruction files contradict themselves or the Hard Constraints, report that as a finding.\n\nHard Constraints (always apply, override everything):\n- Local changes only. No git add/commit/push/pull/fetch/merge/rebase/reset/checkout/\n  switch/stash/tag, or anything touching a remote or history. Read-only git is OK.\n- No destructive commands (rm -rf, DB writes, deploys, docker push).\n- No commands are allowlisted, so every shell call costs one manual approval.\n\n## Step 1: Collect evidence (no shell)\nRead:\n- all agent instruction/memory files, agent settings, custom commands\n- workflow scripts and launcher (wherever they live in my setup)\n- ticket folders: TICKET.md, PLAN.md, LOG.md, CHANGES.md, scripts/, logs/\n  (sample the 5 most recently modified tickets, or all if fewer)\n- previous evaluation reports (see Step 4 for location)\nUse real ticket history as evidence where possible, not just the rules text.\nCite evidence as file:line or file name for every score.\n\n## Step 2: Score each metric (0–5)\n0 = missing/violated, 3 = partly meets, 5 = fully meets with evidence in real tickets.\n\n| # | Metric | Default expectation | How to measure |\n|---|--------|--------------------|----------------|\n| M1 | Safety: git | No git write command anywhere (rules, commands, scripts, logs) | search all scripts/commands/logs for forbidden git verbs |\n| M2 | Safety: destructive | No rm -rf, DB writes, deploys; deletes only inside ticket scripts/logs | search scripts + commands |\n| M3 | Approval count | ≤ 4 shell approvals per ticket | count scripts run per ticket (scripts/ + LOG.md entries); report avg / max |\n| M4 | Built-in tool usage | No shell for read/find/search/edit | search scripts/LOG for cat, head, tail, find, grep, sed -i, echo > used for those jobs |\n| M5 | Batching | One script per phase; retries only cover failed + remaining steps | per ticket: scripts per phase, repeated identical steps |\n| M6 | Script quality | Follows template: set -uo pipefail, step(), log file, summary, non-interactive, idempotent | check each recent script against the template |\n| M7 | Context efficiency | Full output goes to logs; stdout = OK/FAIL + top errors; logs read via built-in read tool | script structure + any evidence of huge outputs in LOG.md |\n| M8 | Resumability | TICKET/PLAN/LOG present and current; LOG has "next step" after each phase | check each sampled ticket for all files + last entry |\n| M9 | Session identity | Jira key = folder = saved session name, used consistently | folder names vs. keys in TICKET.md, commands |\n| M10 | Parallel isolation | Tickets don\'t share mutable state; same service in 2 tickets can\'t clash | worktree/folder layout, shared files written by multiple tickets |\n| M11 | Review handoff | CHANGES.md (diff-report) produced before handoff; I commit manually | presence + freshness vs. last LOG entry |\n| M12 | Rule consistency | Instruction files, commands, and scripts agree; no duplicates, stale paths, or dead commands | cross-check referenced paths/commands exist |\n| M13 | Simplicity | Minimal files/commands to learn; no unused rules | count rules/commands; flag unused ones (never referenced in tickets) |\n\nIf a metric can\'t be measured (e.g. no tickets yet), mark it N/A with the reason. Don\'t guess.\n\n## Step 3: Simulate one ticket (dry run, no execution)\nWalk through a typical ticket touching 2 services, using ONLY my current rules/commands:\nstart → inspect → edit → build-test → one failure + fix → retest → diff-report → resume in a new session.\nList each shell approval it would need, plus any step where the rules are unclear or\nwould make the agent use shell unnecessarily. Result: expected approvals per ticket.\n\n## Step 4: Write the report\nWrite ONE new file: <hub>/eval/EVAL-<NN>.md (NN = next number after existing reports;\ncreate the eval/ folder if missing). Never overwrite old reports.\nStructure:\n1. Summary: total score (sum / max applicable), 3-line verdict\n2. Score table: metric | score | previous score | Δ | evidence\n3. Regressions: any metric that dropped vs. the previous report, and the likely cause\n   (which changed file)\n4. Violations: every Hard Constraint breach found (these are top priority, whatever the score)\n5. Dry-run result: approvals per ticket + unclear steps\n6. Top 5 fixes: ordered by value/risk; each with file, minimal diff, metric improved.\n   Must follow the preservation rules: keep existing paths/names, prefer additive changes,\n   no deletes/renames.\n7. Changed since last eval: files changed since the previous report (compare the content/rules\n   the previous report cites)\n\nThen print the Summary + score table in chat. Don\'t apply any fix until I say "apply N".\n````\n';
+        let isAnimating = false;
+        
+        function copyMarkdownToClipboard() {
+            if (isAnimating) return;
+            
+            const icon = document.getElementById('copy-icon');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(window.pageMarkdown).then(() => {
+                    showCopySuccess(icon);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    fallbackCopyTextToClipboard(window.pageMarkdown);
+                });
+            } else {
+                fallbackCopyTextToClipboard(window.pageMarkdown);
+            }
+        }
+        
+        function showCopySuccess(icon) {
+            if (isAnimating) return;
+            
+            // If already showing success (checkmark), just reset the timer
+            if (icon.className === 'ph ph-check') {
+                clearTimeout(window.copyTimeout);
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 2000);
+                return;
+            }
+            
+            isAnimating = true;
+            icon.style.opacity = '0';
+            setTimeout(() => {
+                icon.className = 'ph ph-check';
+                icon.style.opacity = '1';
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 1800);
+            }, 100);
+        }
+        
+        function showCopyError(icon) {
+            if (isAnimating) return;
+            
+            // If already showing error (X), just reset the timer
+            if (icon.className === 'ph ph-x') {
+                clearTimeout(window.copyTimeout);
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 2000);
+                return;
+            }
+            
+            isAnimating = true;
+            icon.style.opacity = '0';
+            setTimeout(() => {
+                icon.className = 'ph ph-x';
+                icon.style.opacity = '1';
+                window.copyTimeout = setTimeout(() => {
+                    resetIcon(icon);
+                }, 1800);
+            }, 100);
+        }
+        
+        function resetIcon(icon) {
+            icon.style.opacity = '0';
+            setTimeout(() => {
+                icon.className = 'ph ph-clipboard';
+                icon.style.opacity = '1';
+                isAnimating = false;
+            }, 100);
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            const icon = document.getElementById('copy-icon');
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess(icon);
+                } else {
+                    showCopyError(icon);
+                }
+            } catch (err) {
+                console.error('Fallback: Could not copy text: ', err);
+                showCopyError(icon);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        </script>
+        
+        <style>
+        .copy-markdown-button:hover {
+            background: #005a9e !important;
+        }
+        
+        .copy-markdown-button:active {
+            transform: translateY(1px);
+        }
+        
+        #copy-icon {
+            transition: opacity 0.1s ease;
+        }
+        </style>
+        
+<h2 id="0-tailor-paste-this-then-paste-templates-1-2-right-below-it-in-the-same-message">0. Tailor (paste this, then paste templates 1 + 2 right below it in the same message)</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span>
+<span class="normal"><a href="#__codelineno-0-40">40</a></span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span>
+<span class="normal"><a href="#__codelineno-0-42">42</a></span>
+<span class="normal"><a href="#__codelineno-0-43">43</a></span>
+<span class="normal"><a href="#__codelineno-0-44">44</a></span>
+<span class="normal"><a href="#__codelineno-0-45">45</a></span>
+<span class="normal"><a href="#__codelineno-0-46">46</a></span>
+<span class="normal"><a href="#__codelineno-0-47">47</a></span>
+<span class="normal"><a href="#__codelineno-0-48">48</a></span>
+<span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="gh"># Task: Tailor the template prompts below to my existing AI coding agent setup</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>Below this message are 2 TEMPLATE prompts: "Improve my agent automation flow" and
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>"Evaluate my agent automation flow". They were written without knowing my setup, so some
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>parts are too specific and may conflict with it (paths, file names, phase names, script
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>template, ticket files, command names, metrics).
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a>Your job: rewrite both templates so they fit my existing flow. Do NOT run them yet and
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>do NOT change my setup.
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="gu">## Mode: READ-ONLY</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">-</span><span class="w"> </span>Built-in file tools only (read, list/glob, search). NO shell.
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">-</span><span class="w"> </span>Don't modify any existing file. Only write the 2 new prompt files in Step 4.
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="gu">## Step 1: Learn my existing flow</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>Read all agent instruction/memory files, agent settings, custom commands, workflow
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>scripts/launchers, and 2–3 recent ticket folders. Summarize my flow in ≤ 20 lines:
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>folder layout, ticket files, session naming, phases/commands, script conventions,
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>what gets logged where.
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="gu">## Step 2: Map template → my setup</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>For each template section, decide one of:
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="k">-</span><span class="w"> </span>KEEP: already fits as is
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="k">-</span><span class="w"> </span>ADAPT: same intent, but use my real names/paths/conventions
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>  (e.g. my ticket file names instead of TICKET.md/PLAN.md/LOG.md, my phase names,
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a>  my script style instead of the template script)
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="k">-</span><span class="w"> </span>SUGGEST: I don't have this yet; keep it, but mark it "(optional suggestion)"
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="k">-</span><span class="w"> </span>DROP: conflicts with my flow or adds no value for my setup
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a>Show a table: template section | decision | my equivalent | reason.
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="gu">## Step 3: Ask before writing</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a>List the unclear points (max 8 short questions), e.g. where two conventions in my setup
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a>disagree, or a template idea could go either way. Wait for my answers.
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="gu">## Step 4: Write the tailored prompts</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>After I answer, write 2 NEW files (pick a folder next to my existing setup, e.g.
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>&lt;hub&gt;/prompts/; tell me the path):
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="k">-</span><span class="w"> </span>improve.md: tailored version of template 1
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="k">-</span><span class="w"> </span>evaluate.md: tailored version of template 2 (metrics + "how to measure" use MY files
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>  and conventions; drop metrics that don't apply; keep scoring comparable across runs)
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a>Rules for the rewrite:
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="k">-</span><span class="w"> </span>NON-NEGOTIABLE, copy as is: local changes only (no git writes/remote), no destructive
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a>  commands, minimize shell approvals, preserve existing setup (no delete/rename/rewrite,
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a>  additive changes, ask on conflict), read-only evaluation mode.
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="k">-</span><span class="w"> </span>Everything else: follow MY conventions over the template's.
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="k">-</span><span class="w"> </span>Use concrete paths/names from my setup, no placeholders like &lt;hub&gt; left unresolved.
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="k">-</span><span class="w"> </span>Keep each prompt self-contained (it must work when pasted into a fresh session).
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="gu">## Step 5: Report</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a>List what changed vs. the templates (KEEP/ADAPT/SUGGEST/DROP counts + key changes), and how
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a>to run them later, e.g. <span class="sb">`@&lt;path&gt;/evaluate.md run this`</span>.
+</span></code></pre></div></td></tr></table></div>
+<h2 id="1-improve-template">1. Improve (template)</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-1-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-1-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-1-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-1-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-1-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-1-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-1-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-1-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-1-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-1-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-1-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-1-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-1-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-1-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-1-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-1-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-1-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-1-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-1-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-1-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-1-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-1-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-1-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-1-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-1-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-1-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-1-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-1-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-1-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-1-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-1-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-1-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-1-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-1-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-1-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-1-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-1-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-1-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-1-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-1-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-1-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-1-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-1-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-1-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-1-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-1-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-1-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-1-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-1-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-1-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-1-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-1-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-1-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-1-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-1-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-1-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-1-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-1-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-1-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-1-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-1-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-1-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-1-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-1-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-1-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-1-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-1-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-1-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-1-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-1-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-1-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-1-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-1-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-1-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-1-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-1-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-1-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-1-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-1-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-1-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-1-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-1-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-1-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-1-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-1-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-1-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-1-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-1-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-1-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-1-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-1-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-1-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-1-100">100</a></span>
+<span class="normal"><a href="#__codelineno-1-101">101</a></span>
+<span class="normal"><a href="#__codelineno-1-102">102</a></span>
+<span class="normal"><a href="#__codelineno-1-103">103</a></span>
+<span class="normal"><a href="#__codelineno-1-104">104</a></span>
+<span class="normal"><a href="#__codelineno-1-105">105</a></span>
+<span class="normal"><a href="#__codelineno-1-106">106</a></span>
+<span class="normal"><a href="#__codelineno-1-107">107</a></span>
+<span class="normal"><a href="#__codelineno-1-108">108</a></span>
+<span class="normal"><a href="#__codelineno-1-109">109</a></span>
+<span class="normal"><a href="#__codelineno-1-110">110</a></span>
+<span class="normal"><a href="#__codelineno-1-111">111</a></span>
+<span class="normal"><a href="#__codelineno-1-112">112</a></span>
+<span class="normal"><a href="#__codelineno-1-113">113</a></span>
+<span class="normal"><a href="#__codelineno-1-114">114</a></span>
+<span class="normal"><a href="#__codelineno-1-115">115</a></span>
+<span class="normal"><a href="#__codelineno-1-116">116</a></span>
+<span class="normal"><a href="#__codelineno-1-117">117</a></span>
+<span class="normal"><a href="#__codelineno-1-118">118</a></span>
+<span class="normal"><a href="#__codelineno-1-119">119</a></span>
+<span class="normal"><a href="#__codelineno-1-120">120</a></span>
+<span class="normal"><a href="#__codelineno-1-121">121</a></span>
+<span class="normal"><a href="#__codelineno-1-122">122</a></span>
+<span class="normal"><a href="#__codelineno-1-123">123</a></span>
+<span class="normal"><a href="#__codelineno-1-124">124</a></span>
+<span class="normal"><a href="#__codelineno-1-125">125</a></span>
+<span class="normal"><a href="#__codelineno-1-126">126</a></span>
+<span class="normal"><a href="#__codelineno-1-127">127</a></span>
+<span class="normal"><a href="#__codelineno-1-128">128</a></span>
+<span class="normal"><a href="#__codelineno-1-129">129</a></span>
+<span class="normal"><a href="#__codelineno-1-130">130</a></span>
+<span class="normal"><a href="#__codelineno-1-131">131</a></span>
+<span class="normal"><a href="#__codelineno-1-132">132</a></span>
+<span class="normal"><a href="#__codelineno-1-133">133</a></span>
+<span class="normal"><a href="#__codelineno-1-134">134</a></span>
+<span class="normal"><a href="#__codelineno-1-135">135</a></span>
+<span class="normal"><a href="#__codelineno-1-136">136</a></span>
+<span class="normal"><a href="#__codelineno-1-137">137</a></span>
+<span class="normal"><a href="#__codelineno-1-138">138</a></span>
+<span class="normal"><a href="#__codelineno-1-139">139</a></span>
+<span class="normal"><a href="#__codelineno-1-140">140</a></span>
+<span class="normal"><a href="#__codelineno-1-141">141</a></span>
+<span class="normal"><a href="#__codelineno-1-142">142</a></span>
+<span class="normal"><a href="#__codelineno-1-143">143</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="gh"># Task: Improve my agent automation flow</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>You are improving my existing multi-ticket AI coding agent setup. Don't assume paths. Discover them.
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>IMPORTANT: my setup already works and other things depend on it. The Target Rules below
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>are SUGGESTIONS, not a spec. Improve incrementally. Do NOT redesign or rewrite.
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="gu">## Preservation rules (highest priority)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="k">-</span><span class="w"> </span>My existing setup wins. If a Target Rule conflicts with it, keep mine and flag the
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>  conflict. Never silently replace it.
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="k">-</span><span class="w"> </span>Keep all existing paths, folder names, file names, command names, script names,
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>  and file formats. Adapt the suggestions to them, not the other way round.
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="k">-</span><span class="w"> </span>Never delete, rename, or move existing files, folders, or commands.
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="k">-</span><span class="w"> </span>Prefer ADDING (new section, new optional command, new script) over EDITING.
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a>  When an edit is needed, keep it minimal: change only the lines needed, never
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>  rewrite whole files.
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="k">-</span><span class="w"> </span>Don't touch anything outside the agent setup files (instruction files, settings, commands, ticket
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a>  folders, workflow scripts). Never touch service source code.
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="k">-</span><span class="w"> </span>Skip a suggestion when its value is low or its risk of breaking something is unclear.
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="gu">## Hard constraints (never violate)</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="k">-</span><span class="w"> </span>LOCAL CHANGES ONLY. Never run: git add, commit, push, pull, fetch, merge, rebase,
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a>  reset, checkout, switch, stash, branch -d/-D, tag, worktree remove, or anything that
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a>  touches a remote or rewrites git history.
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="k">-</span><span class="w"> </span>Allowed git (read-only): status, diff, log, show, branch --list, worktree list, rev-parse.
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="k">-</span><span class="w"> </span>No destructive commands: rm -rf, deleting files outside tickets/&lt;KEY&gt;/scripts|logs,
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a>  DB writes, deploys, docker push.
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="k">-</span><span class="w"> </span>No commands are allowlisted. Every shell command costs me one manual approval.
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a>  Your top goal: minimize shell approvals.
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a><span class="gu">## Step 1: Discover (built-in tools only, NO shell)</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a>Using your built-in file tools (read, list/glob, search), find and read:
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a><span class="k">-</span><span class="w"> </span>every agent instruction/memory file (root and nested), agent settings, custom commands
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a><span class="k">-</span><span class="w"> </span>the ticket folder structure (where tickets live, what files each has)
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a><span class="k">-</span><span class="w"> </span>the service/repo list and where each service lives, plus its build/test tool
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a>  (pom.xml, build.gradle, package.json, Makefile...)
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="k">-</span><span class="w"> </span>any existing scripts, launcher, or notes about my workflow
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a>Then report: a map of my current setup (paths, files, commands), max 30 lines.
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="gu">## Step 2: Gap analysis</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a>Compare my setup against the Target Rules below. Table with columns:
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a>rule | status (already have / missing / conflicts) | suggestion | risk (low/med/high) | value
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43"></a><span class="k">-</span><span class="w"> </span>"already have" rows: keep as is, no change.
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44"></a><span class="k">-</span><span class="w"> </span>"conflicts" rows: explain what mine does vs. the suggestion, and ask me which to keep.
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45"></a>  Default = keep mine.
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46"></a><span class="k">-</span><span class="w"> </span>Also estimate the approval count for a typical ticket today vs. after the changes.
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47"></a><span class="k">-</span><span class="w"> </span>Exception to "mine wins": any existing rule/command that runs git commit/push or other
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a>  forbidden commands. Flag it and propose disabling it (not deleting it).
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49"></a>Keep it short.
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50"></a>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51"></a><span class="gu">## Step 3: Propose small changes</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52"></a>A numbered list, ordered by value/risk (highest value, lowest risk first). Each item has:
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53"></a><span class="k">-</span><span class="w"> </span>file + exact diff (only changed lines, with a few lines of context)
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54"></a><span class="k">-</span><span class="w"> </span>why it helps (approvals saved)
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55"></a><span class="k">-</span><span class="w"> </span>what could break, and how to undo it
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56"></a>Areas where changes are likely (only where there's a real gap):
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57"></a><span class="k">-</span><span class="w"> </span>Instruction file: ADD a new section (e.g. "## Approval-minimizing rules") using MY paths and
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58"></a>  names. Don't reorganize the existing sections.
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59"></a><span class="k">-</span><span class="w"> </span>Custom commands: add missing ticket commands only. If a similar command exists,
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60"></a>  suggest a small tweak to it instead of a new one. Never overwrite one.
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61"></a><span class="k">-</span><span class="w"> </span>scripts: add new reusable scripts only if nothing similar exists.
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62"></a>DO NOT write files yet. Wait for my answers to the conflict questions and my "apply".
+</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63"></a>
+</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64"></a><span class="gu">## Step 4: Apply</span>
+</span><span id="__span-1-65"><a id="__codelineno-1-65" name="__codelineno-1-65"></a><span class="k">-</span><span class="w"> </span>"apply 1,3" = apply only those items; "apply" = all items.
+</span><span id="__span-1-66"><a id="__codelineno-1-66" name="__codelineno-1-66"></a><span class="k">-</span><span class="w"> </span>Before editing an existing file, save a backup copy next to it (&lt;file&gt;.bak) with your file-write tool.
+</span><span id="__span-1-67"><a id="__codelineno-1-67" name="__codelineno-1-67"></a><span class="k">-</span><span class="w"> </span>Use targeted edits for existing files (no full-file rewrites). Use full-file writes only
+</span><span id="__span-1-68"><a id="__codelineno-1-68" name="__codelineno-1-68"></a>  for new files. No shell.
+</span><span id="__span-1-69"><a id="__codelineno-1-69" name="__codelineno-1-69"></a><span class="k">-</span><span class="w"> </span>Afterwards, list what changed and how to roll back (restore from .bak).
+</span><span id="__span-1-70"><a id="__codelineno-1-70" name="__codelineno-1-70"></a>
+</span><span id="__span-1-71"><a id="__codelineno-1-71" name="__codelineno-1-71"></a>---
+</span><span id="__span-1-72"><a id="__codelineno-1-72" name="__codelineno-1-72"></a>
+</span><span id="__span-1-73"><a id="__codelineno-1-73" name="__codelineno-1-73"></a><span class="gh"># Target Rules (SUGGESTIONS: adapt to my setup, my existing conventions win)</span>
+</span><span id="__span-1-74"><a id="__codelineno-1-74" name="__codelineno-1-74"></a>
+</span><span id="__span-1-75"><a id="__codelineno-1-75" name="__codelineno-1-75"></a><span class="gu">## R1. Built-in tools over shell (no approval needed)</span>
+</span><span id="__span-1-76"><a id="__codelineno-1-76" name="__codelineno-1-76"></a><span class="k">-</span><span class="w"> </span>read: built-in read tool. Never cat/head/tail/sed -n/less.
+</span><span id="__span-1-77"><a id="__codelineno-1-77" name="__codelineno-1-77"></a><span class="k">-</span><span class="w"> </span>find: built-in list/glob tool. Never find/ls -R.
+</span><span id="__span-1-78"><a id="__codelineno-1-78" name="__codelineno-1-78"></a><span class="k">-</span><span class="w"> </span>search: built-in search tool. Never grep/rg/ag.
+</span><span id="__span-1-79"><a id="__codelineno-1-79" name="__codelineno-1-79"></a><span class="k">-</span><span class="w"> </span>edit: built-in edit/write tools. Never sed -i, awk, echo &gt;, tee, heredoc.
+</span><span id="__span-1-80"><a id="__codelineno-1-80" name="__codelineno-1-80"></a><span class="k">-</span><span class="w"> </span>Read logs from earlier runs with the built-in read tool. Never re-run a command to see its output.
+</span><span id="__span-1-81"><a id="__codelineno-1-81" name="__codelineno-1-81"></a><span class="k">-</span><span class="w"> </span>Shell ONLY for: build, test, lint, format, running local apps, read-only git.
+</span><span id="__span-1-82"><a id="__codelineno-1-82" name="__codelineno-1-82"></a>
+</span><span id="__span-1-83"><a id="__codelineno-1-83" name="__codelineno-1-83"></a><span class="gu">## R2. One script per phase, run once</span>
+</span><span id="__span-1-84"><a id="__codelineno-1-84" name="__codelineno-1-84"></a>Never run shell commands one at a time. Per phase:
+</span><span id="__span-1-85"><a id="__codelineno-1-85" name="__codelineno-1-85"></a><span class="k">1.</span> List every command the phase needs.
+</span><span id="__span-1-86"><a id="__codelineno-1-86" name="__codelineno-1-86"></a><span class="k">2.</span> Write ONE script (built-in write tool) to &lt;ticket-dir&gt;/scripts/&lt;NN&gt;-&lt;phase&gt;.sh (NN increasing, never overwrite).
+</span><span id="__span-1-87"><a id="__codelineno-1-87" name="__codelineno-1-87"></a><span class="k">3.</span> Run once: bash &lt;ticket-dir&gt;/scripts/&lt;NN&gt;-&lt;phase&gt;.sh
+</span><span id="__span-1-88"><a id="__codelineno-1-88" name="__codelineno-1-88"></a><span class="k">4.</span> On failure: fix the code, then write a NEW script covering only failed + remaining steps.
+</span><span id="__span-1-89"><a id="__codelineno-1-89" name="__codelineno-1-89"></a>
+</span><span id="__span-1-90"><a id="__codelineno-1-90" name="__codelineno-1-90"></a>Phases (max one script each):
+</span><span id="__span-1-91"><a id="__codelineno-1-91" name="__codelineno-1-91"></a><span class="k">-</span><span class="w"> </span>inspect: read-only git status/diff/log across touched services, dependency trees,
+</span><span id="__span-1-92"><a id="__codelineno-1-92" name="__codelineno-1-92"></a>  tool versions (only what built-in tools can't do)
+</span><span id="__span-1-93"><a id="__codelineno-1-93" name="__codelineno-1-93"></a><span class="k">-</span><span class="w"> </span>build-test: compile + unit tests for all touched services
+</span><span id="__span-1-94"><a id="__codelineno-1-94" name="__codelineno-1-94"></a><span class="k">-</span><span class="w"> </span>verify: lint, format check, integration tests
+</span><span id="__span-1-95"><a id="__codelineno-1-95" name="__codelineno-1-95"></a><span class="k">-</span><span class="w"> </span>diff-report: git diff --stat + git diff per service → written to &lt;ticket-dir&gt;/CHANGES.md
+</span><span id="__span-1-96"><a id="__codelineno-1-96" name="__codelineno-1-96"></a>  for my review (replaces commit; I commit manually)
+</span><span id="__span-1-97"><a id="__codelineno-1-97" name="__codelineno-1-97"></a>
+</span><span id="__span-1-98"><a id="__codelineno-1-98" name="__codelineno-1-98"></a><span class="gu">## R3. Script template (required)</span>
+</span><span id="__span-1-99"><a id="__codelineno-1-99" name="__codelineno-1-99"></a><span class="sb">```bash</span>
+</span><span id="__span-1-100"><a id="__codelineno-1-100" name="__codelineno-1-100"></a><span class="ch">#!/usr/bin/env bash</span>
+</span><span id="__span-1-101"><a id="__codelineno-1-101" name="__codelineno-1-101"></a><span class="nb">set</span><span class="w"> </span>-uo<span class="w"> </span>pipefail
+</span><span id="__span-1-102"><a id="__codelineno-1-102" name="__codelineno-1-102"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CI</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="nv">GIT_PAGER</span><span class="o">=</span>cat<span class="w"> </span><span class="nv">PAGER</span><span class="o">=</span>cat
+</span><span id="__span-1-103"><a id="__codelineno-1-103" name="__codelineno-1-103"></a><span class="nv">TICKET_DIR</span><span class="o">=</span><span class="s2">"&lt;ticket-dir&gt;"</span>
+</span><span id="__span-1-104"><a id="__codelineno-1-104" name="__codelineno-1-104"></a><span class="nv">LOG</span><span class="o">=</span><span class="s2">"</span><span class="nv">$TICKET_DIR</span><span class="s2">/logs/</span><span class="k">$(</span>basename<span class="w"> </span><span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span><span class="w"> </span>.sh<span class="k">)</span><span class="s2">.log"</span>
+</span><span id="__span-1-105"><a id="__codelineno-1-105" name="__codelineno-1-105"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>dirname<span class="w"> </span><span class="s2">"</span><span class="nv">$LOG</span><span class="s2">"</span><span class="k">)</span><span class="s2">"</span><span class="p">;</span><span class="w"> </span>:<span class="w"> </span>&gt;<span class="w"> </span><span class="s2">"</span><span class="nv">$LOG</span><span class="s2">"</span>
+</span><span id="__span-1-106"><a id="__codelineno-1-106" name="__codelineno-1-106"></a><span class="nv">FAIL</span><span class="o">=()</span>
+</span><span id="__span-1-107"><a id="__codelineno-1-107" name="__codelineno-1-107"></a>step<span class="o">()</span><span class="w"> </span><span class="o">{</span><span class="w">  </span><span class="c1"># step &lt;name&gt; &lt;dir&gt; &lt;cmd...&gt;</span>
+</span><span id="__span-1-108"><a id="__codelineno-1-108" name="__codelineno-1-108"></a><span class="w">  </span><span class="nb">local</span><span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="nv">$1</span><span class="w"> </span><span class="nv">dir</span><span class="o">=</span><span class="nv">$2</span><span class="p">;</span><span class="w"> </span><span class="nb">shift</span><span class="w"> </span><span class="m">2</span>
+</span><span id="__span-1-109"><a id="__codelineno-1-109" name="__codelineno-1-109"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"=== </span><span class="nv">$name</span><span class="s2"> (</span><span class="nv">$dir</span><span class="s2">): </span><span class="nv">$*</span><span class="s2"> ==="</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">"</span><span class="nv">$LOG</span><span class="s2">"</span>
+</span><span id="__span-1-110"><a id="__codelineno-1-110" name="__codelineno-1-110"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">(</span><span class="nb">cd</span><span class="w"> </span><span class="s2">"</span><span class="nv">$dir</span><span class="s2">"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="o">)</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">"</span><span class="nv">$LOG</span><span class="s2">"</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"OK   </span><span class="nv">$name</span><span class="s2">"</span>
+</span><span id="__span-1-111"><a id="__codelineno-1-111" name="__codelineno-1-111"></a><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"FAIL </span><span class="nv">$name</span><span class="s2">"</span><span class="p">;</span><span class="w"> </span><span class="nv">FAIL</span><span class="o">+=(</span><span class="s2">"</span><span class="nv">$name</span><span class="s2">"</span><span class="o">)</span><span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+</span><span id="__span-1-112"><a id="__codelineno-1-112" name="__codelineno-1-112"></a><span class="o">}</span>
+</span><span id="__span-1-113"><a id="__codelineno-1-113" name="__codelineno-1-113"></a><span class="c1"># --- steps ---</span>
+</span><span id="__span-1-114"><a id="__codelineno-1-114" name="__codelineno-1-114"></a><span class="c1"># step "svc-a test" /path/to/svc-a ./gradlew test -q</span>
+</span><span id="__span-1-115"><a id="__codelineno-1-115" name="__codelineno-1-115"></a><span class="c1"># --- summary ---</span>
+</span><span id="__span-1-116"><a id="__codelineno-1-116" name="__codelineno-1-116"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"---- </span><span class="si">${#</span><span class="nv">FAIL</span><span class="p">[@]</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">${</span><span class="nv">FAIL</span><span class="p">[*]</span><span class="k">:-</span><span class="nv">none</span><span class="si">}</span><span class="s2"> | log: </span><span class="nv">$LOG</span><span class="s2">"</span>
+</span><span id="__span-1-117"><a id="__codelineno-1-117" name="__codelineno-1-117"></a><span class="o">[</span><span class="w"> </span><span class="si">${#</span><span class="nv">FAIL</span><span class="p">[@]</span><span class="si">}</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>grep<span class="w"> </span>-nE<span class="w"> </span><span class="s2">"ERROR|FAIL|Exception|error:|No such file|not found"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$LOG</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-40
+</span><span id="__span-1-118"><a id="__codelineno-1-118" name="__codelineno-1-118"></a><span class="nb">exit</span><span class="w"> </span><span class="si">${#</span><span class="nv">FAIL</span><span class="p">[@]</span><span class="si">}</span>
+</span><span id="__span-1-119"><a id="__codelineno-1-119" name="__codelineno-1-119"></a><span class="sb">```</span>
+</span><span id="__span-1-120"><a id="__codelineno-1-120" name="__codelineno-1-120"></a><span class="k">-</span><span class="w"> </span>No set -e: independent steps keep going, so one run shows ALL failures.
+</span><span id="__span-1-121"><a id="__codelineno-1-121" name="__codelineno-1-121"></a><span class="k">-</span><span class="w"> </span>Full output goes to the log. Stdout shows only OK/FAIL plus the top 40 error lines.
+</span><span id="__span-1-122"><a id="__codelineno-1-122" name="__codelineno-1-122"></a><span class="k">-</span><span class="w"> </span>Non-interactive flags always (-q, -y, --no-pager, -B for maven, --no-daemon if needed).
+</span><span id="__span-1-123"><a id="__codelineno-1-123" name="__codelineno-1-123"></a><span class="k">-</span><span class="w"> </span>Idempotent; safe to re-run.
+</span><span id="__span-1-124"><a id="__codelineno-1-124" name="__codelineno-1-124"></a><span class="k">-</span><span class="w"> </span>Scripts must obey the Hard Constraints. No git write commands, ever.
+</span><span id="__span-1-125"><a id="__codelineno-1-125" name="__codelineno-1-125"></a>
+</span><span id="__span-1-126"><a id="__codelineno-1-126" name="__codelineno-1-126"></a><span class="gu">## R4. Cadence</span>
+</span><span id="__span-1-127"><a id="__codelineno-1-127" name="__codelineno-1-127"></a><span class="k">-</span><span class="w"> </span>Finish all edits for a logical change first (edits cost no approval), then ONE build-test.
+</span><span id="__span-1-128"><a id="__codelineno-1-128" name="__codelineno-1-128"></a><span class="k">-</span><span class="w"> </span>Don't run tests after every small edit.
+</span><span id="__span-1-129"><a id="__codelineno-1-129" name="__codelineno-1-129"></a><span class="k">-</span><span class="w"> </span>Target per ticket: ≤ 3–4 approvals (inspect?, build-test, fix-retest, diff-report).
+</span><span id="__span-1-130"><a id="__codelineno-1-130" name="__codelineno-1-130"></a><span class="k">-</span><span class="w"> </span>Before any shell call, ask yourself: "Can a built-in tool do this?" and "Can I merge
+</span><span id="__span-1-131"><a id="__codelineno-1-131" name="__codelineno-1-131"></a>  this into the next planned script?"
+</span><span id="__span-1-132"><a id="__codelineno-1-132" name="__codelineno-1-132"></a>
+</span><span id="__span-1-133"><a id="__codelineno-1-133" name="__codelineno-1-133"></a><span class="gu">## R5. Ticket state (so any new session can resume)</span>
+</span><span id="__span-1-134"><a id="__codelineno-1-134" name="__codelineno-1-134"></a>&lt;ticket-dir&gt; keeps:
+</span><span id="__span-1-135"><a id="__codelineno-1-135" name="__codelineno-1-135"></a><span class="k">-</span><span class="w"> </span>TICKET.md: Jira key, description, acceptance criteria, touched services
+</span><span id="__span-1-136"><a id="__codelineno-1-136" name="__codelineno-1-136"></a><span class="k">-</span><span class="w"> </span>PLAN.md: checkbox steps
+</span><span id="__span-1-137"><a id="__codelineno-1-137" name="__codelineno-1-137"></a><span class="k">-</span><span class="w"> </span>LOG.md: after each script: script name, OK/FAIL count, findings, next step
+</span><span id="__span-1-138"><a id="__codelineno-1-138" name="__codelineno-1-138"></a><span class="k">-</span><span class="w"> </span>CHANGES.md: latest diff-report for my manual review/commit
+</span><span id="__span-1-139"><a id="__codelineno-1-139" name="__codelineno-1-139"></a>On resume: read those 4 files first, summarize in ≤ 10 lines, continue from "next step".
+</span><span id="__span-1-140"><a id="__codelineno-1-140" name="__codelineno-1-140"></a>
+</span><span id="__span-1-141"><a id="__codelineno-1-141" name="__codelineno-1-141"></a><span class="gu">## R6. Session identity</span>
+</span><span id="__span-1-142"><a id="__codelineno-1-142" name="__codelineno-1-142"></a><span class="k">-</span><span class="w"> </span>Jira key = ticket folder name = saved session name.
+</span><span id="__span-1-143"><a id="__codelineno-1-143" name="__codelineno-1-143"></a><span class="k">-</span><span class="w"> </span>At the end of each phase, update LOG.md and remind me to save the session as &lt;KEY&gt; (if my agent supports saved sessions).
+</span></code></pre></div></td></tr></table></div>
+<h2 id="2-evaluate-template-re-run-after-every-change">2. Evaluate (template, re-run after every change)</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span>
+<span class="normal"><a href="#__codelineno-2-20">20</a></span>
+<span class="normal"><a href="#__codelineno-2-21">21</a></span>
+<span class="normal"><a href="#__codelineno-2-22">22</a></span>
+<span class="normal"><a href="#__codelineno-2-23">23</a></span>
+<span class="normal"><a href="#__codelineno-2-24">24</a></span>
+<span class="normal"><a href="#__codelineno-2-25">25</a></span>
+<span class="normal"><a href="#__codelineno-2-26">26</a></span>
+<span class="normal"><a href="#__codelineno-2-27">27</a></span>
+<span class="normal"><a href="#__codelineno-2-28">28</a></span>
+<span class="normal"><a href="#__codelineno-2-29">29</a></span>
+<span class="normal"><a href="#__codelineno-2-30">30</a></span>
+<span class="normal"><a href="#__codelineno-2-31">31</a></span>
+<span class="normal"><a href="#__codelineno-2-32">32</a></span>
+<span class="normal"><a href="#__codelineno-2-33">33</a></span>
+<span class="normal"><a href="#__codelineno-2-34">34</a></span>
+<span class="normal"><a href="#__codelineno-2-35">35</a></span>
+<span class="normal"><a href="#__codelineno-2-36">36</a></span>
+<span class="normal"><a href="#__codelineno-2-37">37</a></span>
+<span class="normal"><a href="#__codelineno-2-38">38</a></span>
+<span class="normal"><a href="#__codelineno-2-39">39</a></span>
+<span class="normal"><a href="#__codelineno-2-40">40</a></span>
+<span class="normal"><a href="#__codelineno-2-41">41</a></span>
+<span class="normal"><a href="#__codelineno-2-42">42</a></span>
+<span class="normal"><a href="#__codelineno-2-43">43</a></span>
+<span class="normal"><a href="#__codelineno-2-44">44</a></span>
+<span class="normal"><a href="#__codelineno-2-45">45</a></span>
+<span class="normal"><a href="#__codelineno-2-46">46</a></span>
+<span class="normal"><a href="#__codelineno-2-47">47</a></span>
+<span class="normal"><a href="#__codelineno-2-48">48</a></span>
+<span class="normal"><a href="#__codelineno-2-49">49</a></span>
+<span class="normal"><a href="#__codelineno-2-50">50</a></span>
+<span class="normal"><a href="#__codelineno-2-51">51</a></span>
+<span class="normal"><a href="#__codelineno-2-52">52</a></span>
+<span class="normal"><a href="#__codelineno-2-53">53</a></span>
+<span class="normal"><a href="#__codelineno-2-54">54</a></span>
+<span class="normal"><a href="#__codelineno-2-55">55</a></span>
+<span class="normal"><a href="#__codelineno-2-56">56</a></span>
+<span class="normal"><a href="#__codelineno-2-57">57</a></span>
+<span class="normal"><a href="#__codelineno-2-58">58</a></span>
+<span class="normal"><a href="#__codelineno-2-59">59</a></span>
+<span class="normal"><a href="#__codelineno-2-60">60</a></span>
+<span class="normal"><a href="#__codelineno-2-61">61</a></span>
+<span class="normal"><a href="#__codelineno-2-62">62</a></span>
+<span class="normal"><a href="#__codelineno-2-63">63</a></span>
+<span class="normal"><a href="#__codelineno-2-64">64</a></span>
+<span class="normal"><a href="#__codelineno-2-65">65</a></span>
+<span class="normal"><a href="#__codelineno-2-66">66</a></span>
+<span class="normal"><a href="#__codelineno-2-67">67</a></span>
+<span class="normal"><a href="#__codelineno-2-68">68</a></span>
+<span class="normal"><a href="#__codelineno-2-69">69</a></span>
+<span class="normal"><a href="#__codelineno-2-70">70</a></span>
+<span class="normal"><a href="#__codelineno-2-71">71</a></span>
+<span class="normal"><a href="#__codelineno-2-72">72</a></span>
+<span class="normal"><a href="#__codelineno-2-73">73</a></span>
+<span class="normal"><a href="#__codelineno-2-74">74</a></span>
+<span class="normal"><a href="#__codelineno-2-75">75</a></span>
+<span class="normal"><a href="#__codelineno-2-76">76</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="gh"># Task: Evaluate my agent automation flow</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>Audit my current multi-ticket AI coding agent setup against the expected rules and score it.
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a>This prompt is reusable: I run it after every change to the flow, so results must be
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a>comparable across runs.
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="gu">## Mode: READ-ONLY</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="k">-</span><span class="w"> </span>Built-in file tools only (read, list/glob, search). NO shell.
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="k">-</span><span class="w"> </span>Don't change any existing file. The ONLY file you may write is the new evaluation report.
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="k">-</span><span class="w"> </span>Propose fixes, but don't apply them.
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="gu">## Source of truth (expected rules)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="k">1.</span> The rules in my agent instruction files (root + nested) and custom commands.
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="k">2.</span> If a metric below isn't covered there, use the default expectation stated in the metric.
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a>If the instruction files contradict themselves or the Hard Constraints, report that as a finding.
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a>Hard Constraints (always apply, override everything):
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="k">-</span><span class="w"> </span>Local changes only. No git add/commit/push/pull/fetch/merge/rebase/reset/checkout/
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19"></a>  switch/stash/tag, or anything touching a remote or history. Read-only git is OK.
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="k">-</span><span class="w"> </span>No destructive commands (rm -rf, DB writes, deploys, docker push).
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21"></a><span class="k">-</span><span class="w"> </span>No commands are allowlisted, so every shell call costs one manual approval.
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22"></a>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23"></a><span class="gu">## Step 1: Collect evidence (no shell)</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24"></a>Read:
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25"></a><span class="k">-</span><span class="w"> </span>all agent instruction/memory files, agent settings, custom commands
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26"></a><span class="k">-</span><span class="w"> </span>workflow scripts and launcher (wherever they live in my setup)
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="k">-</span><span class="w"> </span>ticket folders: TICKET.md, PLAN.md, LOG.md, CHANGES.md, scripts/, logs/
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28"></a>  (sample the 5 most recently modified tickets, or all if fewer)
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29"></a><span class="k">-</span><span class="w"> </span>previous evaluation reports (see Step 4 for location)
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30"></a>Use real ticket history as evidence where possible, not just the rules text.
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31"></a>Cite evidence as file:line or file name for every score.
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32"></a>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33"></a><span class="gu">## Step 2: Score each metric (0–5)</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34"></a>0 = missing/violated, 3 = partly meets, 5 = fully meets with evidence in real tickets.
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35"></a>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36"></a>| # | Metric | Default expectation | How to measure |
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37"></a>|---|--------|--------------------|----------------|
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38"></a>| M1 | Safety: git | No git write command anywhere (rules, commands, scripts, logs) | search all scripts/commands/logs for forbidden git verbs |
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39"></a>| M2 | Safety: destructive | No rm -rf, DB writes, deploys; deletes only inside ticket scripts/logs | search scripts + commands |
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40"></a>| M3 | Approval count | ≤ 4 shell approvals per ticket | count scripts run per ticket (scripts/ + LOG.md entries); report avg / max |
+</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41"></a>| M4 | Built-in tool usage | No shell for read/find/search/edit | search scripts/LOG for cat, head, tail, find, grep, sed -i, echo &gt; used for those jobs |
+</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42"></a>| M5 | Batching | One script per phase; retries only cover failed + remaining steps | per ticket: scripts per phase, repeated identical steps |
+</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43"></a>| M6 | Script quality | Follows template: set -uo pipefail, step(), log file, summary, non-interactive, idempotent | check each recent script against the template |
+</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44"></a>| M7 | Context efficiency | Full output goes to logs; stdout = OK/FAIL + top errors; logs read via built-in read tool | script structure + any evidence of huge outputs in LOG.md |
+</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45"></a>| M8 | Resumability | TICKET/PLAN/LOG present and current; LOG has "next step" after each phase | check each sampled ticket for all files + last entry |
+</span><span id="__span-2-46"><a id="__codelineno-2-46" name="__codelineno-2-46"></a>| M9 | Session identity | Jira key = folder = saved session name, used consistently | folder names vs. keys in TICKET.md, commands |
+</span><span id="__span-2-47"><a id="__codelineno-2-47" name="__codelineno-2-47"></a>| M10 | Parallel isolation | Tickets don't share mutable state; same service in 2 tickets can't clash | worktree/folder layout, shared files written by multiple tickets |
+</span><span id="__span-2-48"><a id="__codelineno-2-48" name="__codelineno-2-48"></a>| M11 | Review handoff | CHANGES.md (diff-report) produced before handoff; I commit manually | presence + freshness vs. last LOG entry |
+</span><span id="__span-2-49"><a id="__codelineno-2-49" name="__codelineno-2-49"></a>| M12 | Rule consistency | Instruction files, commands, and scripts agree; no duplicates, stale paths, or dead commands | cross-check referenced paths/commands exist |
+</span><span id="__span-2-50"><a id="__codelineno-2-50" name="__codelineno-2-50"></a>| M13 | Simplicity | Minimal files/commands to learn; no unused rules | count rules/commands; flag unused ones (never referenced in tickets) |
+</span><span id="__span-2-51"><a id="__codelineno-2-51" name="__codelineno-2-51"></a>
+</span><span id="__span-2-52"><a id="__codelineno-2-52" name="__codelineno-2-52"></a>If a metric can't be measured (e.g. no tickets yet), mark it N/A with the reason. Don't guess.
+</span><span id="__span-2-53"><a id="__codelineno-2-53" name="__codelineno-2-53"></a>
+</span><span id="__span-2-54"><a id="__codelineno-2-54" name="__codelineno-2-54"></a><span class="gu">## Step 3: Simulate one ticket (dry run, no execution)</span>
+</span><span id="__span-2-55"><a id="__codelineno-2-55" name="__codelineno-2-55"></a>Walk through a typical ticket touching 2 services, using ONLY my current rules/commands:
+</span><span id="__span-2-56"><a id="__codelineno-2-56" name="__codelineno-2-56"></a>start → inspect → edit → build-test → one failure + fix → retest → diff-report → resume in a new session.
+</span><span id="__span-2-57"><a id="__codelineno-2-57" name="__codelineno-2-57"></a>List each shell approval it would need, plus any step where the rules are unclear or
+</span><span id="__span-2-58"><a id="__codelineno-2-58" name="__codelineno-2-58"></a>would make the agent use shell unnecessarily. Result: expected approvals per ticket.
+</span><span id="__span-2-59"><a id="__codelineno-2-59" name="__codelineno-2-59"></a>
+</span><span id="__span-2-60"><a id="__codelineno-2-60" name="__codelineno-2-60"></a><span class="gu">## Step 4: Write the report</span>
+</span><span id="__span-2-61"><a id="__codelineno-2-61" name="__codelineno-2-61"></a>Write ONE new file: &lt;hub&gt;/eval/EVAL-&lt;NN&gt;.md (NN = next number after existing reports;
+</span><span id="__span-2-62"><a id="__codelineno-2-62" name="__codelineno-2-62"></a>create the eval/ folder if missing). Never overwrite old reports.
+</span><span id="__span-2-63"><a id="__codelineno-2-63" name="__codelineno-2-63"></a>Structure:
+</span><span id="__span-2-64"><a id="__codelineno-2-64" name="__codelineno-2-64"></a><span class="k">1.</span> Summary: total score (sum / max applicable), 3-line verdict
+</span><span id="__span-2-65"><a id="__codelineno-2-65" name="__codelineno-2-65"></a><span class="k">2.</span> Score table: metric | score | previous score | Δ | evidence
+</span><span id="__span-2-66"><a id="__codelineno-2-66" name="__codelineno-2-66"></a><span class="k">3.</span> Regressions: any metric that dropped vs. the previous report, and the likely cause
+</span><span id="__span-2-67"><a id="__codelineno-2-67" name="__codelineno-2-67"></a>   (which changed file)
+</span><span id="__span-2-68"><a id="__codelineno-2-68" name="__codelineno-2-68"></a><span class="k">4.</span> Violations: every Hard Constraint breach found (these are top priority, whatever the score)
+</span><span id="__span-2-69"><a id="__codelineno-2-69" name="__codelineno-2-69"></a><span class="k">5.</span> Dry-run result: approvals per ticket + unclear steps
+</span><span id="__span-2-70"><a id="__codelineno-2-70" name="__codelineno-2-70"></a><span class="k">6.</span> Top 5 fixes: ordered by value/risk; each with file, minimal diff, metric improved.
+</span><span id="__span-2-71"><a id="__codelineno-2-71" name="__codelineno-2-71"></a>   Must follow the preservation rules: keep existing paths/names, prefer additive changes,
+</span><span id="__span-2-72"><a id="__codelineno-2-72" name="__codelineno-2-72"></a>   no deletes/renames.
+</span><span id="__span-2-73"><a id="__codelineno-2-73" name="__codelineno-2-73"></a><span class="k">7.</span> Changed since last eval: files changed since the previous report (compare the content/rules
+</span><span id="__span-2-74"><a id="__codelineno-2-74" name="__codelineno-2-74"></a>   the previous report cites)
+</span><span id="__span-2-75"><a id="__codelineno-2-75" name="__codelineno-2-75"></a>
+</span><span id="__span-2-76"><a id="__codelineno-2-76" name="__codelineno-2-76"></a>Then print the Summary + score table in chat. Don't apply any fix until I say "apply N".
+</span></code></pre></div></td></tr></table></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../java-agent-skills/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Java Agent Skills (Claude + Gemini)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Java Agent Skills (Claude + Gemini)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../agentic-workflows-catalog/" class="md-footer__link md-footer__link--next" aria-label="Next: Agentic Workflows Catalog">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Agentic Workflows Catalog
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/woon17" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/shufa-wen-7a530418b" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93zM6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const metaInner = document.querySelector(".md-footer-meta__inner");
+        if (metaInner) {
+            const infoBlock = document.createElement("div");
+            infoBlock.className = "md-timestamp";
+            infoBlock.style.cssText = `
+          font-size: 0.75rem;
+          color: var(--md-footer-fg-color);
+          margin-top: 0.5rem;
+          text-align: right;
+          flex: 1 0 100%;
+        `;
+            infoBlock.innerHTML = `
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2026-09-25 00:58:32 SGT</span><br>
+  <span style="opacity: 0.8;">(2026-09-25 00:58:13 SGT: ac3dc9a - add agentic workflows catalog page, enable tasklist checkboxes)</span>
+</div>`;
+            metaInner.appendChild(infoBlock);
+        }
+    });
+</script>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.footer", "content.code.copy", "content.code.select", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/open_in_new_tab.js"></script>
+      
+        <script src="../../javascripts/highlight_selected_line_num.js"></script>
+      
+    
+  </body>
+</html>

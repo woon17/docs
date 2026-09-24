@@ -1,0 +1,5 @@
+
+<div style="font-size: 0.7rem; text-align: right; color: var(--md-footer-fg-color);">
+  <span><strong>Last Deployment:</strong> 2026-09-25 00:58:32 SGT</span><br>
+  <span style="opacity: 0.8;">(2026-09-25 00:58:13 SGT: ac3dc9a - add agentic workflows catalog page, enable tasklist checkboxes)</span>
+</div>
