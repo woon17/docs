@@ -53,6 +53,8 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - footnotes
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.highlight:
       anchor_linenums: true
       # pygments_lang_class: true
@@ -141,6 +143,7 @@ nav:
     - Common AI Knowledge: ai-tools/common.md
     - Java Agent Skills (Claude + Gemini): ai-tools/java-agent-skills.md
     - Agentic Ticket Workflow: ai-tools/agentic-ticket-workflow.md
+    - Agentic Workflows Catalog: ai-tools/agentic-workflows-catalog.md
   - KDB:
     - kdb/index.md
     - setup on M3: kdb/setup.md
