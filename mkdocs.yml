@@ -4,6 +4,7 @@ edit_uri: edit/main/docs/
 plugins:
   # - Blog: plugins/blog.md
   - blog
+  - copy-markdown
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
 theme:
