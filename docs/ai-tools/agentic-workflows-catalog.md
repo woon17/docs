@@ -2,7 +2,7 @@
 
 Published workflows to explore, borrowing one idea at a time to improve [my own ticket workflow](agentic-ticket-workflow.md).
 
-- **Harness** = the agent runtime (loop, tools, permissions). It's fixed, so it's not covered here.
+- **Harness** = the agent runtime (loop, tools, permissions). It's fixed, so it's not covered here. See [Harness](harness/index.md).
 - **Workflow** = the process and rules on top of the harness. That's what this page covers.
 
 ---

@@ -144,6 +144,10 @@ nav:
     - Java Agent Skills (Claude + Gemini): ai-tools/java-agent-skills.md
     - Agentic Ticket Workflow: ai-tools/agentic-ticket-workflow.md
     - Agentic Workflows Catalog: ai-tools/agentic-workflows-catalog.md
+    - Harness:
+      - Overview: ai-tools/harness/index.md
+      - Building Blocks: ai-tools/harness/building-blocks.md
+      - Failure Modes & Future: ai-tools/harness/failure-modes.md
   - KDB:
     - kdb/index.md
     - setup on M3: kdb/setup.md
